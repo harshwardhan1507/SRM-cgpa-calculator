@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRM CGPA Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Notification System -->
+    <div id="notification-popup" class="notification-popup hidden">
+        <div class="notification-content">
+            <div class="notification-message"></div>
+            <button class="notification-close">&times;</button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="confirmation-modal hidden">
+        <div class="confirmation-content">
+            <p id="confirmation-message"></p>
+            <div class="confirmation-buttons">
+                <button id="confirm-ok" class="btn-confirm">OK</button>
+                <button id="confirm-cancel" class="btn-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>SRM CGPA Calculator</h1>
+        
+        <!-- Dashboard View -->
+        <div id="dashboard" class="view">
+            <div id="cgpa-stats">
+                <div class="stat-card">
+                    <h3>Overall CGPA</h3>
+                    <p id="overall-cgpa">-</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Current Year CGPA</h3>
+                    <p id="year-cgpa">-</p>
+                </div>
+            </div>
+            
+            <h3>Semester History</h3>
+            <div id="semester-list" class="semester-grid"></div>
+            
+            <!-- Backs Section -->
+            <div id="backs-section" class="hidden">
+                <h3>⚠️ Pending Backs</h3>
+                <div id="backs-list"></div>
+            </div>
+        </div>
+        
+        <!-- Semester Detail View -->
+        <div id="semester-detail-view" class="view hidden">
+            <button id="back-to-dashboard-btn" class="btn-secondary">← Back to Dashboard</button>
+            
+            <div class="semester-header">
+                <h2 id="sem-detail-title">Semester 1</h2>
+                <div class="semester-nav">
+                    <div class="sem-detail-stats">
+                        <div class="sem-stat-card">
+                            <h4>Subjects</h4>
+                            <p id="sem-course-count">0</p>
+                        </div>
+                        <div class="sem-stat-card">
+                            <h4>CGPA</h4>
+                            <p id="sem-detail-cgpa">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Courses List -->
+            <div class="courses-section">
+                <h3>Subjects</h3>
+                <div id="semester-courses-list" class="courses-list"></div>
+            </div>
+            
+            <!-- Add Course Form -->
+            <div class="add-course-section">
+                <h3>Add New Subject</h3>
+                <div class="add-course-form">
+                    <div class="form-group-row">
+                        <div>
+                            <label for="sem-course-name">Course Name:</label>
+                            <input type="text" id="sem-course-name" placeholder="Optional">
+                        </div>
+                        <div>
+                            <label for="sem-credit">Credit:</label>
+                            <input type="number" id="sem-credit" min="1" max="10" step="0.5">
+                        </div>
+                    </div>
+
+                    <div class="course-type-toggle">
+                        <button class="course-type-btn active" data-type="theory" onclick="setSemCourseType('theory')">Theory</button>
+                        <button class="course-type-btn" data-type="lab" onclick="setSemCourseType('lab')">Lab</button>
+                    </div>
+
+                    <div id="sem-theory-inputs" class="theory-fields">
+                        <div>
+                            <label for="sem-mst1">MST1 (out of 30):</label>
+                            <input type="number" id="sem-mst1" min="0" max="30">
+                        </div>
+                        <div>
+                            <label for="sem-mst2">MST2 (out of 30):</label>
+                            <input type="number" id="sem-mst2" min="0" max="30">
+                        </div>
+                        <div>
+                            <label for="sem-assignment">Assignment (out of 10):</label>
+                            <input type="number" id="sem-assignment" min="0" max="10">
+                        </div>
+                        <div>
+                            <label for="sem-endsem">End Sem (out of 100):</label>
+                            <input type="number" id="sem-endsem" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <div id="sem-lab-inputs" class="lab-fields" style="display: none;">
+                        <div>
+                            <label for="sem-lab-internal">Internal (out of 60):</label>
+                            <input type="number" id="sem-lab-internal" min="0" max="60">
+                        </div>
+                        <div>
+                            <label for="sem-lab-external">External (out of 40):</label>
+                            <input type="number" id="sem-lab-external" min="0" max="40">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="sem-add-course-btn" class="btn-add-course">+ Add Subject</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Semester Detail Modal -->
+        <div id="semester-modal" class="modal hidden">
+            <div class="modal-content">
+                <button id="close-modal" class="close-btn">&times;</button>
+                <h2 id="modal-sem-title">Semester 1</h2>
+                <div id="modal-courses"></div>
+                <div class="modal-footer">
+                    <p id="modal-cgpa"><strong>Net CGPA: -</strong></p>
+                    <button id="delete-sem-btn" class="btn-delete">Delete Semester</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form View -->
+        <div id="form-view" class="view hidden">
+            <button id="back-btn" class="btn-secondary">← Back to Dashboard</button>
+            
+            <h2>Add Semester Marks</h2>
+            <div id="semester-info">
+                <label for="semester-num">Semester Number:</label>
+                <input type="number" id="semester-num" min="1" max="8">
+            </div>
+            
+            <div id="course-form">
+                <label for="course-name">Course Name:</label>
+                <input type="text" id="course-name" placeholder="Optional">
+                <label for="course-type">Course Type:</label>
+                <select id="course-type">
+                    <option value="theory">Theory</option>
+                    <option value="lab">Lab</option>
+                </select>
+                <div id="theory-inputs">
+                    <label for="mst1">MST1 (out of 30):</label>
+                    <input type="number" id="mst1" min="0" max="30">
+                    <label for="mst2">MST2 (out of 30):</label>
+                    <input type="number" id="mst2" min="0" max="30">
+                    <label for="assignment">Assignment (out of 10):</label>
+                    <input type="number" id="assignment" min="0" max="10">
+                    <label for="endsem">End Sem (out of 100):</label>
+                    <input type="number" id="endsem" min="0" max="100">
+                </div>
+                <div id="lab-inputs">
+                    <label for="lab-internal">Internal (out of 60):</label>
+                    <input type="number" id="lab-internal" min="0" max="60">
+                    <label for="lab-external">External (out of 40):</label>
+                    <input type="number" id="lab-external" min="0" max="40">
+                </div>
+                <label for="credit">Credit:</label>
+                <input type="number" id="credit" min="1" max="10" step="0.5">
+                <button id="add-course">Add Course</button>
+            </div>
+            <ul id="course-list"></ul>
+            <button id="calculate-cgpa" class="btn-primary">Save Semester</button>
+            <button id="cancel-semester" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
