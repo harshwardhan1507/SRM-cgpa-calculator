@@ -1,12 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SRM CGPA Calculator</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase v9+ Modular SDK -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Your Firebase configuration (REPLACE WITH YOUR CONFIG)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Make available globally for your script.js
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+    </script>
 </head>
+
 <body>
+    <!-- Auth UI Section (Add this right after <body>) -->
+    <div id="auth-section" class="auth-section">
+        <div id="auth-logged-out" class="auth-container">
+            <button id="google-login-btn" class="btn-google-login">
+                <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                    <path fill="#EA4335"
+                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                    <path fill="#4285F4"
+                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                    <path fill="#FBBC05"
+                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                    <path fill="#34A853"
+                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    <path fill="none" d="M0 0h48v48H0z" />
+                </svg>
+                Sign in with Google
+            </button>
+        </div>
+        <div id="auth-logged-in" class="auth-container hidden">
+            <div class="user-info">
+                <img id="user-avatar" class="user-avatar" src="" alt="User">
+                <span id="user-name" class="user-name"></span>
+            </div>
+            <button id="logout-btn" class="btn-logout">Sign Out</button>
+        </div>
+    </div>
+
     <!-- Notification System -->
     <div id="notification-popup" class="notification-popup hidden">
         <div class="notification-content">
@@ -28,7 +85,7 @@
 
     <div class="container">
         <h1>SRM CGPA Calculator</h1>
-        
+
         <!-- Dashboard View -->
         <div id="dashboard" class="view">
             <div id="cgpa-stats">
@@ -41,21 +98,21 @@
                     <p id="year-cgpa">-</p>
                 </div>
             </div>
-            
+
             <h3>Semester History</h3>
             <div id="semester-list" class="semester-grid"></div>
-            
+
             <!-- Backs Section -->
             <div id="backs-section" class="hidden">
                 <h3>⚠️ Pending Backs</h3>
                 <div id="backs-list"></div>
             </div>
         </div>
-        
+
         <!-- Semester Detail View -->
         <div id="semester-detail-view" class="view hidden">
             <button id="back-to-dashboard-btn" class="btn-secondary">← Back to Dashboard</button>
-            
+
             <div class="semester-header">
                 <h2 id="sem-detail-title">Semester 1</h2>
                 <div class="semester-nav">
@@ -71,13 +128,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Courses List -->
             <div class="courses-section">
                 <h3>Subjects</h3>
                 <div id="semester-courses-list" class="courses-list"></div>
             </div>
-            
+
             <!-- Add Course Form -->
             <div class="add-course-section">
                 <h3>Add New Subject</h3>
@@ -94,7 +151,8 @@
                     </div>
 
                     <div class="course-type-toggle">
-                        <button class="course-type-btn active" data-type="theory" onclick="setSemCourseType('theory')">Theory</button>
+                        <button class="course-type-btn active" data-type="theory"
+                            onclick="setSemCourseType('theory')">Theory</button>
                         <button class="course-type-btn" data-type="lab" onclick="setSemCourseType('lab')">Lab</button>
                     </div>
 
@@ -134,7 +192,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Semester Detail Modal -->
         <div id="semester-modal" class="modal hidden">
             <div class="modal-content">
@@ -147,17 +205,17 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Form View -->
         <div id="form-view" class="view hidden">
             <button id="back-btn" class="btn-secondary">← Back to Dashboard</button>
-            
+
             <h2>Add Semester Marks</h2>
             <div id="semester-info">
                 <label for="semester-num">Semester Number:</label>
                 <input type="number" id="semester-num" min="1" max="8">
             </div>
-            
+
             <div id="course-form">
                 <label for="course-name">Course Name:</label>
                 <input type="text" id="course-name" placeholder="Optional">
@@ -191,7 +249,16 @@
             <button id="cancel-semester" class="btn-secondary">Cancel</button>
         </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <!-- Firebase init FIRST -->
+    <script type="module" src="./firebase-init.js"></script>
+
+    <!-- Firebase service -->
+    <script type="module" src="./firebase-service.js"></script>
+
+    <!-- Main app logic -->
+    <script type="module" src="./script.js"></script>
+
 </body>
+
 </html>
