@@ -989,7 +989,7 @@ button:active {
 .semester-header {
     display: grid;
     grid-template-columns: 1fr auto;
-    align-items: start;
+    align-items: center;
     margin-bottom: 40px;
     padding-bottom: 30px;
     border-bottom: 1px solid rgba(100, 200, 255, 0.2);
