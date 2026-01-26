@@ -839,34 +839,76 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Back to dashboard button
   const backToDashboardBtn = document.getElementById("back-to-dashboard-btn");
-  if (backToDashboardBtn) {
-    backToDashboardBtn.addEventListener("click", function () {
-      updateSemesterData();
-      saveSemestersToFirestore(semesters, db);
+if (backToDashboardBtn) {
+  backToDashboardBtn.addEventListener("click", function () {
 
-      document.getElementById("sem-course-name").value = "";
-      document.getElementById("sem-mst1").value = "";
-      document.getElementById("sem-mst2").value = "";
-      document.getElementById("sem-assignment").value = "";
-      document.getElementById("sem-endsem").value = "";
-      document.getElementById("sem-lab-internal").value = "";
-      document.getElementById("sem-lab-external").value = "";
-      document.getElementById("sem-credit").value = "";
+    // 🔹 Calculate totals for this semester
+    let totalPoints = 0;
+    let totalCredits = 0;
 
-      const buttons = document.querySelectorAll(".course-type-btn");
-      buttons.forEach((btn) => btn.classList.remove("active"));
-      if (buttons[0]) buttons[0].classList.add("active");
-
-      const theoryInputs = document.getElementById("sem-theory-inputs");
-      const labInputs = document.getElementById("sem-lab-inputs");
-      if (theoryInputs) theoryInputs.style.display = "grid";
-      if (labInputs) labInputs.style.display = "none";
-
-      updateDashboard();
-      showDashboardView();
-      showNotification("Semester data saved successfully!", "success");
+    courses.forEach(course => {
+      if (!course.hasBack) {
+        totalPoints += course.grade * course.credit;
+        totalCredits += course.credit;
+      }
     });
-  }
+
+    const cgpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
+
+    // 🔹 Create or update semester entry
+    const semIndex = semesters.findIndex(
+      s => s.semester === currentViewingSemester
+    );
+
+    const semesterData = {
+      semester: currentViewingSemester,
+      courses: courses,
+      cgpa: cgpa,
+      totalPoints: totalPoints,
+      totalCredits: totalCredits
+    };
+
+    if (semIndex === -1) {
+      semesters.push(semesterData);       // NEW semester
+    } else {
+      semesters[semIndex] = semesterData; // UPDATE semester
+    }
+
+    // 🔹 Persist data
+    localStorage.setItem("semesters", JSON.stringify(semesters));
+    if (db && window.firebaseAuth?.currentUser) {
+      saveSemestersToFirestore(semesters, db);
+    }
+
+    // 🔹 Reset form inputs
+    document.getElementById("sem-course-name").value = "";
+    document.getElementById("sem-mst1").value = "";
+    document.getElementById("sem-mst2").value = "";
+    document.getElementById("sem-assignment").value = "";
+    document.getElementById("sem-endsem").value = "";
+    document.getElementById("sem-lab-internal").value = "";
+    document.getElementById("sem-lab-external").value = "";
+    document.getElementById("sem-credit").value = "";
+
+    const buttons = document.querySelectorAll(".course-type-btn");
+    buttons.forEach(btn => btn.classList.remove("active"));
+    if (buttons[0]) buttons[0].classList.add("active");
+
+    const theoryInputs = document.getElementById("sem-theory-inputs");
+    const labInputs = document.getElementById("sem-lab-inputs");
+    if (theoryInputs) theoryInputs.style.display = "grid";
+    if (labInputs) labInputs.style.display = "none";
+
+    // 🔹 Reset state & navigate
+    courses = [];
+    currentViewingSemester = null;
+
+    updateDashboard();
+    showDashboardView();
+    showNotification("Semester data saved successfully!", "success");
+  });
+}
+
 
   // Calculate CGPA button
   const calculateBtn = document.getElementById("calculate-cgpa");
