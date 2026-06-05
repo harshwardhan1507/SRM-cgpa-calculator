@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from './logo';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -79,9 +80,7 @@ export default function Navbar() {
           {/* Left Logo Group */}
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="bg-[#111111] border border-[#1A1A1A] w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-white transition-colors group-hover:border-[#71717A]">
-                SA
-              </div>
+              <Logo size="sm" />
               <span className="font-sans text-sm font-semibold tracking-tight text-white hidden sm:inline-block">
                 SRM Academic Suite
               </span>

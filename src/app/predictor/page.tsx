@@ -13,7 +13,9 @@ import {
   AlertCircle,
   Clock,
   Sparkles,
-  Calculator
+  Calculator,
+  Lock,
+  Unlock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/toast';
@@ -24,6 +26,7 @@ interface SimSemester {
   semesterNum: number;
   credits: number;
   projectedSgpa: number;
+  isLocked?: boolean;
 }
 
 export default function PredictorPage() {
@@ -57,7 +60,8 @@ export default function PredictorPage() {
       initialSims.push({
         semesterNum: sem,
         credits: 20, // default credits
-        projectedSgpa: 8.50 // default projected SGPA
+        projectedSgpa: 8.50, // default projected SGPA
+        isLocked: false
       });
     }
     
@@ -89,6 +93,18 @@ export default function PredictorPage() {
     }));
   };
 
+  const handleToggleSimSemLock = (semNum: number) => {
+    setSimSemesters(simSemesters.map(s => {
+      if (s.semesterNum === semNum) {
+        return {
+          ...s,
+          isLocked: !s.isLocked
+        };
+      }
+      return s;
+    }));
+  };
+
   const handleAddSimSemester = () => {
     const nextSemNum = simSemesters.length > 0 
       ? Math.max(...simSemesters.map(s => s.semesterNum)) + 1 
@@ -102,7 +118,8 @@ export default function PredictorPage() {
     setSimSemesters([...simSemesters, {
       semesterNum: nextSemNum,
       credits: 20,
-      projectedSgpa: 8.50
+      projectedSgpa: 8.50,
+      isLocked: false
     }]);
   };
 
@@ -118,18 +135,45 @@ export default function PredictorPage() {
   const overallPoints = completedPoints + totalPointsSim;
   const projectedCumulativeCgpa = overallCredits > 0 ? overallPoints / overallCredits : 0;
 
+  // Split into fixed (locked) and flexible (unlocked) simulated semesters
+  const lockedSims = simSemesters.filter(s => s.isLocked);
+  const unlockedSims = simSemesters.filter(s => !s.isLocked);
+
+  const lockedCredits = lockedSims.reduce((acc, s) => acc + s.credits, 0);
+  const lockedPoints = lockedSims.reduce((acc, s) => acc + (s.projectedSgpa * s.credits), 0);
+
+  const unlockedCredits = unlockedSims.reduce((acc, s) => acc + s.credits, 0);
+
+  // Total fixed targets (completed terms + locked simulated terms)
+  const totalFixedPoints = completedPoints + lockedPoints;
+  const totalFixedCredits = completedCredits + lockedCredits;
+
   // Required points to reach target CGPA
   const requiredTotalPoints = targetCgpa * overallCredits;
-  const requiredPointsFromSim = requiredTotalPoints - completedPoints;
-  const requiredAverageSgpa = totalCreditsSim > 0 ? requiredPointsFromSim / totalCreditsSim : 0;
+  const requiredPointsFromUnlocked = requiredTotalPoints - totalFixedPoints;
+  const requiredAverageSgpa = unlockedCredits > 0 ? requiredPointsFromUnlocked / unlockedCredits : 0;
 
   // Feasibility status
   let feasibility: 'possible' | 'impossible' | 'achieved' = 'possible';
-  if (requiredAverageSgpa > 10.00) {
-    feasibility = 'impossible';
-  } else if (requiredAverageSgpa <= 0) {
-    feasibility = 'achieved';
+  if (unlockedCredits > 0) {
+    if (requiredAverageSgpa > 10.00) {
+      feasibility = 'impossible';
+    } else if (requiredAverageSgpa <= 0) {
+      feasibility = 'achieved';
+    }
+  } else {
+    // If all simulated terms are locked, feasibility depends on if the total fixed cumulative is enough
+    feasibility = projectedCumulativeCgpa >= targetCgpa ? 'achieved' : 'impossible';
   }
+
+  // Bounds range of possibility
+  const maxPossibleCgpa = overallCredits > 0 
+    ? (completedPoints + (10.00 * totalCreditsSim)) / overallCredits 
+    : 10.00;
+
+  const minPossibleCgpa = overallCredits > 0 
+    ? (completedPoints + (5.00 * totalCreditsSim)) / overallCredits 
+    : 5.00;
 
   return (
     <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
@@ -168,9 +212,17 @@ export default function PredictorPage() {
               value={targetCgpa}
               onChange={(e) => setTargetCgpa(parseFloat(e.target.value))}
             />
-            <div className="flex justify-between font-mono text-[10px] text-muted-foreground">
-              <span>5.00</span>
-              <span>10.00</span>
+            <div className="flex flex-col gap-1.5 font-mono text-[10px]">
+              <div className="flex justify-between text-muted-foreground">
+                <span>Min: {minPossibleCgpa.toFixed(2)}</span>
+                <span>Max: {maxPossibleCgpa.toFixed(2)}</span>
+              </div>
+              {targetCgpa > maxPossibleCgpa && (
+                <span className="text-red-400 font-semibold text-center mt-1">⚠️ Unreachable! Max: {maxPossibleCgpa.toFixed(2)}</span>
+              )}
+              {targetCgpa < minPossibleCgpa && (
+                <span className="text-green-400 font-semibold text-center mt-1">✓ Already achieved! Min: {minPossibleCgpa.toFixed(2)}</span>
+              )}
             </div>
           </div>
         </section>
@@ -182,10 +234,18 @@ export default function PredictorPage() {
             <span className="font-mono text-xs text-muted-foreground uppercase">Required Avg. SGPA</span>
             <div>
               <div className="text-4xl font-bold text-white leading-none tracking-tight">
-                <AnimatedCounter value={feasibility === 'achieved' ? 0 : requiredAverageSgpa} />
+                {unlockedCredits > 0 ? (
+                  <AnimatedCounter value={feasibility === 'achieved' ? 0 : requiredAverageSgpa} />
+                ) : (
+                  <span className="text-2xl text-muted-foreground font-semibold">ALL FIXED</span>
+                )}
               </div>
               <div className="text-xs text-muted-foreground mt-2">
-                across {simSemesters.length} remaining semesters
+                {unlockedCredits > 0 ? (
+                  `across ${unlockedSims.length} flexible semester${unlockedSims.length > 1 ? 's' : ''}`
+                ) : (
+                  'all future semesters are fixed'
+                )}
               </div>
             </div>
           </div>
@@ -309,17 +369,34 @@ export default function PredictorPage() {
               {simSemesters.map((sem) => (
                 <div 
                   key={sem.semesterNum}
-                  className="bg-[#090909] border border-border rounded-xl p-4 flex flex-col gap-4 relative overflow-hidden"
+                  className={`bg-[#090909] border rounded-xl p-4 flex flex-col gap-4 relative overflow-hidden transition-colors ${
+                    sem.isLocked ? 'border-neutral-800' : 'border-border'
+                  }`}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-white"></div>
+                  <div className={`absolute left-0 top-0 bottom-0 w-1 ${
+                    sem.isLocked ? 'bg-neutral-600' : 'bg-white'
+                  }`}></div>
                   <div className="flex justify-between items-center">
-                    <h4 className="text-sm font-semibold text-white">Semester {sem.semesterNum} (Hypothetical)</h4>
-                    <button 
-                      onClick={() => handleDeleteSimSemester(sem.semesterNum)}
-                      className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-all"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <h4 className="text-sm font-semibold text-white">Semester {sem.semesterNum} {sem.isLocked ? '(Fixed)' : '(Flexible)'}</h4>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleToggleSimSemLock(sem.semesterNum)}
+                        className={`p-1 hover:bg-neutral-900 rounded-lg transition-all cursor-pointer`}
+                        title={sem.isLocked ? 'Make SGPA Flexible' : 'Lock SGPA (Keep fixed in calculations)'}
+                      >
+                        {sem.isLocked ? (
+                          <Lock className="w-4 h-4 text-white" />
+                        ) : (
+                          <Unlock className="w-4 h-4 text-muted-foreground hover:text-white" />
+                        )}
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteSimSemester(sem.semesterNum)}
+                        className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-all cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">

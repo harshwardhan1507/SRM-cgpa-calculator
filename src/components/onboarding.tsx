@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { useToast } from './toast';
 import { BookOpen, User, GraduationCap, Calendar, Compass, Hash } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Logo from './logo';
 
 export default function Onboarding() {
   const { updateProfile } = useFirebase();
@@ -65,7 +66,10 @@ export default function Onboarding() {
         {/* Aesthetic top ambient bar */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent opacity-60" />
 
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 flex flex-col items-center justify-center">
+          <div className="mb-4">
+            <Logo size="md" />
+          </div>
           <span className="font-mono text-[10px] tracking-widest text-[#71717A] uppercase border border-[#1A1A1A] px-2.5 py-1 rounded-md inline-block mb-3">
             Initial Setup
           </span>
