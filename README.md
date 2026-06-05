@@ -1,114 +1,36 @@
-# SRM CGPA Calculator
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A simple, fast, and accurate **CGPA & GPA calculator** built specifically for **SRM University students**.  
-The project is designed to be lightweight, beginner-friendly, and scalable, with optional Firebase integration for future backend features.
+## Getting Started
 
-🔗 **Live Demo:** https://srm-cgpa-calculator-by-haruto.vercel.app
+First, run the development server:
 
----
-
-## 🚀 Features
-
-- 📊 Calculate **GPA** for a single semester  
-- 📈 Calculate **CGPA** across multiple semesters  
-- 🎓 Logic aligned with **SRM University grading system**  
-- ⚡ Instant client-side calculations  
-- 💻 Clean and responsive UI  
-- 🔐 Firebase setup included for future authentication & data storage  
-- 🌐 Deployed on **Vercel**
-
----
-
-## 🛠️ Tech Stack
-
-- **HTML5** – Markup  
-- **CSS3** – Styling & layout  
-- **JavaScript (Vanilla)** – Calculation logic  
-- **Firebase** – Backend foundation (Auth / Database ready)  
-- **Vercel** – Deployment & hosting  
-
----
-
-## 📐 How the Calculator Works
-
-1. User enters:
-   - Number of subjects
-   - Credits per subject
-   - Corresponding grades
-2. Grades are converted into grade points
-3. A **credit-weighted average** is calculated
-4. Final **GPA / CGPA** is displayed instantly
-
-All calculations are performed on the client side for speed and simplicity.
-
----
-
-## 📂 Project Structure
-```text
-srm-cgpa-calculator/
-│
-├── index.html # Main HTML file
-├── style.css # Global styles
-├── script.js # CGPA/GPA calculation logic
-│
-├── firebase-init.js # Firebase initialization & configuration
-├── firebase-service.js # Firebase services (auth, database logic)
-│
-└── README.md # Project documentation
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🔥 Firebase Integration
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-Firebase is included to support future features such as:
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- Google account authentication  
-- Saving semester-wise GPA/CGPA data  
-- User-specific dashboards  
-- Cloud database support  
+## Learn More
 
-Currently, the calculator works **independently of Firebase**, ensuring reliability even without login.
+To learn more about Next.js, take a look at the following resources:
 
----
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## ⚠️ Accuracy Disclaimer
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-This calculator follows commonly used SRM grading patterns.  
-For official academic purposes, always refer to **SRM University’s academic regulations**.
+## Deploy on Vercel
 
----
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 📌 Planned Enhancements
-
-- 🔐 Google Login using Firebase Authentication  
-- 💾 Store semester data in Firebase Firestore  
-- 📊 CGPA trend visualization  
-- 📱 Improved mobile UX  
-- 🧮 CGPA to percentage conversion  
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome.
-
-1. Fork the repository  
-2. Create a new feature branch  
-3. Commit your changes  
-4. Open a pull request  
-
----
-
-## 👨‍💻 Author
-
-**Harsh Wardhan**  
-Engineering Student | Web Development Enthusiast  
-
-If you find this project useful, consider giving it a ⭐ on GitHub.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

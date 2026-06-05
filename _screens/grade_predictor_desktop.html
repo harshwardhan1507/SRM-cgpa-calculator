@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Grade Predictor - SRM Academic Suite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Geist', sans-serif; }
+        .font-label-mono { font-family: 'JetBrains Mono', monospace; }
+        /* Custom range slider styling for minimal look */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 0 2px #090909;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #27272A;
+            border-radius: 2px;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-primary": "#2f3131",
+                            "error-container": "#93000a",
+                            "tertiary-fixed": "#e7e1dd",
+                            "primary-fixed-dim": "#c6c6c7",
+                            "tertiary": "#ffffff",
+                            "inverse-primary": "#5d5f5f",
+                            "on-error-container": "#ffdad6",
+                            "on-tertiary-fixed-variant": "#494643",
+                            "border-strong": "#27272A",
+                            "on-primary-fixed-variant": "#454747",
+                            "on-tertiary-fixed": "#1d1b19",
+                            "on-surface-variant": "#c4c7c8",
+                            "inverse-on-surface": "#303030",
+                            "secondary-fixed-dim": "#c6c5cf",
+                            "primary-fixed": "#e2e2e2",
+                            "secondary-fixed": "#e3e1ec",
+                            "outline": "#8e9192",
+                            "surface-variant": "#353535",
+                            "border-subtle": "#1A1A1A",
+                            "primary": "#ffffff",
+                            "outline-variant": "#444748",
+                            "on-error": "#690005",
+                            "primary-container": "#e2e2e2",
+                            "on-secondary-fixed-variant": "#46464e",
+                            "on-secondary-container": "#bcbbc5",
+                            "surface-tint": "#c6c6c7",
+                            "surface-dim": "#131313",
+                            "secondary": "#c6c5cf",
+                            "error": "#ffb4ab",
+                            "surface-hover": "#111111",
+                            "on-secondary": "#2f3038",
+                            "surface-container-highest": "#353535",
+                            "surface-bright": "#393939",
+                            "surface": "#090909",
+                            "on-background": "#e2e2e2",
+                            "inverse-surface": "#e2e2e2",
+                            "on-secondary-fixed": "#1a1b22",
+                            "tertiary-fixed-dim": "#cbc6c1",
+                            "on-tertiary": "#32302d",
+                            "on-primary-fixed": "#1a1c1c",
+                            "background": "#131313",
+                            "surface-container-lowest": "#0e0e0e",
+                            "secondary-container": "#4a4b53",
+                            "on-tertiary-container": "#676460",
+                            "surface-container": "#1f1f1f",
+                            "surface-container-low": "#1b1b1b",
+                            "on-surface": "#e2e2e2",
+                            "tertiary-container": "#e7e1dd",
+                            "surface-container-high": "#2a2a2a",
+                            "text-muted": "#A1A1AA",
+                            "on-primary-container": "#636565"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                    },
+                    "spacing": {
+                            "lg": "24px",
+                            "md": "16px",
+                            "2xl": "64px",
+                            "xl": "40px",
+                            "unit": "4px",
+                            "sm": "8px",
+                            "margin": "32px",
+                            "gutter": "24px",
+                            "xs": "4px"
+                    },
+                    "fontFamily": {
+                            "body-md": ["Geist"],
+                            "headline-md": ["Geist"],
+                            "headline-lg": ["Geist"],
+                            "button": ["Geist"],
+                            "label-mono": ["JetBrains Mono"],
+                            "body-lg": ["Geist"],
+                            "headline-lg-mobile": ["Geist"],
+                            "display": ["Geist"]
+                    },
+                    "fontSize": {
+                            "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                            "headline-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                            "button": ["14px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                            "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                            "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                            "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<header class="bg-background border-b border-border-subtle w-full sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin py-md max-w-[1440px] mx-auto">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-semibold text-primary tracking-tight" href="#">SRM Academic Suite</a>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-text-muted font-body-md hover:text-primary transition-colors hover:bg-surface-hover hover:text-primary px-sm py-xs rounded" href="#">Home</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors hover:bg-surface-hover hover:text-primary px-sm py-xs rounded" href="#">SGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors hover:bg-surface-hover hover:text-primary px-sm py-xs rounded" href="#">CGPA Calculator</a>
+<a class="text-primary font-semibold border-b border-primary pb-1 px-sm" href="#">Grade Predictor</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors hover:bg-surface-hover hover:text-primary px-sm py-xs rounded" href="#">About Grading</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<button class="text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[1440px] mx-auto px-margin py-2xl flex flex-col gap-2xl">
+<!-- Hero & Target Input -->
+<section class="flex flex-col md:flex-row gap-xl items-start justify-between">
+<div class="flex flex-col gap-sm max-w-2xl">
+<h1 class="font-display text-display text-primary">Grade Predictor</h1>
+<p class="font-body-lg text-body-lg text-text-muted">Simulate future semester performances to understand what it takes to reach your academic goals.</p>
+</div>
+<div class="bg-surface border border-border-subtle rounded-xl p-lg w-full md:w-96 flex flex-col gap-md">
+<div class="flex justify-between items-end">
+<label class="font-label-mono text-label-mono text-text-muted uppercase tracking-wider">Target CGPA</label>
+<span class="font-headline-lg text-headline-lg text-primary" id="target-display">9.00</span>
+</div>
+<input class="w-full mt-sm" id="target-slider" max="10.00" min="5.00" step="0.01" type="range" value="9.00"/>
+<div class="flex justify-between font-label-mono text-label-mono text-text-muted mt-xs">
+<span>5.0</span>
+<span>10.0</span>
+</div>
+</div>
+</section>
+<!-- Summary Dashboard Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-surface border border-border-subtle rounded-xl p-lg flex flex-col justify-between h-48 group hover:bg-surface-hover transition-colors">
+<span class="font-label-mono text-label-mono text-text-muted uppercase">Required Avg. SGPA</span>
+<div>
+<div class="font-display text-display text-primary leading-none">9.25</div>
+<div class="font-body-md text-body-md text-text-muted mt-sm">across 3 remaining semesters</div>
+</div>
+</div>
+<div class="bg-surface border border-border-subtle rounded-xl p-lg flex flex-col justify-between h-48 group hover:bg-surface-hover transition-colors">
+<span class="font-label-mono text-label-mono text-text-muted uppercase">Current CGPA</span>
+<div>
+<div class="font-display text-display text-primary leading-none">8.85</div>
+<div class="font-body-md text-body-md text-text-muted mt-sm">after 5 completed semesters</div>
+</div>
+</div>
+<div class="bg-surface border border-border-subtle rounded-xl p-lg flex flex-col justify-between h-48 group hover:bg-surface-hover transition-colors relative overflow-hidden">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI3MjcyQSIgc3Ryb2tlLXdpZHRoPSIyIj48cGF0aCBkPSJNMCAxMDBDMTAwIDEwMCAyMDAgMCAzMDAgMEwzMDAgMTAwWiIvPjwvZz48L3N2Zz4=')] opacity-20 object-cover" data-alt="A subtle, minimalist abstract line chart representing growth, rendered in very faint gray lines on a dark background, fitting a professional academic dashboard aesthetic."></div>
+<span class="font-label-mono text-label-mono text-text-muted uppercase relative z-10">Feasibility</span>
+<div class="relative z-10">
+<div class="font-headline-lg text-headline-lg text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Possible
+                    </div>
+<div class="font-body-md text-body-md text-text-muted mt-sm">Target is mathematically achievable.</div>
+</div>
+</div>
+</section>
+<!-- Simulation Workspace -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-xl">
+<!-- Left: Completed -->
+<div class="flex flex-col gap-md">
+<h3 class="font-headline-md text-headline-md text-primary border-b border-border-strong pb-sm">Completed Semesters</h3>
+<div class="flex flex-col gap-sm">
+<!-- Semester Card -->
+<div class="bg-surface-container-lowest border border-border-subtle rounded-lg p-md flex justify-between items-center opacity-80">
+<div>
+<div class="font-headline-md text-headline-md text-primary">Semester 1</div>
+<div class="font-body-md text-body-md text-text-muted">24 Credits</div>
+</div>
+<div class="text-right">
+<div class="font-label-mono text-label-mono text-text-muted uppercase mb-xs">SGPA</div>
+<div class="font-headline-lg text-headline-lg text-primary">8.50</div>
+</div>
+</div>
+<!-- Semester Card -->
+<div class="bg-surface-container-lowest border border-border-subtle rounded-lg p-md flex justify-between items-center opacity-80">
+<div>
+<div class="font-headline-md text-headline-md text-primary">Semester 2</div>
+<div class="font-body-md text-body-md text-text-muted">22 Credits</div>
+</div>
+<div class="text-right">
+<div class="font-label-mono text-label-mono text-text-muted uppercase mb-xs">SGPA</div>
+<div class="font-headline-lg text-headline-lg text-primary">8.75</div>
+</div>
+</div>
+<!-- Semester Card -->
+<div class="bg-surface-container-lowest border border-border-subtle rounded-lg p-md flex justify-between items-center opacity-80">
+<div>
+<div class="font-headline-md text-headline-md text-primary">Semester 3</div>
+<div class="font-body-md text-body-md text-text-muted">25 Credits</div>
+</div>
+<div class="text-right">
+<div class="font-label-mono text-label-mono text-text-muted uppercase mb-xs">SGPA</div>
+<div class="font-headline-lg text-headline-lg text-primary">8.90</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-border-subtle rounded-lg p-md flex justify-between items-center opacity-80">
+<div>
+<div class="font-headline-md text-headline-md text-primary">Semester 4</div>
+<div class="font-body-md text-body-md text-text-muted">23 Credits</div>
+</div>
+<div class="text-right">
+<div class="font-label-mono text-label-mono text-text-muted uppercase mb-xs">SGPA</div>
+<div class="font-headline-lg text-headline-lg text-primary">9.10</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-border-subtle rounded-lg p-md flex justify-between items-center opacity-80">
+<div>
+<div class="font-headline-md text-headline-md text-primary">Semester 5</div>
+<div class="font-body-md text-body-md text-text-muted">20 Credits</div>
+</div>
+<div class="text-right">
+<div class="font-label-mono text-label-mono text-text-muted uppercase mb-xs">SGPA</div>
+<div class="font-headline-lg text-headline-lg text-primary">9.05</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Future/Simulation -->
+<div class="flex flex-col gap-md">
+<div class="flex justify-between items-center border-b border-border-strong pb-sm">
+<h3 class="font-headline-md text-headline-md text-primary">Simulation</h3>
+<button class="font-button text-button text-text-muted hover:text-primary transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span> Add Semester
+                    </button>
+</div>
+<div class="flex flex-col gap-sm">
+<!-- Interactive Sim Card -->
+<div class="bg-surface border border-border-strong rounded-lg p-md flex flex-col gap-md relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-outline"></div>
+<div class="flex justify-between items-center">
+<div class="font-headline-md text-headline-md text-primary">Semester 6 (Current)</div>
+<button class="text-text-muted hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-text-muted uppercase">Credits</label>
+<input class="bg-surface-hover border-b border-border-subtle text-primary font-body-md px-sm py-xs focus:border-primary focus:outline-none focus:ring-0 w-full transition-colors" type="number" value="22"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-text-muted uppercase">Projected SGPA</label>
+<input class="bg-surface-hover border-b border-border-subtle text-primary font-body-md px-sm py-xs focus:border-primary focus:outline-none focus:ring-0 w-full transition-colors" step="0.01" type="number" value="9.20"/>
+</div>
+</div>
+</div>
+<!-- Interactive Sim Card -->
+<div class="bg-surface border border-border-strong rounded-lg p-md flex flex-col gap-md relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-outline-variant group-hover:bg-outline transition-colors"></div>
+<div class="flex justify-between items-center">
+<div class="font-headline-md text-headline-md text-primary">Semester 7</div>
+<button class="text-text-muted hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-text-muted uppercase">Credits</label>
+<input class="bg-surface-hover border-b border-border-subtle text-primary font-body-md px-sm py-xs focus:border-primary focus:outline-none focus:ring-0 w-full transition-colors" type="number" value="20"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-text-muted uppercase">Projected SGPA</label>
+<input class="bg-surface-hover border-b border-border-subtle text-primary font-body-md px-sm py-xs focus:border-primary focus:outline-none focus:ring-0 w-full transition-colors" step="0.01" type="number" value="9.30"/>
+</div>
+</div>
+</div>
+<!-- Interactive Sim Card -->
+<div class="bg-surface border border-border-strong rounded-lg p-md flex flex-col gap-md relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-outline-variant group-hover:bg-outline transition-colors"></div>
+<div class="flex justify-between items-center">
+<div class="font-headline-md text-headline-md text-primary">Semester 8</div>
+<button class="text-text-muted hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-text-muted uppercase">Credits</label>
+<input class="bg-surface-hover border-b border-border-subtle text-primary font-body-md px-sm py-xs focus:border-primary focus:outline-none focus:ring-0 w-full transition-colors" type="number" value="12"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-mono text-label-mono text-text-muted uppercase">Projected SGPA</label>
+<input class="bg-surface-hover border-b border-border-subtle text-primary font-body-md px-sm py-xs focus:border-primary focus:outline-none focus:ring-0 w-full transition-colors" step="0.01" type="number" value="9.50"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sticky Calculation Bar (simulated as static block at bottom of main for layout simplicity, sticky on mobile could be added) -->
+<div class="bg-surface border border-border-strong rounded-xl p-md flex flex-col md:flex-row justify-between items-center mt-xl gap-md">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 1;">calculate</span>
+<div>
+<div class="font-label-mono text-label-mono text-text-muted uppercase">Projected Cumulative CGPA</div>
+<div class="font-body-md text-body-md text-text-muted">Based on inputs above</div>
+</div>
+</div>
+<div class="font-display text-display text-primary">
+                8.98
+            </div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-background border-t border-border-subtle w-full mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin py-lg gap-md max-w-[1440px] mx-auto">
+<span class="font-label-mono text-label-mono text-text-muted">© 2024 SRM Academic Suite. All rights reserved.</span>
+<nav class="flex gap-md">
+<a class="font-label-mono text-label-mono text-text-muted hover:text-primary transition-colors linear duration-150" href="#">GitHub</a>
+<a class="font-label-mono text-label-mono text-text-muted hover:text-primary transition-colors linear duration-150" href="#">LinkedIn</a>
+<a class="font-label-mono text-label-mono text-text-muted hover:text-primary transition-colors linear duration-150" href="#">Powered by Firebase</a>
+</nav>
+</div>
+</footer>
+<script>
+        // Simple script to update slider value display
+        const slider = document.getElementById('target-slider');
+        const display = document.getElementById('target-display');
+        
+        slider.addEventListener('input', function() {
+            display.textContent = parseFloat(this.value).toFixed(2);
+        });
+    </script>
+</body></html>

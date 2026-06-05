@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .mono-table-header {
+            border-bottom: 1px solid #27272A;
+        }
+        .grid-pattern {
+            background-image: radial-gradient(#1A1A1A 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1f1f1f",
+                        "tertiary-fixed-dim": "#cbc6c1",
+                        "secondary": "#c6c5cf",
+                        "surface-variant": "#353535",
+                        "secondary-fixed-dim": "#c6c5cf",
+                        "background": "#131313",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#636565",
+                        "surface-tint": "#c6c6c7",
+                        "surface-container-highest": "#353535",
+                        "surface-container-high": "#2a2a2a",
+                        "border-strong": "#27272A",
+                        "text-muted": "#A1A1AA",
+                        "tertiary-fixed": "#e7e1dd",
+                        "border-subtle": "#1A1A1A",
+                        "surface-hover": "#111111",
+                        "error-container": "#93000a",
+                        "on-surface": "#e2e2e2",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#e7e1dd",
+                        "inverse-on-surface": "#303030",
+                        "primary": "#ffffff",
+                        "on-primary-fixed": "#1a1c1c",
+                        "surface-bright": "#393939",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary-container": "#4a4b53",
+                        "secondary-fixed": "#e3e1ec",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#bcbbc5",
+                        "tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#1d1b19",
+                        "on-secondary": "#2f3038",
+                        "on-primary-fixed-variant": "#454747",
+                        "primary-container": "#e2e2e2",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary": "#32302d",
+                        "outline": "#8e9192",
+                        "on-primary": "#2f3131",
+                        "on-secondary-fixed-variant": "#46464e",
+                        "surface": "#090909",
+                        "on-surface-variant": "#c4c7c8",
+                        "inverse-primary": "#5d5f5f",
+                        "surface-container-low": "#1b1b1b",
+                        "on-tertiary-fixed-variant": "#494643",
+                        "inverse-surface": "#e2e2e2",
+                        "on-secondary-fixed": "#1a1b22",
+                        "primary-fixed": "#e2e2e2",
+                        "outline-variant": "#444748",
+                        "on-tertiary-container": "#676460"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin": "32px",
+                        "2xl": "64px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "xl": "40px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "button": ["Inter", "sans-serif"],
+                        "label-mono": ["JetBrains Mono", "monospace"],
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "button": ["14px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                        "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 z-50 border-b border-border-subtle bg-background">
+<div class="flex justify-between items-center w-full px-margin py-md max-w-[1440px] mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-headline-md text-headline-md font-semibold text-primary tracking-tight">SRM Academic Suite</span>
+<nav class="hidden md:flex gap-lg">
+<a class="text-text-muted font-body-md hover:text-primary transition-colors duration-150 ease-out" href="#">Home</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors duration-150 ease-out" href="#">SGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors duration-150 ease-out" href="#">CGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors duration-150 ease-out" href="#">Grade Predictor</a>
+<a class="text-primary font-semibold border-b border-primary pb-1 duration-150 ease-out" href="#">About Grading</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-text-muted hover:text-primary transition-colors">settings</button>
+<button class="material-symbols-outlined text-text-muted hover:text-primary transition-colors">account_circle</button>
+</div>
+</div>
+</header>
+<main class="min-h-screen pt-xl pb-2xl px-margin max-w-[1440px] mx-auto">
+<!-- Hero Section -->
+<section class="mb-2xl flex flex-col md:flex-row md:items-end justify-between gap-xl relative overflow-hidden p-xl bg-surface border border-border-subtle rounded-2xl">
+<div class="grid-pattern absolute inset-0 opacity-20 pointer-events-none"></div>
+<div class="relative z-10 max-w-2xl">
+<span class="font-label-mono text-label-mono text-text-muted mb-sm block">ACADEMIC REGULATIONS</span>
+<h1 class="font-display text-display text-primary mb-md">Grading System <span class="text-text-muted">Overview</span></h1>
+<p class="font-body-lg text-body-lg text-text-muted">A comprehensive guide to the SRM Institute of Science and Technology evaluation framework, covering internal assessments, external examinations, and grade point calculations.</p>
+</div>
+<div class="relative z-10 flex flex-col items-end gap-xs">
+<span class="font-label-mono text-label-mono text-primary bg-surface-container px-sm py-xs border border-border-subtle rounded">REV: 2024.1</span>
+<span class="font-label-mono text-label-mono text-text-muted">Last Updated Oct 2023</span>
+</div>
+</section>
+<!-- Evaluation Split -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-2xl">
+<!-- Theory Component -->
+<div class="bg-surface border border-border-subtle p-lg rounded-xl hover:border-border-strong transition-all duration-300">
+<div class="flex items-center justify-between mb-xl">
+<h2 class="font-headline-md text-headline-md text-primary">Theory Courses</h2>
+<span class="material-symbols-outlined text-text-muted">menu_book</span>
+</div>
+<div class="flex gap-gutter items-center h-24">
+<div class="flex-1 h-full flex flex-col justify-end">
+<div class="bg-primary h-[40%] w-full mb-xs rounded-sm"></div>
+<span class="font-label-mono text-label-mono text-text-muted">INTERNAL 40%</span>
+</div>
+<div class="flex-1 h-full flex flex-col justify-end">
+<div class="bg-white/20 border border-white/30 h-[60%] w-full mb-xs rounded-sm"></div>
+<span class="font-label-mono text-label-mono text-text-muted">EXTERNAL 60%</span>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-border-subtle">
+<p class="font-body-md text-body-md text-text-muted leading-relaxed">Theory assessment involves continuous internal evaluation through CTs, assignments, and surprise tests, followed by a summative semester-end examination.</p>
+</div>
+</div>
+<!-- Lab Component -->
+<div class="bg-surface border border-border-subtle p-lg rounded-xl hover:border-border-strong transition-all duration-300">
+<div class="flex items-center justify-between mb-xl">
+<h2 class="font-headline-md text-headline-md text-primary">Practical / Labs</h2>
+<span class="material-symbols-outlined text-text-muted">biotech</span>
+</div>
+<div class="flex gap-gutter items-center h-24">
+<div class="flex-1 h-full flex flex-col justify-end">
+<div class="bg-primary h-[60%] w-full mb-xs rounded-sm"></div>
+<span class="font-label-mono text-label-mono text-text-muted">INTERNAL 60%</span>
+</div>
+<div class="flex-1 h-full flex flex-col justify-end">
+<div class="bg-white/20 border border-white/30 h-[40%] w-full mb-xs rounded-sm"></div>
+<span class="font-label-mono text-label-mono text-text-muted">EXTERNAL 40%</span>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-border-subtle">
+<p class="font-body-md text-body-md text-text-muted leading-relaxed">Practical assessment prioritizes performance in the laboratory, records maintenance, and models, with a moderate weightage for the final practical exam.</p>
+</div>
+</div>
+</div>
+<!-- Grade Point Table -->
+<section class="bg-surface border border-border-subtle rounded-xl overflow-hidden">
+<div class="px-lg py-md mono-table-header bg-surface-container-low flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">Grade Point Table</h3>
+<span class="font-label-mono text-label-mono text-text-muted">10-POINT SCALE</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="font-label-mono text-label-mono text-text-muted border-b border-border-subtle">
+<th class="px-lg py-md font-normal">RANGE OF MARKS</th>
+<th class="px-lg py-md font-normal">LETTER GRADE</th>
+<th class="px-lg py-md font-normal text-right">GRADE POINTS</th>
+</tr>
+</thead>
+<tbody class="font-label-mono text-body-md">
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md">91 — 100</td>
+<td class="px-lg py-md font-semibold text-primary">O (Outstanding)</td>
+<td class="px-lg py-md text-right text-primary">10</td>
+</tr>
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md">81 — 90</td>
+<td class="px-lg py-md font-semibold text-primary">A+ (Excellent)</td>
+<td class="px-lg py-md text-right text-primary">9</td>
+</tr>
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md">71 — 80</td>
+<td class="px-lg py-md font-semibold text-primary">A (Very Good)</td>
+<td class="px-lg py-md text-right text-primary">8</td>
+</tr>
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md">61 — 70</td>
+<td class="px-lg py-md font-semibold text-primary">B+ (Good)</td>
+<td class="px-lg py-md text-right text-primary">7</td>
+</tr>
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md">56 — 60</td>
+<td class="px-lg py-md font-semibold text-primary">B (Above Average)</td>
+<td class="px-lg py-md text-right text-primary">6</td>
+</tr>
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md">50 — 55</td>
+<td class="px-lg py-md font-semibold text-primary">C (Average)</td>
+<td class="px-lg py-md text-right text-primary">5</td>
+</tr>
+<tr class="border-b border-border-subtle hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md text-muted">&lt; 50</td>
+<td class="px-lg py-md font-semibold text-error">F (Fail)</td>
+<td class="px-lg py-md text-right text-error">0</td>
+</tr>
+<tr class="hover:bg-surface-hover transition-colors">
+<td class="px-lg py-md text-muted">Lack of Attendance</td>
+<td class="px-lg py-md font-semibold text-error-container">Ab (Absent)</td>
+<td class="px-lg py-md text-right text-error-container">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Dynamic Visualization Placeholder -->
+<section class="mt-2xl">
+<div class="bg-surface-container-lowest border border-border-subtle rounded-2xl p-xl flex flex-col md:flex-row items-center gap-xl">
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-primary mb-md">Relative vs Absolute</h3>
+<p class="font-body-md text-body-md text-text-muted mb-lg">SRM follows a hybrid relative grading system where the grade boundaries may shift slightly based on the class performance (mean and standard deviation) for specific batches.</p>
+<div class="flex gap-md">
+<button class="px-lg py-md bg-primary text-background font-button rounded-lg hover:opacity-90 transition-opacity">Calculate GPA</button>
+<button class="px-lg py-md bg-surface border border-border-subtle text-primary font-button rounded-lg hover:border-primary transition-colors">View Regulations PDF</button>
+</div>
+</div>
+<div class="w-full md:w-1/3 aspect-square border border-border-subtle rounded-xl relative flex items-center justify-center p-md overflow-hidden">
+<div class="absolute inset-0 grid-pattern opacity-10"></div>
+<!-- Abstract Data Viz Representation -->
+<div class="w-full h-full flex items-end gap-1">
+<div class="flex-1 bg-border-subtle h-[20%] rounded-t-sm"></div>
+<div class="flex-1 bg-border-subtle h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-border-strong h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-[90%] rounded-t-sm"></div>
+<div class="flex-1 bg-border-strong h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-border-subtle h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-border-subtle h-[15%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="full-width bottom-0 border-t border-border-subtle bg-background">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin py-lg gap-md max-w-[1440px] mx-auto">
+<span class="font-label-mono text-label-mono text-text-muted">© 2024 SRM Academic Suite. All rights reserved.</span>
+<div class="flex gap-lg">
+<a class="font-label-mono text-label-mono text-text-muted hover:text-primary transition-colors" href="#">GitHub</a>
+<a class="font-label-mono text-label-mono text-text-muted hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="font-label-mono text-label-mono text-text-muted hover:text-primary transition-colors" href="#">Powered by Firebase</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for table rows
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Add sticky header behavior
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 0) {
+                header.classList.add('bg-background/80', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('bg-background/80', 'backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

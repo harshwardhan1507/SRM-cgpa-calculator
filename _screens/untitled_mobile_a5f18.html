@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            -webkit-font-smoothing: antialiased;
+        }
+        .tonal-layer-1 {
+            background-color: #090909;
+            border: 1px solid #1A1A1A;
+        }
+        .tonal-layer-2 {
+            background-color: #090909;
+            border: 1px solid #27272A;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container": "#1f1f1f",
+                      "tertiary-fixed-dim": "#cbc6c1",
+                      "secondary": "#c6c5cf",
+                      "surface-variant": "#353535",
+                      "secondary-fixed-dim": "#c6c5cf",
+                      "background": "#131313",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#c6c6c7",
+                      "error": "#ffb4ab",
+                      "on-primary-container": "#636565",
+                      "surface-tint": "#c6c6c7",
+                      "surface-container-highest": "#353535",
+                      "surface-container-high": "#2a2a2a",
+                      "border-strong": "#27272A",
+                      "text-muted": "#A1A1AA",
+                      "tertiary-fixed": "#e7e1dd",
+                      "border-subtle": "#1A1A1A",
+                      "surface-hover": "#111111",
+                      "error-container": "#93000a",
+                      "on-surface": "#e2e2e2",
+                      "surface-dim": "#131313",
+                      "tertiary-container": "#e7e1dd",
+                      "inverse-on-surface": "#303030",
+                      "primary": "#ffffff",
+                      "on-primary-fixed": "#1a1c1c",
+                      "surface-bright": "#393939",
+                      "surface-container-lowest": "#0e0e0e",
+                      "secondary-container": "#4a4b53",
+                      "secondary-fixed": "#e3e1ec",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-container": "#bcbbc5",
+                      "tertiary": "#ffffff",
+                      "on-tertiary-fixed": "#1d1b19",
+                      "on-secondary": "#2f3038",
+                      "on-primary-fixed-variant": "#454747",
+                      "primary-container": "#e2e2e2",
+                      "on-background": "#e2e2e2",
+                      "on-tertiary": "#32302d",
+                      "outline": "#8e9192",
+                      "on-primary": "#2f3131",
+                      "on-secondary-fixed-variant": "#46464e",
+                      "surface": "#090909",
+                      "on-surface-variant": "#c4c7c8",
+                      "inverse-primary": "#5d5f5f",
+                      "surface-container-low": "#1b1b1b",
+                      "on-tertiary-fixed-variant": "#494643",
+                      "inverse-surface": "#e2e2e2",
+                      "on-secondary-fixed": "#1a1b22",
+                      "primary-fixed": "#e2e2e2",
+                      "outline-variant": "#444748",
+                      "on-tertiary-container": "#676460"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.75rem",
+                      "lg": "1rem",
+                      "xl": "1.25rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin": "32px",
+                      "2xl": "64px",
+                      "lg": "24px",
+                      "gutter": "24px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "xl": "40px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "headline-md": ["Geist"],
+                      "button": ["Geist"],
+                      "label-mono": ["JetBrains Mono"],
+                      "headline-lg-mobile": ["Geist"],
+                      "display": ["Geist"],
+                      "body-lg": ["Geist"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "headline-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "button": ["14px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                      "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 w-full z-50 border-b border-border-subtle bg-background">
+<div class="flex justify-between items-center w-full px-margin py-md max-w-[1440px] mx-auto">
+<div class="font-headline-md text-headline-md font-semibold text-primary tracking-tight">
+                SRM Academic Suite
+            </div>
+<nav class="hidden md:flex gap-xl">
+<a class="text-primary font-semibold border-b border-primary pb-1 font-body-md" href="#">Home</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">SGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">CGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">Grade Predictor</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">About Grading</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-text-muted hover:text-primary transition-colors" data-icon="settings">settings</button>
+<button class="material-symbols-outlined text-text-muted hover:text-primary transition-colors" data-icon="account_circle">account_circle</button>
+</div>
+</div>
+</header>
+<main class="pt-[80px] pb-2xl max-w-[1440px] mx-auto px-margin">
+<!-- Hero Section: Bento Grid Hybrid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter py-xl">
+<!-- Left Content -->
+<div class="lg:col-span-7 flex flex-col justify-center space-y-md">
+<div class="space-y-sm">
+<span class="font-label-mono text-label-mono text-text-muted uppercase tracking-widest px-sm py-xs border border-border-subtle rounded-lg inline-block">System Dashboard v2.0</span>
+<h1 class="font-display text-display text-primary leading-tight">SRM Academic Suite</h1>
+<p class="font-headline-md text-headline-md text-text-muted">Calculate. Predict. Track.</p>
+</div>
+<p class="font-body-lg text-body-lg text-text-muted max-w-lg">
+                    Academic performance toolkit built specifically for SRM students. A precision instrument for managing credits, predicting grades, and auditing degree progress with mathematical certainty.
+                </p>
+<div class="pt-md flex gap-md">
+<button class="bg-primary text-on-primary font-button text-button px-lg py-md rounded-xl transition-transform active:scale-95">Get Started</button>
+<button class="bg-transparent border border-border-strong text-primary font-button text-button px-lg py-md rounded-xl hover:bg-surface-hover transition-colors">Documentation</button>
+</div>
+</div>
+<!-- Right Content: Stats Card -->
+<div class="lg:col-span-5">
+<div class="tonal-layer-1 p-xl rounded-xl relative overflow-hidden h-full flex flex-col justify-between">
+<!-- Decorative patterns using CSS -->
+<div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 8px 8px;"></div>
+<div>
+<div class="font-label-mono text-label-mono text-text-muted mb-sm">CURRENT CGPA</div>
+<div class="font-display text-[64px] font-semibold text-primary">9.10</div>
+</div>
+<div class="grid grid-cols-3 gap-md pt-xl border-t border-border-subtle">
+<div>
+<div class="font-label-mono text-label-mono text-text-muted">CREDITS</div>
+<div class="font-headline-md text-primary">48</div>
+</div>
+<div>
+<div class="font-label-mono text-label-mono text-text-muted">SEMESTERS</div>
+<div class="font-headline-md text-primary">2</div>
+</div>
+<div>
+<div class="font-label-mono text-label-mono text-text-muted">TOTAL POINTS</div>
+<div class="font-headline-md text-primary">436.80</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="py-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+                Quick Actions
+            </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- SGPA Card -->
+<div class="tonal-layer-1 p-lg rounded-xl hover:bg-surface-hover transition-all duration-150 cursor-pointer group">
+<div class="material-symbols-outlined text-primary mb-md" data-icon="calculate">calculate</div>
+<h3 class="font-headline-md text-primary mb-xs">SGPA Calculator</h3>
+<p class="font-body-md text-text-muted">Compute term-specific performance based on internal grades.</p>
+</div>
+<!-- CGPA Card -->
+<div class="tonal-layer-1 p-lg rounded-xl hover:bg-surface-hover transition-all duration-150 cursor-pointer group">
+<div class="material-symbols-outlined text-primary mb-md" data-icon="analytics">analytics</div>
+<h3 class="font-headline-md text-primary mb-xs">CGPA Calculator</h3>
+<p class="font-body-md text-text-muted">Aggregate multiple semesters to track your overall standing.</p>
+</div>
+<!-- Grade Predictor -->
+<div class="tonal-layer-1 p-lg rounded-xl hover:bg-surface-hover transition-all duration-150 cursor-pointer group">
+<div class="material-symbols-outlined text-primary mb-md" data-icon="query_stats">query_stats</div>
+<h3 class="font-headline-md text-primary mb-xs">Grade Predictor</h3>
+<p class="font-body-md text-text-muted">Simulate final results based on expected marks.</p>
+</div>
+<!-- About Grading -->
+<div class="tonal-layer-1 p-lg rounded-xl hover:bg-surface-hover transition-all duration-150 cursor-pointer group">
+<div class="material-symbols-outlined text-primary mb-md" data-icon="info">info</div>
+<h3 class="font-headline-md text-primary mb-xs">About Grading</h3>
+<p class="font-body-md text-text-muted">Official SRM grading system schemas and conversion tables.</p>
+</div>
+</div>
+</section>
+<!-- Semester History -->
+<section class="py-xl">
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+                        Semester History
+                    </h2>
+<p class="font-body-md text-text-muted">Breakdown of performance across your academic timeline.</p>
+</div>
+<button class="bg-primary text-on-primary font-button text-button px-lg py-md rounded-xl flex items-center gap-xs hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    Add Semester
+                </button>
+</div>
+<div class="space-y-md">
+<!-- Semester 2 -->
+<div class="tonal-layer-1 p-lg rounded-xl flex items-center justify-between border-l-4 border-l-primary overflow-hidden">
+<div class="flex gap-xl items-center">
+<div class="bg-surface-container-high w-12 h-12 flex items-center justify-center rounded-lg">
+<span class="font-label-mono text-primary text-headline-md">02</span>
+</div>
+<div>
+<h4 class="font-headline-md text-primary">Semester 2</h4>
+<p class="font-label-mono text-label-mono text-text-muted uppercase">Spring 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-2xl">
+<div class="hidden md:block">
+<div class="font-label-mono text-label-mono text-text-muted text-right">CREDITS EARNED</div>
+<div class="font-headline-md text-primary text-right">24</div>
+</div>
+<div class="bg-surface-hover px-xl py-sm rounded-lg border border-border-strong">
+<div class="font-label-mono text-label-mono text-text-muted">SGPA</div>
+<div class="font-headline-md text-primary">9.25</div>
+</div>
+<button class="material-symbols-outlined text-text-muted hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</button>
+</div>
+</div>
+<!-- Semester 1 -->
+<div class="tonal-layer-1 p-lg rounded-xl flex items-center justify-between border-l-4 border-l-border-strong overflow-hidden">
+<div class="flex gap-xl items-center">
+<div class="bg-surface-container-high w-12 h-12 flex items-center justify-center rounded-lg">
+<span class="font-label-mono text-primary text-headline-md">01</span>
+</div>
+<div>
+<h4 class="font-headline-md text-primary">Semester 1</h4>
+<p class="font-label-mono text-label-mono text-text-muted uppercase">Fall 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-2xl">
+<div class="hidden md:block">
+<div class="font-label-mono text-label-mono text-text-muted text-right">CREDITS EARNED</div>
+<div class="font-headline-md text-primary text-right">24</div>
+</div>
+<div class="bg-surface-hover px-xl py-sm rounded-lg border border-border-strong">
+<div class="font-label-mono text-label-mono text-text-muted">SGPA</div>
+<div class="font-headline-md text-primary">8.95</div>
+</div>
+<button class="material-symbols-outlined text-text-muted hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Visualization Teaser -->
+<section class="py-xl grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-2 tonal-layer-1 rounded-xl p-xl h-64 flex flex-col justify-center items-center text-center">
+<div class="mb-md opacity-20 flex gap-xs items-end h-32">
+<div class="w-8 bg-primary h-3/4 rounded-t-sm"></div>
+<div class="w-8 bg-primary h-full rounded-t-sm"></div>
+<div class="w-8 bg-primary h-1/2 rounded-t-sm"></div>
+<div class="w-8 bg-primary h-4/5 rounded-t-sm"></div>
+<div class="w-8 bg-primary h-2/3 rounded-t-sm"></div>
+<div class="w-8 bg-primary h-full rounded-t-sm"></div>
+</div>
+<h3 class="font-headline-md text-primary">Trend Analysis</h3>
+<p class="font-body-md text-text-muted">Detailed visual breakdown of performance available in Pro view.</p>
+</div>
+<div class="tonal-layer-1 rounded-xl p-xl flex flex-col justify-center items-center">
+<div class="font-label-mono text-label-mono text-text-muted mb-md">REMAINING TO 10.0</div>
+<div class="relative w-32 h-32">
+<!-- SVG Progress Circle -->
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-border-subtle" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="32.8" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-headline-md text-primary">91%</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="border-t border-border-subtle bg-background mt-2xl">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin py-lg gap-md max-w-[1440px] mx-auto">
+<div class="font-label-mono text-label-mono text-text-muted">
+                © 2024 SRM Academic Suite. All rights reserved.
+            </div>
+<div class="flex gap-xl">
+<a class="text-text-muted hover:text-primary transition-colors font-label-mono text-label-mono" href="#">GitHub</a>
+<a class="text-text-muted hover:text-primary transition-colors font-label-mono text-label-mono" href="#">LinkedIn</a>
+<a class="text-text-muted hover:text-primary transition-colors font-label-mono text-label-mono" href="#">Powered by Firebase</a>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-background border-t border-border-subtle z-50 flex justify-around py-md px-md">
+<button class="flex flex-col items-center gap-xs text-primary">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-mono text-[10px]">HOME</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-text-muted">
+<span class="material-symbols-outlined" data-icon="calculate">calculate</span>
+<span class="font-label-mono text-[10px]">SGPA</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-text-muted">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-mono text-[10px]">GRADES</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-text-muted">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-mono text-[10px]">PROFILE</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions and UI logic
+        document.querySelectorAll('.tonal-layer-1').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = '#27272A';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '#1A1A1A';
+            });
+        });
+
+        // Simple enter animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('section');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = 'opacity 400ms ease-out, transform 400ms ease-out';
+                el.style.transitionDelay = `${index * 100}ms`;
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 50);
+            });
+        });
+    </script>
+</body></html>

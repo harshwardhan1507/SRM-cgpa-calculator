@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Import ERP Results | SRM Academic Suite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#1f1f1f",
+                    "tertiary-fixed-dim": "#cbc6c1",
+                    "secondary": "#c6c5cf",
+                    "surface-variant": "#353535",
+                    "secondary-fixed-dim": "#c6c5cf",
+                    "background": "#131313",
+                    "on-error": "#690005",
+                    "primary-fixed-dim": "#c6c6c7",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#636565",
+                    "surface-tint": "#c6c6c7",
+                    "surface-container-highest": "#353535",
+                    "surface-container-high": "#2a2a2a",
+                    "border-strong": "#27272A",
+                    "text-muted": "#A1A1AA",
+                    "tertiary-fixed": "#e7e1dd",
+                    "border-subtle": "#1A1A1A",
+                    "surface-hover": "#111111",
+                    "error-container": "#93000a",
+                    "on-surface": "#e2e2e2",
+                    "surface-dim": "#131313",
+                    "tertiary-container": "#e7e1dd",
+                    "inverse-on-surface": "#303030",
+                    "primary": "#ffffff",
+                    "on-primary-fixed": "#1a1c1c",
+                    "surface-bright": "#393939",
+                    "surface-container-lowest": "#0e0e0e",
+                    "secondary-container": "#4a4b53",
+                    "secondary-fixed": "#e3e1ec",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#bcbbc5",
+                    "tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#1d1b19",
+                    "on-secondary": "#2f3038",
+                    "on-primary-fixed-variant": "#454747",
+                    "primary-container": "#e2e2e2",
+                    "on-background": "#e2e2e2",
+                    "on-tertiary": "#32302d",
+                    "outline": "#8e9192",
+                    "on-primary": "#2f3131",
+                    "on-secondary-fixed-variant": "#46464e",
+                    "surface": "#090909",
+                    "on-surface-variant": "#c4c7c8",
+                    "inverse-primary": "#5d5f5f",
+                    "surface-container-low": "#1b1b1b",
+                    "on-tertiary-fixed-variant": "#494643",
+                    "inverse-surface": "#e2e2e2",
+                    "on-secondary-fixed": "#1a1b22",
+                    "primary-fixed": "#e2e2e2",
+                    "outline-variant": "#444748",
+                    "on-tertiary-container": "#676460"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.75rem",
+                    "lg": "1rem",
+                    "xl": "1.25rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "margin": "32px",
+                    "2xl": "64px",
+                    "lg": "24px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "xl": "40px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Geist", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "button": ["Geist", "sans-serif"],
+                    "label-mono": ["JetBrains Mono", "monospace"],
+                    "display": ["Geist", "sans-serif"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "button": ["14px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                    "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #000000; color: #e2e2e2; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #090909; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1A1A1A; border-radius: 2px; }
+        .grid-pattern { background-image: radial-gradient(#1A1A1A 1px, transparent 1px); background-size: 24px 24px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary selection:text-background">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-background border-b border-border-subtle">
+<div class="flex justify-between items-center w-full px-margin py-md max-w-[1440px] mx-auto">
+<div class="font-headline-md text-headline-md font-semibold text-primary tracking-tight">
+                SRM Academic Suite
+            </div>
+<nav class="hidden md:flex gap-xl items-center">
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-primary font-semibold border-b border-primary pb-1" href="#">SGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">CGPA Calculator</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">Grade Predictor</a>
+<a class="text-text-muted font-body-md hover:text-primary transition-colors" href="#">About Grading</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-hover p-sm transition-colors rounded-xl">
+<span class="material-symbols-outlined text-on-surface">settings</span>
+</button>
+<button class="hover:bg-surface-hover p-sm transition-colors rounded-xl">
+<span class="material-symbols-outlined text-on-surface">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-[80px] min-h-screen grid-pattern">
+<div class="max-w-[1440px] mx-auto px-margin py-xl flex flex-col gap-2xl">
+<!-- Flagship Import Section -->
+<section class="flex flex-col gap-lg">
+<div class="flex flex-col gap-xs">
+<span class="font-label-mono text-label-mono text-text-muted uppercase">Intelligence Layer</span>
+<h1 class="font-display text-display text-primary">Import ERP Results</h1>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Option A: Screenshot Upload -->
+<div class="group relative bg-surface border border-border-subtle p-xl hover:border-border-strong transition-all duration-150 flex flex-col items-center justify-center gap-md cursor-pointer overflow-hidden rounded-xl">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-hover to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-10 flex flex-col items-center text-center gap-md">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container rounded-lg border border-border-subtle group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">add_photo_alternate</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Upload ERP Screenshot</h3>
+<p class="text-text-muted font-body-md mt-sm">AI vision will detect subjects, credits, and grades from your AcademiA portal.</p>
+</div>
+<span class="font-label-mono text-label-mono text-primary px-md py-xs bg-surface-container-high border border-border-strong rounded-lg">SELECT FILE</span>
+</div>
+</div>
+<!-- Option B: Text Paste -->
+<div class="group relative bg-surface border border-border-subtle p-xl hover:border-border-strong transition-all duration-150 flex flex-col items-center justify-center gap-md cursor-pointer overflow-hidden rounded-xl">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-hover to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-10 flex flex-col items-center text-center gap-md w-full">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container rounded-lg border border-border-subtle group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">content_paste</span>
+</div>
+<div class="w-full">
+<h3 class="font-headline-md text-headline-md text-primary">Paste ERP Table Text</h3>
+<div class="mt-md bg-surface-container-lowest border border-border-subtle p-sm rounded-lg">
+<textarea class="w-full h-24 bg-transparent border-none focus:ring-0 text-body-md font-label-mono resize-none text-on-surface" placeholder="Copy/Paste the entire results table here..."></textarea>
+</div>
+</div>
+<button class="bg-primary text-background font-button text-button px-xl py-md hover:opacity-90 transition-opacity rounded-xl">PROCESS TEXT</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Results Section -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Detected Subjects -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<div class="flex justify-between items-end border-b border-border-subtle pb-md">
+<h2 class="font-headline-md text-headline-md text-primary">Detected Subjects</h2>
+<span class="font-label-mono text-label-mono text-text-muted">7 ITEMS FOUND</span>
+</div>
+<div class="flex flex-col border border-border-subtle bg-surface rounded-xl overflow-hidden">
+<!-- Table Header -->
+<div class="grid grid-cols-12 px-md py-sm border-b border-border-subtle bg-surface-container-lowest font-label-mono text-label-mono text-text-muted">
+<div class="col-span-7">SUBJECT NAME</div>
+<div class="col-span-2 text-center">CREDITS</div>
+<div class="col-span-2 text-center">GRADE</div>
+<div class="col-span-1"></div>
+</div>
+<!-- Table Rows -->
+<div class="flex flex-col divide-y divide-border-subtle">
+<!-- Row 1 -->
+<div class="grid grid-cols-12 px-md py-md items-center hover:bg-surface-hover transition-colors">
+<div class="col-span-7 font-body-md text-primary">Engineering Mathematics-I</div>
+<div class="col-span-2 text-center font-label-mono">4</div>
+<div class="col-span-2 text-center">
+<span class="font-label-mono bg-surface-container-high border border-border-strong px-md py-xs rounded-lg">O</span>
+</div>
+<div class="col-span-1 text-right">
+<button class="text-text-muted hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 px-md py-md items-center hover:bg-surface-hover transition-colors">
+<div class="col-span-7 font-body-md text-primary">Programming for Problem Solving</div>
+<div class="col-span-2 text-center font-label-mono">3</div>
+<div class="col-span-2 text-center">
+<span class="font-label-mono bg-surface-container-high border border-border-strong px-md py-xs rounded-lg">A+</span>
+</div>
+<div class="col-span-1 text-right">
+<button class="text-text-muted hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-12 px-md py-md items-center hover:bg-surface-hover transition-colors">
+<div class="col-span-7 font-body-md text-primary">Environmental Science</div>
+<div class="col-span-2 text-center font-label-mono">2</div>
+<div class="col-span-2 text-center">
+<span class="font-label-mono bg-surface-container-high border border-border-strong px-md py-xs rounded-lg">A</span>
+</div>
+<div class="col-span-1 text-right">
+<button class="text-text-muted hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-12 px-md py-md items-center hover:bg-surface-hover transition-colors">
+<div class="col-span-7 font-body-md text-primary">Physics for Computing Science</div>
+<div class="col-span-2 text-center font-label-mono">4</div>
+<div class="col-span-2 text-center">
+<span class="font-label-mono bg-surface-container-high border border-border-strong px-md py-xs rounded-lg">B+</span>
+</div>
+<div class="col-span-1 text-right">
+<button class="text-text-muted hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Add Manual Row -->
+<div class="px-md py-md bg-surface-container-lowest border-t border-border-subtle flex items-center justify-between">
+<button class="text-text-muted hover:text-primary transition-colors flex items-center gap-xs font-label-mono text-label-mono uppercase">
+<span class="material-symbols-outlined text-[18px]">add</span> Add Subject Manually
+                            </button>
+</div>
+</div>
+</div>
+<!-- Calculated & Save Panel -->
+<aside class="lg:col-span-4 flex flex-col gap-lg">
+<!-- SGPA Card -->
+<div class="bg-surface border border-border-subtle p-xl flex flex-col gap-lg rounded-xl">
+<div class="flex flex-col gap-xs">
+<span class="font-label-mono text-label-mono text-text-muted uppercase">CALCULATED RESULT</span>
+<div class="flex items-baseline gap-sm">
+<span class="text-[64px] font-semibold text-primary leading-none tracking-tighter">8.95</span>
+<span class="font-label-mono text-text-muted">SGPA</span>
+</div>
+</div>
+<div class="flex flex-col gap-md border-t border-border-subtle pt-lg">
+<div class="flex justify-between items-center">
+<span class="text-text-muted">Total Credits</span>
+<span class="font-label-mono text-primary">22.0</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-text-muted">Weighted Points</span>
+<span class="font-label-mono text-primary">196.9</span>
+</div>
+</div>
+<button class="w-full bg-primary text-background py-md font-button text-button hover:opacity-90 transition-opacity rounded-xl">
+                            SAVE SEMESTER
+                        </button>
+</div>
+<!-- Secondary Meta Form -->
+<div class="bg-surface border border-border-subtle p-xl flex flex-col gap-md rounded-xl">
+<h3 class="font-label-mono text-label-mono text-text-muted uppercase">Semester Metadata</h3>
+<div class="flex flex-col gap-xs">
+<label class="text-label-mono text-text-muted">SEMESTER NUMBER</label>
+<input class="bg-surface-container border-b border-border-subtle focus:border-primary text-on-surface px-sm py-xs outline-none transition-colors font-label-mono rounded-lg" type="number" value="3"/>
+</div>
+<div class="flex flex-col gap-xs mt-sm">
+<label class="text-label-mono text-text-muted">ACADEMIC YEAR</label>
+<select class="bg-surface-container border-b border-border-subtle focus:border-primary text-on-surface px-sm py-xs outline-none transition-colors font-label-mono rounded-lg">
+<option>2023-2024</option>
+<option>2024-2025</option>
+</select>
+</div>
+</div>
+</aside>
+</div>
+<!-- Manual Form Grid (Secondary) -->
+<section class="border-t border-border-subtle pt-2xl flex flex-col gap-lg opacity-60 hover:opacity-100 transition-opacity">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Manual Entry Form</h2>
+<p class="text-text-muted font-body-md mt-xs">Use this if the AI import fails to detect certain data correctly.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="bg-surface border border-border-subtle p-md flex flex-col gap-sm rounded-xl">
+<label class="font-label-mono text-label-mono text-text-muted">SUBJECT NAME</label>
+<input class="bg-transparent border border-border-subtle focus:border-primary p-sm text-on-surface outline-none rounded-lg" placeholder="e.g. Computer Networks" type="text"/>
+</div>
+<div class="bg-surface border border-border-subtle p-md flex flex-col gap-sm rounded-xl">
+<label class="font-label-mono text-label-mono text-text-muted">CREDIT VALUE</label>
+<input class="bg-transparent border border-border-subtle focus:border-primary p-sm text-on-surface outline-none rounded-lg" placeholder="4" type="number"/>
+</div>
+<div class="bg-surface border border-border-subtle p-md flex flex-col gap-sm rounded-xl">
+<label class="font-label-mono text-label-mono text-text-muted">OBTAINED GRADE</label>
+<select class="bg-transparent border border-border-subtle focus:border-primary p-sm text-on-surface outline-none rounded-lg">
+<option>O</option>
+<option>A+</option>
+<option>A</option>
+<option>B+</option>
+<option>B</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="border-t border-border-subtle bg-background mt-2xl">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin py-lg gap-md max-w-[1440px] mx-auto">
+<div class="font-label-mono text-label-mono text-text-muted">
+                © 2024 SRM Academic Suite. All rights reserved.
+            </div>
+<div class="flex gap-xl">
+<a class="text-text-muted hover:text-primary transition-colors font-label-mono text-label-mono" href="#">GitHub</a>
+<a class="text-text-muted hover:text-primary transition-colors font-label-mono text-label-mono" href="#">LinkedIn</a>
+<a class="text-text-muted hover:text-primary transition-colors font-label-mono text-label-mono" href="#">Powered by Firebase</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for interactive zones
+        document.querySelectorAll('.group').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                // Subtle scale effect handled via tailwind transition
+            });
+        });
+
+        // Mock interaction for Process Text
+        const processBtn = document.querySelector('button');
+        if(processBtn && processBtn.innerText === "PROCESS TEXT") {
+            processBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const originalText = processBtn.innerText;
+                processBtn.innerText = "PROCESSING...";
+                setTimeout(() => {
+                    processBtn.innerText = originalText;
+                    alert("Mock AI analysis complete. Subjects updated.");
+                }, 1500);
+            });
+        }
+    </script>
+</body></html>
