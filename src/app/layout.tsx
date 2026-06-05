@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   title: "SRM Academic Suite",
   description:
     "Track your SGPA, CGPA, and academic progress. Import ERP results, predict grades, and manage semesters — built for SRM students.",
-  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
