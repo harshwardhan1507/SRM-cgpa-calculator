@@ -519,9 +519,9 @@ function NewSemesterForm() {
                   }}
                   className="flex flex-col divide-y divide-border"
                 >
-                  {subjects.map((course) => (
+                  {subjects.map((course, idx) => (
                     <motion.div
-                      key={course.id}
+                      key={course.id || `${course.name}-${idx}`}
                       variants={{
                         hidden: { opacity: 0, y: 10 },
                         show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } }
@@ -542,12 +542,12 @@ function NewSemesterForm() {
                             {course.type === 'theory' ? (
                               <span>
                                 mst1: {course.mst1}/30 • mst2: {course.mst2}/30 • Assg: {course.assignment}/10 • EndSem: {course.endsem}/100
-                                <span className="text-white font-medium ml-1">({course.totalMarks.toFixed(1)}/100)</span>
+                                <span className="text-white font-medium ml-1">({(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100)</span>
                               </span>
                             ) : (
                               <span>
                                 Internal: {course.labInternal}/60 • External: {course.labExternal}/40
-                                <span className="text-white font-medium ml-1">({course.totalMarks.toFixed(1)}/100)</span>
+                                <span className="text-white font-medium ml-1">({(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100)</span>
                               </span>
                             )}
                           </div>

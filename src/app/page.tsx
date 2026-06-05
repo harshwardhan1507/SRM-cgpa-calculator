@@ -420,11 +420,11 @@ export default function DashboardPage() {
                             </div>
                           ) : (
                             <div className="space-y-3">
-                              {sem.courses.map((course) => {
+                              {sem.courses.map((course, courseIdx) => {
                                 const hasDetailedMarks = course.mst1 !== undefined || course.labInternal !== undefined;
                                 return (
                                   <div
-                                    key={course.id}
+                                    key={course.id || `${course.name}-${courseIdx}`}
                                     className={`p-4 border rounded-xl bg-black flex justify-between items-center ${course.hasBack ? 'border-red-900/50' : 'border-[#1A1A1A]'
                                       }`}
                                   >
@@ -432,7 +432,7 @@ export default function DashboardPage() {
                                       <h4 className="font-semibold text-white text-sm leading-snug">{course.name}</h4>
                                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground font-mono">
                                         <span>Credits: <strong className="text-white">{course.credit}</strong></span>
-                                        <span>Total Marks: <strong className="text-white">{course.totalMarks.toFixed(1)}/100</strong></span>
+                                        <span>Total Marks: <strong className="text-white">{(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100</strong></span>
                                         {course.type === 'lab' && <span className="bg-neutral-900 px-2 py-0.5 rounded text-[10px]">LAB</span>}
                                       </div>
                                       {hasDetailedMarks && (
@@ -658,10 +658,10 @@ export default function DashboardPage() {
             </h3>
             <p className="text-xs text-muted-foreground mb-4">You have backlog papers recorded. Based on academic rules, you can clear them in the semesters listed below.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {backlogCourses.map(({ course, semesterNum }) => {
+              {backlogCourses.map(({ course, semesterNum }, idx) => {
                 const clearSem = semesterNum + 2;
                 return (
-                  <div key={course.id} className="bg-black border border-border p-4 rounded-lg flex flex-col gap-2">
+                  <div key={course.id || `${course.name}-${idx}`} className="bg-black border border-border p-4 rounded-lg flex flex-col gap-2">
                     <div className="flex justify-between items-start">
                       <h4 className="text-sm font-semibold text-white truncate max-w-[150px]">{course.name}</h4>
                       <span className="font-mono text-[9px] bg-red-950 border border-red-800 text-red-400 px-2 py-0.5 rounded-full">BACK</span>
