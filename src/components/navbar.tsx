@@ -90,12 +90,20 @@ export default function Navbar() {
                       <p className="text-xs text-text-muted uppercase font-mono tracking-wider">Account</p>
                       <p className="text-sm font-medium truncate text-white">{user.displayName || user.email}</p>
                     </div>
+                    <Link
+                      href="/profile"
+                      onClick={() => setShowUserMenu(false)}
+                      className="w-full text-left px-4 py-2 text-sm text-neutral-300 hover:text-white hover:bg-surface-hover transition-colors flex items-center gap-2 cursor-pointer"
+                    >
+                      <UserIcon className="w-4 h-4 text-text-muted" />
+                      View Profile
+                    </Link>
                     <button
                       onClick={() => {
                         logout();
                         setShowUserMenu(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-surface-hover transition-colors flex items-center gap-2"
+                      className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-surface-hover transition-colors flex items-center gap-2 cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
                       Sign Out

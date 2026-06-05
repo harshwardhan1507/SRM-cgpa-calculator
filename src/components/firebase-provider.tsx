@@ -18,12 +18,15 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { Semester } from '@/types/semester';
+import { UserProfile } from '@/types/profile';
 
 interface FirebaseContextType {
   user: User | null;
   loading: boolean;
   semesters: Semester[];
   setSemesters: (semesters: Semester[]) => Promise<void>;
+  profile: UserProfile | null;
+  updateProfile: (profile: UserProfile) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -34,6 +37,7 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [semesters, setSemestersState] = useState<Semester[]>([]);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   // Load initial data from localStorage for offline/immediate display & register SW
   useEffect(() => {
@@ -93,6 +97,19 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
               const cloudSemesters = data.semesters || [];
               setSemestersState(cloudSemesters);
               localStorage.setItem('semesters', JSON.stringify(cloudSemesters));
+
+              if (data.name) {
+                setProfile({
+                  name: data.name,
+                  registrationNumber: data.registrationNumber || '',
+                  branch: data.branch || '',
+                  program: data.program || '',
+                  currentYear: data.currentYear || 1,
+                  currentSemester: data.currentSemester || 1
+                });
+              } else {
+                setProfile(null);
+              }
             }
           });
           
@@ -146,12 +163,34 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateProfile = async (newProfile: UserProfile) => {
+    setProfile(newProfile);
+    if (user) {
+      try {
+        const userDocRef = doc(db, 'users', user.uid);
+        await setDoc(userDocRef, {
+          name: newProfile.name,
+          registrationNumber: newProfile.registrationNumber,
+          branch: newProfile.branch,
+          program: newProfile.program,
+          currentYear: newProfile.currentYear,
+          currentSemester: newProfile.currentSemester,
+          lastUpdated: new Date().toISOString()
+        }, { merge: true });
+      } catch (error) {
+        console.error('Error updating firestore profile:', error);
+      }
+    }
+  };
+
   return (
     <FirebaseContext.Provider value={{
       user,
       loading,
       semesters,
       setSemesters,
+      profile,
+      updateProfile,
       loginWithGoogle,
       logout
     }}>

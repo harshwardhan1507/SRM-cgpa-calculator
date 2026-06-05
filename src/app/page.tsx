@@ -8,6 +8,7 @@ import { Semester } from '@/types/semester';
 import { Subject } from '@/types/subject';
 import Link from 'next/link';
 import { useState } from 'react';
+import Onboarding from '@/components/onboarding';
 import {
   Plus,
   ChevronRight,
@@ -32,7 +33,7 @@ import { ConfirmationModal } from '@/components/confirmation-modal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function DashboardPage() {
-  const { semesters, setSemesters, user } = useFirebase();
+  const { semesters, setSemesters, user, profile, loading } = useFirebase();
   const [selectedSemester, setSelectedSemester] = useState<Semester | null>(null);
   const { showToast } = useToast();
 
@@ -65,6 +66,11 @@ export default function DashboardPage() {
   const totalSemestersCount = semesters.length;
   const totalCredits = cgpaResult.totalCredits;
   const overallCgpa = cgpaResult.cgpa;
+
+  // Show onboarding screen if user is signed in but has no profile
+  if (!loading && user && !profile) {
+    return <Onboarding />;
+  }
 
   // Total points (weighted grade points)
   let totalPoints = 0;
@@ -184,33 +190,72 @@ export default function DashboardPage() {
       >
         {/* Hero Section */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 py-8">
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-6">
-            <div className="space-y-3">
-              <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
-                Academic Dashboard v2.0
-              </span>
-              <h1 className="text-5xl font-bold tracking-tight text-white leading-tight">
-                SRM Academic Suite
-              </h1>
-              <p className="text-lg text-muted-foreground font-medium">
-                Calculate. Predict. Track.
-              </p>
-            </div>
-            <p className="text-muted-foreground leading-relaxed max-w-lg">
-              Academic performance toolkit built specifically for SRM students. A precision instrument for managing credits, predicting grades, and auditing degree progress with mathematical certainty.
-            </p>
-            <div className="flex gap-4 pt-2">
-              <Link href="/semester/new">
-                <Button className="bg-white hover:bg-neutral-200 text-black px-6 py-5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-95">
-                  Get Started
-                </Button>
-              </Link>
-              <Link href="/grading">
-                <Button variant="outline" className="bg-transparent border border-border text-white hover:bg-neutral-900 px-6 py-5 rounded-xl text-sm font-medium">
-                  Regulations
-                </Button>
-              </Link>
-            </div>
+          <div className="lg:col-span-7">
+            {profile ? (
+              <div className="bg-[#090909] border border-border p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between">
+                <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-start">
+                    <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
+                      Student Profile
+                    </span>
+                    <Link href="/profile">
+                      <Button variant="ghost" className="h-7 hover:bg-neutral-900 text-muted-foreground hover:text-white border border-transparent hover:border-border rounded-lg text-[10px] px-2.5 cursor-pointer">
+                        Edit Profile
+                      </Button>
+                    </Link>
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-white tracking-tight leading-none">{profile.name}</h2>
+                    <p className="text-xs text-muted-foreground font-mono mt-1.5 uppercase tracking-widest">{profile.registrationNumber}</p>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 pt-8 border-t border-border mt-8">
+                  <div>
+                    <div className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">Program & Branch</div>
+                    <div className="text-sm font-semibold text-white mt-1">
+                      {profile.program} {profile.branch.includes('Computer Science') ? 'CSE' : profile.branch}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">Academic Year</div>
+                    <div className="text-sm font-semibold text-white mt-1">
+                      Sem {profile.currentSemester} • Year {profile.currentYear}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center space-y-6 h-full">
+                <div className="space-y-3">
+                  <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
+                    Academic Dashboard v2.0
+                  </span>
+                  <h1 className="text-5xl font-bold tracking-tight text-white leading-tight">
+                    SRM Academic Suite
+                  </h1>
+                  <p className="text-lg text-muted-foreground font-medium">
+                    Calculate. Predict. Track.
+                  </p>
+                </div>
+                <p className="text-muted-foreground leading-relaxed max-w-lg">
+                  Academic performance toolkit built specifically for SRM students. A precision instrument for managing credits, predicting grades, and auditing degree progress with mathematical certainty.
+                </p>
+                <div className="flex gap-4 pt-2">
+                  <Link href="/semester/new">
+                    <Button className="bg-white hover:bg-neutral-200 text-black px-6 py-5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-95">
+                      Get Started
+                    </Button>
+                  </Link>
+                  <Link href="/grading">
+                    <Button variant="outline" className="bg-transparent border border-border text-white hover:bg-neutral-900 px-6 py-5 rounded-xl text-sm font-medium">
+                      Regulations
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Current CGPA Stats Card */}

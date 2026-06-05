@@ -29,7 +29,7 @@ import { ConfirmationModal } from '@/components/confirmation-modal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function NewSemesterForm() {
-  const { semesters, setSemesters } = useFirebase();
+  const { semesters, setSemesters, profile } = useFirebase();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { showToast } = useToast();
@@ -90,7 +90,7 @@ function NewSemesterForm() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load existing semester data if editing
+  // Load existing semester data if editing or load defaults from profile
   useEffect(() => {
     if (editingSemNum !== null) {
       setSemesterNum(editingSemNum);
@@ -102,13 +102,18 @@ function NewSemesterForm() {
         }
       }
     } else {
-      // Guess next empty semester number
-      const nextSem = semesters.length > 0
+      // Prepopulate semester number from profile if available, else guess next empty
+      const nextSem = profile ? profile.currentSemester : (semesters.length > 0
         ? Math.max(...semesters.map(s => s.semester)) + 1
-        : 1;
+        : 1);
       setSemesterNum(nextSem > 8 ? 8 : nextSem);
+
+      if (profile) {
+        const baseYear = 2023 + (profile.currentYear - 1);
+        setAcademicYear(`${baseYear}-${baseYear + 1}`);
+      }
     }
-  }, [editingSemNum, semesters]);
+  }, [editingSemNum, semesters, profile]);
 
   // Calculations
   const sgpaResult = calculateSGPA(subjects);
