@@ -65,6 +65,7 @@ function NewSemesterForm() {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [semesterNum, setSemesterNum] = useState<number>(1);
   const [academicYear, setAcademicYear] = useState<string>('2023-2024');
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   // OCR & Paste text state
   const [pastedText, setPastedText] = useState<string>('');
@@ -162,6 +163,8 @@ function NewSemesterForm() {
       const parsedSubjects = parseERPText(text);
       if (parsedSubjects.length > 0) {
         setSubjects(prev => [...prev, ...parsedSubjects]);
+        setUploadSuccess(true);
+        setTimeout(() => setUploadSuccess(false), 2000);
         showToast(`Successfully extracted ${parsedSubjects.length} subjects from screenshot!`, 'success');
       } else {
         showToast("OCR completed, but could not detect any subjects. Try copy-pasting the ERP text table instead.", 'warning');
@@ -394,8 +397,12 @@ function NewSemesterForm() {
 
         {/* Import Zone Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Option A: Screenshot Upload */}
-          <div
+          {/* Option A: OCR Screenshot */}
+          <motion.div
+            whileHover={{ y: -3, borderColor: '#FAFAFA' }}
+            whileTap={{ scale: 0.98 }}
+            animate={uploadSuccess ? { scale: [1, 1.02, 1] } : {}}
+            transition={{ duration: 0.3 }}
             onClick={() => fileInputRef.current?.click()}
             className="group relative bg-[#090909] border border-border p-8 hover:border-neutral-800 transition-all duration-200 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden rounded-2xl min-h-[200px]"
           >
@@ -420,7 +427,7 @@ function NewSemesterForm() {
                   <Upload className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-white">Upload ERP Screenshot</h3>
+                  <h3 className="text-base font-semibold text-white">{uploadSuccess ? '✓ ERP Detected' : 'Upload ERP Screenshot'}</h3>
                   <p className="text-xs text-muted-foreground mt-1 max-w-xs">
                     Scan grades and credits from your AcademiA exam portal screenshot.
                   </p>
@@ -430,7 +437,7 @@ function NewSemesterForm() {
                 </span>
               </div>
             )}
-          </div>
+          </motion.div>
 
           {/* Option B: Copy Paste Text */}
           <div className="bg-[#090909] border border-border p-6 rounded-2xl flex flex-col justify-between min-h-[200px]">
@@ -475,19 +482,54 @@ function NewSemesterForm() {
               </div>
 
               {/* Rows */}
-              {subjects.length === 0 ? (
+              {ocrLoading || textLoading ? (
+                <div className="flex flex-col divide-y divide-border animate-pulse">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="grid grid-cols-12 px-5 py-4 items-center bg-[#090909]/40">
+                      <div className="col-span-7 space-y-2 text-left">
+                        <div className="h-3.5 bg-neutral-900 rounded w-2/3"></div>
+                        <div className="h-2.5 bg-neutral-900 rounded w-1/3"></div>
+                      </div>
+                      <div className="col-span-2 flex justify-center">
+                        <div className="h-7 bg-neutral-900 rounded w-8"></div>
+                      </div>
+                      <div className="col-span-2 flex justify-center">
+                        <div className="h-7 bg-neutral-900 rounded w-10"></div>
+                      </div>
+                      <div className="col-span-1"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : subjects.length === 0 ? (
                 <div className="p-8 text-center text-xs text-muted-foreground">
                   No subjects added. Upload a screenshot, paste ERP text, or add subjects manually below.
                 </div>
               ) : (
-                <div className="flex flex-col divide-y divide-border">
+                <motion.div 
+                  initial="hidden"
+                  animate="show"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.04
+                      }
+                    }
+                  }}
+                  className="flex flex-col divide-y divide-border"
+                >
                   {subjects.map((course) => (
-                    <div
+                    <motion.div
                       key={course.id}
+                      variants={{
+                        hidden: { opacity: 0, y: 10 },
+                        show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } }
+                      }}
                       className={`grid grid-cols-12 px-5 py-4 items-center transition-colors ${course.hasBack ? 'bg-red-950/5 hover:bg-red-950/10' : 'hover:bg-neutral-900/40'
                         }`}
                     >
-                      <div className="col-span-7 font-medium text-white text-xs sm:text-sm truncate pr-2 flex flex-col gap-1">
+                      <div className="col-span-7 font-medium text-white text-xs sm:text-sm truncate pr-2 flex flex-col gap-1 text-left">
                         <div className="flex items-center gap-2">
                           <span className="truncate">{course.name}</span>
                           {course.type === 'lab' && (
@@ -549,14 +591,14 @@ function NewSemesterForm() {
                       <div className="col-span-1 text-right">
                         <button
                           onClick={() => handleDeleteSubject(course.id)}
-                          className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-colors"
+                          className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-colors cursor-pointer"
                         >
                           <Trash2 className="w-4.5 h-4.5" />
                         </button>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               )}
             </div>
           </div>

@@ -18,6 +18,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { useToast } from '@/components/toast';
+import { motion } from 'framer-motion';
+import { AnimatedCounter } from '@/components/animated-counter';
 
 interface MockSemester {
   id: string;
@@ -130,7 +132,12 @@ export default function CGPAPage() {
     <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
       <Navbar />
 
-      <main className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full">
+      <motion.main 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full"
+      >
         {/* Hero: Current CGPA */}
         <section className="py-12 flex flex-col md:flex-row justify-between items-end border-b border-border">
           <div className="space-y-4">
@@ -138,7 +145,7 @@ export default function CGPAPage() {
               Academic Overview & Simulation
             </span>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-none">
-              Cumulative CGPA {simulatedCgpa > 0 ? simulatedCgpa.toFixed(2) : '0.00'}
+              Cumulative CGPA <AnimatedCounter value={simulatedCgpa} />
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
               Simulated performance across {mockSemesters.length} semesters. Toggle semesters or add hypothetical future semesters to see how it affects your final graduation CGPA.
@@ -147,7 +154,7 @@ export default function CGPAPage() {
           <div className="mt-8 md:mt-0 flex gap-4 w-full md:w-auto">
             <div className="p-5 bg-[#090909] border border-border flex flex-col gap-1 min-w-[140px] rounded-xl flex-1 md:flex-none">
               <span className="font-mono text-[10px] text-muted-foreground uppercase">Credits</span>
-              <span className="text-2xl font-bold text-white leading-tight">{totalCreditsSim}</span>
+              <span className="text-2xl font-bold text-white leading-tight"><AnimatedCounter value={totalCreditsSim} decimals={0} /></span>
             </div>
             <div className="p-5 bg-[#090909] border border-border flex flex-col gap-1 min-w-[140px] rounded-xl flex-1 md:flex-none">
               <span className="font-mono text-[10px] text-muted-foreground uppercase">Estimated Rank</span>
@@ -261,14 +268,14 @@ export default function CGPAPage() {
                 <Flame className="w-6 h-6 text-white mb-4" />
                 <h3 className="text-base font-bold text-white mb-1.5">Simulation Gap</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Your simulated CGPA is <strong className="text-white">{(simulatedCgpa - realCgpa).toFixed(2)}</strong> points {simulatedCgpa >= realCgpa ? 'above' : 'below'} your actual recorded CGPA ({realCgpa.toFixed(2)}).
+                  Your simulated CGPA is <strong className="text-white"><AnimatedCounter value={simulatedCgpa - realCgpa} /></strong> points {simulatedCgpa >= realCgpa ? 'above' : 'below'} your actual recorded CGPA (<AnimatedCounter value={realCgpa} />).
                 </p>
               </div>
               <div className="p-6 bg-[#090909] border border-border group hover:border-neutral-800 transition-colors rounded-2xl">
                 <Target className="w-6 h-6 text-white mb-4" />
                 <h3 className="text-base font-bold text-white mb-1.5">Simulation Target</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  In this simulation, you have earned <strong className="text-white">{totalCreditsSim} credits</strong> with a grade point product of <strong className="text-white">{totalPointsSim.toFixed(1)}</strong>.
+                  In this simulation, you have earned <strong className="text-white"><AnimatedCounter value={totalCreditsSim} decimals={0} /> credits</strong> with a grade point product of <strong className="text-white"><AnimatedCounter value={totalPointsSim} decimals={1} /></strong>.
                 </p>
               </div>
             </div>
@@ -347,7 +354,7 @@ export default function CGPAPage() {
             </div>
           </aside>
         </div>
-      </main>
+      </motion.main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-black">

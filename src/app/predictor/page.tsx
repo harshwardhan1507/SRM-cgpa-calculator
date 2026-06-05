@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/toast';
+import { motion } from 'framer-motion';
+import { AnimatedCounter } from '@/components/animated-counter';
 
 interface SimSemester {
   semesterNum: number;
@@ -133,7 +135,12 @@ export default function PredictorPage() {
     <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
       <Navbar />
 
-      <main className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full flex flex-col gap-12">
+      <motion.main 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full flex flex-col gap-12"
+      >
         {/* Hero & Target Input */}
         <section className="flex flex-col md:flex-row gap-8 items-start justify-between mt-8">
           <div className="flex flex-col gap-3 max-w-2xl">
@@ -175,7 +182,7 @@ export default function PredictorPage() {
             <span className="font-mono text-xs text-muted-foreground uppercase">Required Avg. SGPA</span>
             <div>
               <div className="text-4xl font-bold text-white leading-none tracking-tight">
-                {feasibility === 'achieved' ? '0.00' : requiredAverageSgpa.toFixed(2)}
+                <AnimatedCounter value={feasibility === 'achieved' ? 0 : requiredAverageSgpa} />
               </div>
               <div className="text-xs text-muted-foreground mt-2">
                 across {simSemesters.length} remaining semesters
@@ -188,7 +195,7 @@ export default function PredictorPage() {
             <span className="font-mono text-xs text-muted-foreground uppercase">Current CGPA</span>
             <div>
               <div className="text-4xl font-bold text-white leading-none tracking-tight">
-                {completedCgpa > 0 ? completedCgpa.toFixed(2) : '0.00'}
+                <AnimatedCounter value={completedCgpa} />
               </div>
               <div className="text-xs text-muted-foreground mt-2">
                 after {completedSemestersCount} completed semesters ({completedCredits} credits)
@@ -356,10 +363,10 @@ export default function PredictorPage() {
             </div>
           </div>
           <div className="text-4xl font-bold text-white font-mono">
-            {projectedCumulativeCgpa > 0 ? projectedCumulativeCgpa.toFixed(2) : '0.00'}
+            <AnimatedCounter value={projectedCumulativeCgpa} />
           </div>
         </div>
-      </main>
+      </motion.main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-black mt-12">

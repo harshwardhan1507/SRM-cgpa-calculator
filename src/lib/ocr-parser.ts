@@ -24,90 +24,204 @@ function normalizeGrade(raw: string): string {
 }
 
 /**
+ * Normalizes subject codes by correcting common OCR mistakes where letters
+ * and numbers are swapped (e.g., O for 0, I/l for 1).
+ */
+function normalizeCode(rawCode: string): string {
+  // Use case-sensitive matching for the middle letters to prevent lowercase 'l' or 'i' from matching as letters.
+  const match = rawCode.match(/^([0-9OIld|]{2})([A-Z]{2,6})([0-9OIld|]{2,4})([A-Z]?)$/);
+  if (!match) {
+    // Try case-insensitive fallback if it doesn't match case-sensitively
+    const matchIC = rawCode.match(/^([0-9OIld|]{2})([a-zA-Z]{2,6})([0-9OIld|]{2,4})([a-zA-Z]?)$/);
+    if (!matchIC) return rawCode.toUpperCase();
+    return normalizeCodeParts(matchIC[1], matchIC[2], matchIC[3], matchIC[4]);
+  }
+  
+  return normalizeCodeParts(match[1], match[2], match[3], match[4]);
+}
+
+function normalizeCodeParts(p1: string, p2: string, p3: string, p4: string): string {
+  const cleanDigits = (s: string) => {
+    return s.toUpperCase()
+      .replace(/O/g, '0')
+      .replace(/[ILl|]/g, '1')
+      .replace(/S/g, '5')
+      .replace(/B/g, '8');
+  };
+  
+  const prefix = cleanDigits(p1);
+  const middle = p2.toUpperCase();
+  const suffix = cleanDigits(p3);
+  const final = p4.toUpperCase();
+  
+  return `${prefix}${middle}${suffix}${final}`;
+}
+
+/**
  * Parse text copied from SRM ERP Portal or output by Tesseract OCR.
+ * Uses a robust subject-code anchor chunking algorithm.
  */
 export function parseERPText(text: string): Subject[] {
   const subjects: Subject[] = [];
-
-  // Try matching the structured AcademiA table format
-  // Example row: 1 NOV 2025 23VAC102 INDIAN CONSTITUTION AND POLITY 2 C 7.00 PASS 1
-  const structuredRegex = /(\d+)\s+([A-Z]{3}\s+\d{4})\s+([0-9]{2}[A-Z]{2,6}[0-9]{3,4}[A-Z]?)\s+(.+?)\s+(\d+)\s+([SABCDEF]|AB|ABS|O|A\+|B\+|C\+)\s+(\d+(?:\.\d+)?)\s+([A-Z]+)\s+(\d+)/gi;
   
-  const matches = [...text.matchAll(structuredRegex)];
-  
-  if (matches.length > 0) {
-    for (const match of matches) {
-      const subjectCode = match[3];
-      const description = match[4].trim();
-      const credit = parseInt(match[5]);
-      const gradeLetter = normalizeGrade(match[6]);
-      const gradePoints = parseFloat(match[7]);
-      const resultStatus = match[8].toUpperCase();
-      
-      const hasBack = gradeLetter === 'F' || gradeLetter === 'Ab' || resultStatus === 'FAIL' || resultStatus === 'RA';
-      
-      const isLab = /lab|practical|workshop|project|seminar/i.test(description) || /[JjPp]$/.test(subjectCode);
-      const type: CourseType = isLab ? 'lab' : 'theory';
+  // 1. Preprocess text to resolve line breaks within columns and normalize whitespace
+  const cleanText = text.replace(/\r/g, '').replace(/\n+/g, ' ').replace(/\s+/g, ' ');
 
-      subjects.push({
-        id: uuidv4(),
-        name: `${subjectCode} - ${description}`,
-        credit: credit,
-        grade: hasBack ? 0 : gradePoints,
-        hasBack: hasBack,
-        type: type,
-        totalMarks: hasBack ? 39 : (gradePoints === 10 ? 95 : gradePoints === 9 ? 85 : gradePoints === 8 ? 75 : gradePoints === 7 ? 65 : gradePoints === 6 ? 55 : 45),
-        // Add default mock marks details based on parsed grade points
-        ...(type === 'theory' ? {
-          mst1: hasBack ? 10 : 25,
-          mst2: hasBack ? 10 : 26,
-          assignment: hasBack ? 5 : 9,
-          endsem: hasBack ? 30 : (gradePoints * 10)
-        } : {
-          labInternal: hasBack ? 30 : (gradePoints * 6),
-          labExternal: hasBack ? 10 : (gradePoints * 4)
-        })
-      });
-    }
-    return subjects;
+  // 2. Find all subject code anchors in the text (allowing common OCR errors)
+  const codeRegex = /\b[0-9OIld|]{2}[A-Z]{2,6}[0-9OIld|]{2,4}[A-Z]?\b/gi;
+  
+  const matches: { rawCode: string; index: number }[] = [];
+  let match;
+  while ((match = codeRegex.exec(cleanText)) !== null) {
+    matches.push({
+      rawCode: match[0],
+      index: match.index
+    });
   }
 
+  // If no code anchors were found, fallback to line-by-line scanning
+  if (matches.length === 0) {
+    return parseLineByLineFallback(text);
+  }
+
+  // 3. Process each subject chunk using anchors
+  for (let i = 0; i < matches.length; i++) {
+    const current = matches[i];
+    const next = matches[i + 1];
+    
+    // Chunk of text starting at current code and ending at next code (or end of text)
+    let chunk = cleanText.substring(current.index, next ? next.index : cleanText.length).trim();
+    
+    // Remove the raw subject code from the beginning of the chunk
+    let remaining = chunk.substring(current.rawCode.length).trim();
+    
+    // Normalize code (correcting 0/O, 1/l, etc.)
+    const subjectCode = normalizeCode(current.rawCode);
+    
+    // A. Find grade points (decimal number with dot or comma, allowing OCR errors)
+    const gpMatch = remaining.match(/\b([0-9OIld|]+[\.,][0-9OIld|]{2})\b/);
+    let gradePoints = 8.0; // default fallback
+    let gpStr = '';
+    
+    if (gpMatch) {
+      gpStr = gpMatch[1];
+      const cleanGP = gpStr.toUpperCase()
+        .replace(/,/g, '.')
+        .replace(/O/g, '0')
+        .replace(/[ILl|]/g, '1')
+        .replace(/S/g, '5')
+        .replace(/B/g, '8');
+      gradePoints = parseFloat(cleanGP) || 0;
+    } else {
+      // Look for any integer between 0 and 10
+      const intMatch = remaining.match(/\b(10|[0-9])\b/);
+      if (intMatch) {
+        gpStr = intMatch[1];
+        gradePoints = parseFloat(gpStr) || 0;
+      }
+    }
+    
+    // B. Find credit (number 1-5 or OCR equivalent: I, l, |, d)
+    // Search in the text of the chunk before the grade points
+    let beforeGp = remaining;
+    if (gpStr) {
+      const idx = remaining.indexOf(gpStr);
+      if (idx !== -1) {
+        beforeGp = remaining.substring(0, idx).trim();
+      }
+    }
+    
+    // Search for credit candidates from right to left
+    const creditMatches = [...beforeGp.matchAll(/\b([1-5Ild|])\b/g)];
+    let credit = 3; // default fallback
+    let creditStr = '';
+    if (creditMatches.length > 0) {
+      const lastMatch = creditMatches[creditMatches.length - 1];
+      creditStr = lastMatch[1];
+      
+      const cleanCredit = creditStr.toUpperCase()
+        .replace(/[ILl|d]/g, '1')
+        .replace(/S/g, '5')
+        .replace(/B/g, '8');
+      credit = parseInt(cleanCredit) || 3;
+    }
+    
+    // C. Extract description
+    let description = beforeGp;
+    if (creditStr) {
+      const idx = beforeGp.lastIndexOf(creditStr);
+      if (idx !== -1) {
+        description = beforeGp.substring(0, idx).trim();
+      }
+    }
+    
+    // Clean up description (strip trailing standalone grade letters if any)
+    description = description
+      .replace(/\s+\b(S|A|B|C|D|E|F|Ab|O|A\+|B\+|C\+)\b$/i, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+      
+    // Determine grade letter and hasBack status
+    const gradeLetter = normalizeGrade(gradePoints === 10 ? 'S' : gradePoints === 9 ? 'A' : gradePoints === 8 ? 'B' : gradePoints === 7 ? 'C' : gradePoints === 6 ? 'D' : gradePoints === 5 ? 'E' : 'F');
+    const hasBack = gradeLetter === 'F' || gradeLetter === 'Ab';
+    
+    // Heuristic for course type
+    const isLab = /lab|practical|workshop|project|seminar/i.test(description) || /[JjPp]$/.test(subjectCode);
+    const type: CourseType = isLab ? 'lab' : 'theory';
+
+    subjects.push({
+      id: uuidv4(),
+      name: `${subjectCode} - ${description || `Subject ${subjectCode}`}`,
+      credit,
+      grade: hasBack ? 0 : gradePoints,
+      hasBack,
+      type,
+      totalMarks: hasBack ? 39 : (gradePoints === 10 ? 95 : gradePoints === 9 ? 85 : gradePoints === 8 ? 75 : gradePoints === 7 ? 65 : gradePoints === 6 ? 55 : 45),
+      ...(type === 'theory' ? {
+        mst1: hasBack ? 10 : 25,
+        mst2: hasBack ? 10 : 26,
+        assignment: hasBack ? 5 : 9,
+        endsem: hasBack ? 30 : (gradePoints * 10)
+      } : {
+        labInternal: hasBack ? 30 : (gradePoints * 6),
+        labExternal: hasBack ? 10 : (gradePoints * 4)
+      })
+    });
+  }
+  
+  return subjects;
+}
+
+/**
+ * Fallback parser scanning text line-by-line if no course code anchors were found.
+ */
+function parseLineByLineFallback(text: string): Subject[] {
+  const subjects: Subject[] = [];
   const lines = text.split('\n');
 
-  // Common course code regex (e.g. 18CSB101T, 21MA102, 15CS302J)
-  const codeRegex = /\b[0-9]{2}[A-Z]{2,6}[0-9]{3,4}[A-Z]?\b/;
-
-  // Valid grades regex
+  const codeRegex = /\b[0-9]{2}[A-Z]{2,6}[0-9]{2,4}[A-Z]?\b/;
   const gradeRegex = /\b(S|A|B|C|D|E|F|Ab)\b/i;
-
 
   for (let line of lines) {
     line = line.trim();
     if (!line) continue;
 
-    // Check if the line has a grade and credits
     const codeMatch = line.match(codeRegex);
     const gradeMatch = line.match(gradeRegex);
     
-    // Fallback heuristic if no code is present but the line contains typical subject keywords
     const isSubjectLine = codeMatch || /credit|grade|passed|fail/i.test(line) || /[a-z]{4,}/i.test(line);
     
     if (gradeMatch && isSubjectLine) {
       const gradeLetter = normalizeGrade(gradeMatch[0]);
       const gradePoints = GRADE_POINTS[gradeLetter] || 0;
       
-      // Look for credit (usually a single number 1-5, often preceded or followed by tabs/spaces)
-      // Remove the code and grade first to avoid matching parts of code as credit
       let temp = line;
       if (codeMatch) temp = temp.replace(codeMatch[0], '');
       temp = temp.replace(gradeMatch[0], '');
       
-      // Find numbers between 1 and 5 in the remaining text
       const creditsMatch = temp.match(/\b([1-5])\b/);
-      const credit = creditsMatch ? parseInt(creditsMatch[1]) : 3; // Default to 3 credits if not found
+      const credit = creditsMatch ? parseInt(creditsMatch[1]) : 3;
       
-      // Try to extract name
-      // Name is usually the text remaining between code (if exists) and credit/grade
       let name = '';
       if (codeMatch) {
         const parts = line.split(codeMatch[0]);
@@ -117,7 +231,6 @@ export function parseERPText(text: string): Subject[] {
       }
       
       if (!name || name.length < 3) {
-        // Fallback name extraction: clean the whole line from code, grade, credits, and typical status words
         name = line
           .replace(codeMatch ? codeMatch[0] : '', '')
           .replace(gradeMatch[0], '')
@@ -133,20 +246,18 @@ export function parseERPText(text: string): Subject[] {
       }
 
       const hasBack = gradeLetter === 'F' || gradeLetter === 'Ab';
-      
-      // Heuristic for course type
       const isLab = /lab|practical|workshop|project|seminar/i.test(name) || (codeMatch && /[JjPp]$/.test(codeMatch[0]));
       const type: CourseType = isLab ? 'lab' : 'theory';
+      const subjectCode = codeMatch ? normalizeCode(codeMatch[0]) : '';
 
       subjects.push({
         id: uuidv4(),
-        name: name,
+        name: subjectCode ? `${subjectCode} - ${name}` : name,
         credit: credit,
         grade: gradePoints,
         hasBack: hasBack,
         type: type,
-        totalMarks: hasBack ? 40 : 85, // Mocked total marks for display
-        // Add default mock marks for theory/lab details
+        totalMarks: hasBack ? 40 : 85,
         ...(type === 'theory' ? {
           mst1: hasBack ? 10 : 25,
           mst2: hasBack ? 10 : 26,

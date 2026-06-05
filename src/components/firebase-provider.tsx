@@ -50,6 +50,15 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    const localProfile = localStorage.getItem('profile');
+    if (localProfile) {
+      try {
+        setProfile(JSON.parse(localProfile));
+      } catch (e) {
+        console.error('Error parsing local profile:', e);
+      }
+    }
+
     // Register service worker for PWA support
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').then((reg) => {
@@ -99,16 +108,19 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
               localStorage.setItem('semesters', JSON.stringify(cloudSemesters));
 
               if (data.name) {
-                setProfile({
+                const newProfile = {
                   name: data.name,
                   registrationNumber: data.registrationNumber || '',
                   branch: data.branch || '',
                   program: data.program || '',
                   currentYear: data.currentYear || 1,
                   currentSemester: data.currentSemester || 1
-                });
+                };
+                setProfile(newProfile);
+                localStorage.setItem('profile', JSON.stringify(newProfile));
               } else {
                 setProfile(null);
+                localStorage.removeItem('profile');
               }
             }
           });
@@ -165,6 +177,7 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
 
   const updateProfile = async (newProfile: UserProfile) => {
     setProfile(newProfile);
+    localStorage.setItem('profile', JSON.stringify(newProfile));
     if (user) {
       try {
         const userDocRef = doc(db, 'users', user.uid);

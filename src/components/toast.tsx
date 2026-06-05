@@ -25,10 +25,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     const id = Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { id, message, type }]);
 
-    // Auto-remove after 4 seconds
+    // Auto-remove after 2.5 seconds
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4000);
+    }, 2500);
   }, []);
 
   const removeToast = useCallback((id: string) => {
@@ -66,15 +66,15 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-3 max-w-sm w-full px-4 pointer-events-none">
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
               key={toast.id}
               layout
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
+              exit={{ opacity: 0, y: -15, scale: 0.95, transition: { duration: 0.15 } }}
               className={`pointer-events-auto flex items-start gap-3 p-4 bg-[#090909] border ${getBorderColor(
                 toast.type
               )} rounded-xl shadow-xl w-full relative overflow-hidden`}

@@ -34,6 +34,7 @@ export const viewport: Viewport = {
 
 import { FirebaseProvider } from "@/components/firebase-provider";
 import { ToastProvider } from "@/components/toast";
+import { CommandPalette } from "@/components/command-palette";
 
 export default function RootLayout({
   children,
@@ -50,6 +51,7 @@ export default function RootLayout({
         <ToastProvider>
           <FirebaseProvider>
             {children}
+            <CommandPalette />
           </FirebaseProvider>
         </ToastProvider>
       </body>
