@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 import { useFirebase } from '@/components/firebase-provider';
 import { calculateCGPA } from '@/lib/cgpa';
 import { getGradeLetter } from '@/lib/grade-mapping';
@@ -366,10 +367,16 @@ export default function DashboardPage() {
                   <motion.div
                     key={semNum}
                     layout
-                    whileHover={{ y: -2, borderColor: '#FAFAFA' }}
-                    transition={{ duration: 0.15 }}
+                    whileHover={{ 
+                      scale: 1.015, 
+                      y: -4, 
+                      borderColor: '#FAFAFA',
+                      zIndex: 10,
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3)'
+                    }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                     onClick={() => setExpandedSemNum(isExpanded ? null : semNum)}
-                    className={`bg-[#090909] border border-border p-5 rounded-xl flex flex-col border-l-4 cursor-pointer hover:bg-neutral-900 transition-all duration-200 ${hasBacks ? 'border-l-red-500' : 'border-l-white'
+                    className={`bg-[#090909] border border-border p-5 rounded-xl flex flex-col border-l-4 cursor-pointer hover:bg-neutral-900 transition-colors ${hasBacks ? 'border-l-red-500' : 'border-l-white'
                       }`}
                   >
                     <div className="flex items-center justify-between w-full">
@@ -503,13 +510,19 @@ export default function DashboardPage() {
                 return (
                   <motion.div
                     key={semNum}
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.15 }}
+                    whileHover={{ 
+                      scale: 1.015, 
+                      y: -4, 
+                      borderColor: '#FAFAFA',
+                      zIndex: 10,
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3)'
+                    }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                     onClick={() => {
                       // Navigate to create new semester
                       window.location.href = `/semester/new?sem=${semNum}`;
                     }}
-                    className="bg-black border border-border border-dashed p-5 rounded-xl flex items-center justify-between cursor-pointer hover:bg-neutral-950 transition-all duration-200 opacity-60"
+                    className="bg-black border border-border border-dashed p-5 rounded-xl flex items-center justify-between cursor-pointer hover:bg-neutral-950 transition-colors opacity-60 hover:opacity-100"
                   >
                     <div className="flex gap-6 items-center">
                       <div className="border border-border border-dashed w-12 h-12 flex items-center justify-center rounded-lg">
@@ -678,19 +691,7 @@ export default function DashboardPage() {
         )}
       </motion.main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-black mt-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center w-full px-6 py-6 gap-4 max-w-[1440px] mx-auto">
-          <div className="font-mono text-xs text-muted-foreground">
-            © 2026 SRM Academic Suite. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            <a className="text-muted-foreground hover:text-white transition-colors font-mono text-xs" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a className="text-muted-foreground hover:text-white transition-colors font-mono text-xs" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <span className="text-muted-foreground font-mono text-xs">Powered by Firebase</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <ConfirmationModal
         isOpen={confirmState.isOpen}

@@ -1,14 +1,16 @@
 'use client';
 
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 import { 
   BookOpen, 
   Award, 
-  CheckCircle,
+  ArrowUpRight,
   HelpCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { officialRegulationsPdfUrl } from '@/lib/official-links';
 
 export default function GradingPage() {
   const gradingScale = [
@@ -49,12 +51,21 @@ export default function GradingPage() {
               <span className="text-muted-foreground">
                 Last Updated Oct 2023
               </span>
+              <a
+                href={officialRegulationsPdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-400 hover:text-white transition-colors inline-flex items-center gap-1"
+              >
+                Official PDF
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
             </div>
           </div>
         </section>
 
         {/* Evaluation Split */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section id="erp-guide" className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Theory Courses */}
           <div className="bg-[#090909] border border-border p-6 rounded-xl hover:border-neutral-800 transition-all duration-300 flex flex-col justify-between">
             <div className="flex items-center justify-between mb-8">
@@ -135,7 +146,7 @@ export default function GradingPage() {
         </section>
 
         {/* Relative vs Absolute */}
-        <section>
+        <section id="faq">
           <div className="bg-[#090909] border border-border rounded-xl p-8 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 space-y-4">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -151,9 +162,15 @@ export default function GradingPage() {
                     Calculate GPA
                   </Button>
                 </Link>
-                <Button variant="outline" className="bg-transparent border border-border text-white hover:bg-neutral-900 px-4 py-2.5 rounded-xl text-xs font-semibold">
+                <a
+                  href={officialRegulationsPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-transparent border border-border text-white hover:bg-neutral-900 px-4 py-2.5 rounded-xl text-xs font-semibold inline-flex items-center gap-2 transition-colors"
+                >
                   Official Regulations PDF
-                </Button>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
               </div>
             </div>
             
@@ -174,19 +191,7 @@ export default function GradingPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-black">
-        <div className="flex flex-col md:flex-row justify-between items-center w-full px-6 py-6 gap-4 max-w-[1440px] mx-auto">
-          <div className="font-mono text-xs text-muted-foreground">
-            © 2024 SRM Academic Suite. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            <a className="text-muted-foreground hover:text-white transition-colors font-mono text-xs" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a className="text-muted-foreground hover:text-white transition-colors font-mono text-xs" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <span className="text-muted-foreground font-mono text-xs">Powered by Firebase</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

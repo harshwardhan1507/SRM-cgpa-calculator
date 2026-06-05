@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 import { useFirebase } from '@/components/firebase-provider';
 import { calculateSGPA } from '@/lib/sgpa';
 import { parseERPText } from '@/lib/ocr-parser';
@@ -115,6 +116,16 @@ function NewSemesterForm() {
       }
     }
   }, [editingSemNum, semesters, profile]);
+
+  // Auto-trigger ERP screenshot upload dialog if query parameter ?import=true is set
+  useEffect(() => {
+    if (searchParams.get('import') === 'true' && fileInputRef.current) {
+      fileInputRef.current.click();
+      // Clear URL parameter safely without reloading
+      const cleanUrl = window.location.pathname;
+      router.replace(cleanUrl);
+    }
+  }, [searchParams, router]);
 
   // Calculations
   const sgpaResult = calculateSGPA(subjects);
@@ -907,19 +918,7 @@ function NewSemesterForm() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-black">
-        <div className="flex flex-col md:flex-row justify-between items-center w-full px-6 py-6 gap-4 max-w-[1440px] mx-auto">
-          <div className="font-mono text-xs text-muted-foreground">
-            © 2024 SRM Academic Suite. All rights reserved.
-          </div>
-          <div className="flex gap-6">
-            <a className="text-muted-foreground hover:text-white transition-colors font-mono text-xs" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a className="text-muted-foreground hover:text-white transition-colors font-mono text-xs" href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <span className="text-muted-foreground font-mono text-xs">Powered by Firebase</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
       <ConfirmationModal
         isOpen={confirmState.isOpen}
         title={confirmState.title}
