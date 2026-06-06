@@ -157,7 +157,7 @@ export default function GradingPage() {
                 SRM Institute of Science and Technology follows a hybrid relative grading system. While the base criteria mapped above represents absolute performance thresholds, grade boundaries for specific batches or courses may shift slightly depending on the statistical metrics (mean and standard deviation) of the class performance.
               </p>
               <div className="flex gap-4 pt-2">
-                <Link href="/semester/new">
+                <Link href="/sgpa">
                   <Button className="bg-white hover:bg-neutral-200 text-black px-4 py-2.5 rounded-xl text-xs font-semibold">
                     Calculate GPA
                   </Button>

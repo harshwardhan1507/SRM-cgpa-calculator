@@ -1,7 +1,5 @@
 'use client';
 
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
 import { useFirebase } from '@/components/firebase-provider';
 import { calculateCGPA } from '@/lib/cgpa';
 import { getGradeLetter } from '@/lib/grade-mapping';
@@ -16,17 +14,12 @@ import {
   ChevronRight,
   Calculator,
   TrendingUp,
-  Info,
   Flame,
   Trash2,
-  X,
   AlertTriangle,
   LayoutGrid,
-  TrendingDown,
   BarChart3,
-  Calendar,
   Clock,
-  BookOpen,
   Upload
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -34,6 +27,7 @@ import dynamic from 'next/dynamic';
 import { useToast } from '@/components/toast';
 import { ConfirmationModal } from '@/components/confirmation-modal';
 import { motion, AnimatePresence } from 'framer-motion';
+import InsightsCard from '@/components/insights-card';
 
 const TrendChart = dynamic(() => import('@/components/trend-chart'), {
   ssr: false,
@@ -189,10 +183,8 @@ export default function DashboardPage() {
     );
   };
   return (
-    <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
-      <Navbar />
-
-      <motion.main 
+    <>
+      <motion.main
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -200,168 +192,168 @@ export default function DashboardPage() {
       >
         {/* Hero Section */}
         <section className="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-6 py-6 sm:py-8">
-          <div className="order-2 lg:order-1 lg:col-span-7">
-            {profile ? (
-              <div className="bg-[#090909] border border-border p-6 sm:p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between min-h-[120px]">
-                <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
-                      Student Profile
-                    </span>
-                    <Link href="/profile">
-                      <Button variant="ghost" className="h-7 hover:bg-neutral-900 text-muted-foreground hover:text-white border border-transparent hover:border-border rounded-lg text-[10px] px-2.5 cursor-pointer">
-                        Edit Profile
-                      </Button>
-                    </Link>
-                  </div>
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none">{profile.name}</h2>
-                    <p className="text-xs text-muted-foreground font-mono mt-1.5 uppercase tracking-widest">{profile.registrationNumber}</p>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4 pt-8 border-t border-border mt-8">
-                  <div>
-                    <div className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">Program & Branch</div>
-                    <div className="text-sm font-semibold text-white mt-1">
-                      {profile.program} {profile.branch.includes('Computer Science') ? 'CSE' : profile.branch}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">Academic Year</div>
-                    <div className="text-sm font-semibold text-white mt-1">
-                      Sem {profile.currentSemester} • Year {profile.currentYear}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col justify-center space-y-6 h-full min-h-[120px]">
-                <div className="space-y-3">
-                  <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
-                    Academic Dashboard v2.0
-                  </span>
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
-                    SRM Academic Suite
-                  </h1>
-                  <p className="text-sm sm:text-base text-muted-foreground font-medium">
-                    Calculate. Predict. Track.
-                  </p>
-                </div>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
-                  Academic performance toolkit built specifically for SRM students. A precision instrument for managing credits, predicting grades, and auditing degree progress with mathematical certainty.
-                </p>
-                <div className="flex gap-4 pt-2">
-                  <Link href="/semester/new" className="w-full sm:w-auto">
-                    <Button size="xl" className="w-full">
-                      Get Started
-                    </Button>
-                  </Link>
-                  <Link href="/grading" className="w-full sm:w-auto">
-                    <Button variant="outline" size="xl" className="w-full">
-                      Regulations
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Current CGPA Stats Card */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="order-1 lg:order-2 lg:col-span-5"
-          >
+        <div className="order-2 lg:order-1 lg:col-span-7">
+          {profile ? (
             <div className="bg-[#090909] border border-border p-6 sm:p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between min-h-[120px]">
               <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
-              <div>
-                <div className="font-mono text-xs text-muted-foreground tracking-wider mb-2">CURRENT CGPA</div>
-                <div className="text-5xl sm:text-6xl font-bold text-white tracking-tighter">
-                  <AnimatedCounter value={overallCgpa} />
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
+                    Student Profile
+                  </span>
+                  <Link href="/profile">
+                    <Button variant="ghost" className="h-7 hover:bg-neutral-900 text-muted-foreground hover:text-white border border-transparent hover:border-border rounded-lg text-[10px] px-2.5 cursor-pointer">
+                      Edit Profile
+                    </Button>
+                  </Link>
+                </div>
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none">{profile.name}</h2>
+                  <p className="text-xs text-muted-foreground font-mono mt-1.5 uppercase tracking-widest">{profile.registrationNumber}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border mt-8">
+              
+              <div className="grid grid-cols-2 gap-4 pt-8 border-t border-border mt-8">
                 <div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Credits</div>
-                  <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalCredits}</div>
+                  <div className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">Program & Branch</div>
+                  <div className="text-sm font-semibold text-white mt-1">
+                    {profile.program} {profile.branch.includes('Computer Science') ? 'CSE' : profile.branch}
+                  </div>
                 </div>
                 <div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Semesters</div>
-                  <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalSemestersCount}</div>
-                </div>
-                <div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Total Points</div>
-                  <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalPoints.toFixed(2)}</div>
+                  <div className="font-mono text-[9px] text-muted-foreground uppercase tracking-wider">Academic Year</div>
+                  <div className="text-sm font-semibold text-white mt-1">
+                    Sem {profile.currentSemester} • Year {profile.currentYear}
+                  </div>
                 </div>
               </div>
             </div>
-          </motion.div>
-        </section>
+          ) : (
+            <div className="flex flex-col justify-center space-y-6 h-full min-h-[120px]">
+              <div className="space-y-3">
+                <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
+                  Academic Dashboard v2.0
+                </span>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                  SRM Academic Suite
+                </h1>
+                <p className="text-sm sm:text-base text-muted-foreground font-medium">
+                  Calculate. Predict. Track.
+                </p>
+              </div>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
+                Academic performance toolkit built specifically for SRM students. A precision instrument for managing credits, predicting grades, and auditing degree progress with mathematical certainty.
+              </p>
+              <div className="flex gap-4 pt-2">
+                <Link href="/sgpa" className="w-full sm:w-auto">
+                  <Button size="xl" className="w-full">
+                    Get Started
+                  </Button>
+                </Link>
+                <Link href="/grading" className="w-full sm:w-auto">
+                  <Button variant="outline" size="xl" className="w-full">
+                    Regulations
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
 
-        {/* Quick Actions */}
-        <section className="py-6 sm:py-8">
-          <h2 className="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-            <LayoutGrid className="w-5 h-5 text-white" />
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <Link href="/semester/new" className="block w-full">
-              <motion.div 
-                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
-                transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
-              >
-                <Calculator className="w-6 h-6 text-white sm:mb-4 shrink-0" />
-                <div>
-                  <h3 className="text-sm sm:text-lg font-medium text-white">SGPA Calculator</h3>
-                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Compute term-specific performance based on internal grades.</p>
-                </div>
-              </motion.div>
-            </Link>
-            <Link href="/cgpa" className="block w-full">
-              <motion.div 
-                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
-                transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
-              >
-                <Flame className="w-6 h-6 text-white sm:mb-4 shrink-0" />
-                <div>
-                  <h3 className="text-sm sm:text-lg font-medium text-white">CGPA Calculator</h3>
-                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Aggregate multiple semesters to track your overall standing.</p>
-                </div>
-              </motion.div>
-            </Link>
-            <Link href="/predictor" className="block w-full">
-              <motion.div 
-                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
-                transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
-              >
-                <TrendingUp className="w-6 h-6 text-white sm:mb-4 shrink-0" />
-                <div>
-                  <h3 className="text-sm sm:text-lg font-medium text-white">Grade Predictor</h3>
-                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Simulate final results based on expected marks.</p>
-                </div>
-              </motion.div>
-            </Link>
-            <Link href="/semester/new?import=true" className="block w-full">
-              <motion.div 
-                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
-                transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
-              >
-                <Upload className="w-6 h-6 text-white sm:mb-4 shrink-0" />
-                <div>
-                  <h3 className="text-sm sm:text-lg font-medium text-white">Upload ERP Result</h3>
-                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Import academic reports dynamically from portal screenshots.</p>
-                </div>
-              </motion.div>
-            </Link>
+        {/* Current CGPA Stats Card */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="order-1 lg:order-2 lg:col-span-5"
+        >
+          <div className="bg-[#090909] border border-border p-6 sm:p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between min-h-[120px]">
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
+            <div>
+              <div className="font-mono text-xs text-muted-foreground tracking-wider mb-2">CURRENT CGPA</div>
+              <div className="text-5xl sm:text-6xl font-bold text-white tracking-tighter">
+                <AnimatedCounter value={overallCgpa} />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border mt-8">
+              <div>
+                <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Credits</div>
+                <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalCredits}</div>
+              </div>
+              <div>
+                <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Semesters</div>
+                <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalSemestersCount}</div>
+              </div>
+              <div>
+                <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Total Points</div>
+                <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalPoints.toFixed(2)}</div>
+              </div>
+            </div>
           </div>
-        </section>        {/* Semester History */}
+        </motion.div>
+      </section>
+
+      {/* Quick Actions */}
+      <section className="py-6 sm:py-8">
+        <h2 className="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
+          <LayoutGrid className="w-5 h-5 text-white" />
+          Quick Actions
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <Link href="/sgpa" className="block w-full">
+            <motion.div 
+              whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
+              transition={{ duration: 0.2 }}
+              className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
+            >
+              <Calculator className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+              <div>
+                <h3 className="text-sm sm:text-lg font-medium text-white">SGPA Calculator</h3>
+                <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Compute term-specific performance based on internal grades.</p>
+              </div>
+            </motion.div>
+          </Link>
+          <Link href="/cgpa" className="block w-full">
+            <motion.div 
+              whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
+              transition={{ duration: 0.2 }}
+              className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
+            >
+              <Flame className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+              <div>
+                <h3 className="text-sm sm:text-lg font-medium text-white">CGPA Calculator</h3>
+                <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Aggregate multiple semesters to track your overall standing.</p>
+              </div>
+            </motion.div>
+          </Link>
+          <Link href="/predictor" className="block w-full">
+            <motion.div 
+              whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
+              transition={{ duration: 0.2 }}
+              className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
+            >
+              <TrendingUp className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+              <div>
+                <h3 className="text-sm sm:text-lg font-medium text-white">GPA Planner</h3>
+                <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Map target grades and get AI-powered academic coaching.</p>
+              </div>
+            </motion.div>
+          </Link>
+          <Link href="/sgpa?import=true" className="block w-full">
+            <motion.div 
+              whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
+              transition={{ duration: 0.2 }}
+              className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
+            >
+              <Upload className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+              <div>
+                <h3 className="text-sm sm:text-lg font-medium text-white">Upload ERP Result</h3>
+                <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Import academic reports dynamically from portal screenshots.</p>
+              </div>
+            </motion.div>
+          </Link>
+        </div>
+      </section>        {/* Semester History */}
         <section className="py-8">
           <div className="flex justify-between items-end mb-6">
             <div>
@@ -371,7 +363,7 @@ export default function DashboardPage() {
               </h2>
               <p className="text-xs text-muted-foreground mt-1">Breakdown of performance across your academic timeline.</p>
             </div>
-            <Link href="/semester/new">
+            <Link href="/sgpa">
               <Button size="sm" className="bg-white hover:bg-neutral-200 text-black px-4 py-2 rounded-xl flex items-center gap-1 text-xs transition-all active:scale-95">
                 <Plus className="w-4 h-4" />
                 Add Semester
@@ -518,7 +510,7 @@ export default function DashboardPage() {
                               Delete Semester
                             </button>
                             <Link
-                              href={`/semester/new?sem=${semNum}`}
+                              href={`/sgpa?sem=${semNum}`}
                               className="block"
                             >
                               <Button className="bg-white hover:bg-neutral-200 text-black text-xs px-4 py-2 rounded-xl transition-all">
@@ -545,7 +537,7 @@ export default function DashboardPage() {
                     transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                     onClick={() => {
                       // Navigate to create new semester
-                      window.location.href = `/semester/new?sem=${semNum}`;
+                      window.location.href = `/sgpa?sem=${semNum}`;
                     }}
                     className="bg-black border border-border border-dashed p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer hover:bg-neutral-950 transition-colors opacity-60 hover:opacity-100 min-h-[120px]"
                   >
@@ -585,7 +577,7 @@ export default function DashboardPage() {
                 <TrendChart data={chartData} />
               ) : (
                 <div className="text-center text-xs text-muted-foreground flex flex-col items-center gap-2">
-                  <TrendingDown className="w-8 h-8 opacity-20" />
+                  <TrendingUp className="w-8 h-8 opacity-20" />
                   No semester data available to visualize. Add a semester to see your academic trend line.
                 </div>
               )}
@@ -631,30 +623,7 @@ export default function DashboardPage() {
             </motion.div>
 
             {/* Academic Insights Card */}
-            {semesters.length > 0 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-                className="bg-[#090909] border border-border rounded-xl p-6 flex flex-col justify-between min-h-[140px] text-left"
-              >
-                <span className="font-mono text-xs text-muted-foreground uppercase mb-4">Academic Insights</span>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] text-muted-foreground uppercase font-mono">Best Semester</span>
-                    <strong className="text-sm font-semibold text-white">
-                      Sem {bestSem} (<AnimatedCounter value={bestSgpa} />)
-                    </strong>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] text-muted-foreground uppercase font-mono">Lowest Semester</span>
-                    <strong className="text-sm font-semibold text-white">
-                      Sem {worstSem} (<AnimatedCounter value={worstSgpa} />)
-                    </strong>
-                  </div>
-                </div>
-              </motion.div>
-            )}
+            <InsightsCard />
           </div>
         </section>
             {/* Backlogs Section */}
@@ -686,8 +655,6 @@ export default function DashboardPage() {
         )}
       </motion.main>
 
-      <Footer />
-
       <ConfirmationModal
         isOpen={confirmState.isOpen}
         title={confirmState.title}
@@ -695,6 +662,6 @@ export default function DashboardPage() {
         onConfirm={confirmState.onConfirm}
         onCancel={() => setConfirmState(prev => ({ ...prev, isOpen: false }))}
       />
-    </div>
+    </>
   );
 }

@@ -1,7 +1,5 @@
 'use client';
 
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
 import { useFirebase } from '@/components/firebase-provider';
 import { calculateSGPA } from '@/lib/sgpa';
 import { parseERPText } from '@/lib/ocr-parser';
@@ -156,7 +154,7 @@ function NewSemesterForm() {
   const labInternalVal = labInt;
   const labHasBack = labInternalVal < 20;
   const labTotal = labInternalVal + labExt;
-  const labGradePoints = getGradeFromMarks(labTotal, labHasBack);
+  const labGradePoints = getGradeFromMarks(labTotal, labHasBack, true);
   const labGradeLetter = getGradeLetter(labGradePoints, labHasBack);
 
   // OCR Screenshot Processing
@@ -277,7 +275,7 @@ function NewSemesterForm() {
         const isBack = li < 20;
         const total = li + le;
 
-        gradePoints = getGradeFromMarks(total, isBack);
+        gradePoints = getGradeFromMarks(total, isBack, true);
         hasBack = isBack || gradePoints === 0;
         totalMarks = total;
 
@@ -392,10 +390,13 @@ function NewSemesterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
-      <Navbar />
-
-      <main className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-4 sm:px-6 w-full flex flex-col gap-8 sm:gap-12">
+    <>
+      <motion.main 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-4 sm:px-6 w-full flex flex-col gap-8 sm:gap-12"
+      >
         {/* Banner Title */}
         <section className="flex flex-col gap-2 mt-8">
           <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
@@ -999,9 +1000,8 @@ function NewSemesterForm() {
             )}
           </div>
         </section>
-      </main>
+      </motion.main>
 
-      <Footer />
       <ConfirmationModal
         isOpen={confirmState.isOpen}
         title={confirmState.title}
@@ -1009,19 +1009,24 @@ function NewSemesterForm() {
         onConfirm={confirmState.onConfirm}
         onCancel={() => setConfirmState(prev => ({ ...prev, isOpen: false }))}
       />
-    </div>
+    </>
   );
 }
 
 export default function NewSemesterPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-black text-[#FAFAFA] flex items-center justify-center font-sans">
+      <motion.main 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="flex-grow flex items-center justify-center font-sans"
+      >
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-8 h-8 animate-spin" />
           <p className="text-xs text-muted-foreground font-mono">Initializing academic editor...</p>
         </div>
-      </div>
+      </motion.main>
     }>
       <NewSemesterForm />
     </Suspense>

@@ -27,6 +27,8 @@ interface FirebaseContextType {
   setSemesters: (semesters: Semester[]) => Promise<void>;
   profile: UserProfile | null;
   updateProfile: (profile: UserProfile) => Promise<void>;
+  insights: any | null;
+  refreshInsights: (profile: any) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -41,6 +43,7 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [semesters, setSemestersState] = useState<Semester[]>([]);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [insights, setInsights] = useState<any | null>(null);
 
   // Load initial data from localStorage for offline/immediate display & register SW
   useEffect(() => {
@@ -62,6 +65,15 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    const localInsights = localStorage.getItem('insights');
+    if (localInsights) {
+      try {
+        setInsights(JSON.parse(localInsights));
+      } catch (e) {
+        console.error('Error parsing local insights:', e);
+      }
+    }
+
     // Register service worker for PWA support
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').then((reg) => {
@@ -76,12 +88,17 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let active = true;
     let unsubscribeDoc: (() => void) | undefined;
+    let unsubscribeInsightsDoc: (() => void) | undefined;
 
     const handleAuthChange = async (currentUser: User | null) => {
-      // Clean up previous document listener if any
+      // Clean up previous document listeners if any
       if (unsubscribeDoc) {
         unsubscribeDoc();
         unsubscribeDoc = undefined;
+      }
+      if (unsubscribeInsightsDoc) {
+        unsubscribeInsightsDoc();
+        unsubscribeInsightsDoc = undefined;
       }
 
       if (!active) return;
@@ -138,6 +155,20 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
                 setProfile(null);
                 localStorage.removeItem('profile');
               }
+            }
+          });
+
+          // Setup real-time listener on user insights doc at users/{uid}/insights/current
+          const insightsDocRef = doc(db, 'users', currentUser.uid, 'insights', 'current');
+          unsubscribeInsightsDoc = onSnapshot(insightsDocRef, (docSnap) => {
+            if (!active) return;
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              setInsights(data);
+              localStorage.setItem('insights', JSON.stringify(data));
+            } else {
+              setInsights(null);
+              localStorage.removeItem('insights');
             }
           });
           
@@ -198,6 +229,9 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
       if (unsubscribeDoc) {
         unsubscribeDoc();
       }
+      if (unsubscribeInsightsDoc) {
+        unsubscribeInsightsDoc();
+      }
     };
   }, []);
 
@@ -248,6 +282,46 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const refreshInsights = async (profileData: any) => {
+    if (!user) return;
+    try {
+      const response = await fetch('/api/insights', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'generate_insights',
+          profile: profileData,
+          uid: user.uid
+        })
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      const newInsights = {
+        ...data,
+        version: 1,
+        generatedAt: new Date().toISOString(),
+        confidence: profileData.confidence
+      };
+
+      // Save to Firestore under users/{uid}/insights/current
+      const insightsDocRef = doc(db, 'users', user.uid, 'insights', 'current');
+      await setDoc(insightsDocRef, newInsights);
+
+      // Save locally
+      setInsights(newInsights);
+      localStorage.setItem('insights', JSON.stringify(newInsights));
+    } catch (error) {
+      console.error('Error refreshing insights:', error);
+      throw error;
+    }
+  };
+
   return (
     <FirebaseContext.Provider value={{
       user,
@@ -256,6 +330,8 @@ export function FirebaseProvider({ children }: { children: React.ReactNode }) {
       setSemesters,
       profile,
       updateProfile,
+      insights,
+      refreshInsights,
       loginWithGoogle,
       logout
     }}>

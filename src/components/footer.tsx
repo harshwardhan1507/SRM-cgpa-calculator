@@ -43,7 +43,11 @@ function LinkedinIcon({ className }: { className?: string }) {
   );
 }
 
-export default function Footer() {
+interface FooterProps {
+  showCta?: boolean;
+}
+
+export default function Footer({ showCta = false }: FooterProps) {
   const { user } = useFirebase();
   const [isOnline, setIsOnline] = useState(() =>
     typeof navigator === 'undefined' ? true : navigator.onLine
@@ -72,132 +76,14 @@ export default function Footer() {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="bg-black text-[#FAFAFA] border-t border-[#1A1A1A] w-full mt-auto"
     >
-      {/* Developer Spotlight */}
-      <div className="hidden md:block max-w-[1440px] mx-auto px-6 pt-16 pb-12 border-b border-[#1A1A1A]">
-        <div className="bg-[#090909] border border-border rounded-2xl p-6 sm:p-8 lg:p-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16">
-            <div className="flex flex-col justify-between gap-10">
-              <div className="space-y-5">
-                <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
-                  Developer
-                </div>
-                <div className="space-y-3">
-                  <a
-                    href={developer.portfolio}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white hover:text-zinc-300 transition-colors"
-                  >
-                    {developer.name}
-                    <ArrowUpRight className="w-4 h-4 text-zinc-500 transition-colors group-hover:text-white" />
-                  </a>
-                  <div className="text-sm text-zinc-400 font-medium">
-                    {developer.role}
-                  </div>
-                </div>
-                <p className="text-sm sm:text-base text-zinc-500 leading-7 max-w-2xl">
-                  Building modern web applications, developer tools, and academic platforms that solve real-world student problems.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <a
-                  href={developer.portfolio}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white hover:bg-neutral-200 text-black px-4 py-3 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2"
-                >
-                  View Portfolio
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-                <a
-                  href={developer.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-black border border-border hover:border-zinc-600 text-zinc-300 hover:text-white px-4 py-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2"
-                >
-                  <GithubIcon className="w-3.5 h-3.5" />
-                  GitHub
-                </a>
-                <a
-                  href={developer.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-black border border-border hover:border-zinc-600 text-zinc-300 hover:text-white px-4 py-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2"
-                >
-                  <LinkedinIcon className="w-3.5 h-3.5" />
-                  LinkedIn
-                </a>
-                <a
-                  href={`mailto:${developer.email}`}
-                  className="bg-black border border-border hover:border-zinc-600 text-zinc-300 hover:text-white px-4 py-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  Contact
-                </a>
-              </div>
-            </div>
-
-            <div className="bg-black border border-border rounded-xl p-5 sm:p-6 space-y-6">
-              <div className="space-y-2">
-                <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
-                  Contact Information
-                </div>
-                <a
-                  href={`mailto:${developer.email}`}
-                  className="text-sm text-zinc-300 hover:text-white transition-colors break-all inline-flex"
-                >
-                  {developer.email}
-                </a>
-              </div>
-
-              <div className="space-y-3 pt-4 border-t border-border">
-                <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
-                  Links
-                </div>
-                <div className="space-y-3 text-xs">
-                  <a
-                    href={developer.portfolio}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-4 text-zinc-500 hover:text-white transition-colors"
-                  >
-                    <span>Portfolio</span>
-                    <span className="text-right break-all">{developer.portfolio}</span>
-                  </a>
-                  <a
-                    href={developer.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-4 text-zinc-500 hover:text-white transition-colors"
-                  >
-                    <span>GitHub</span>
-                    <span className="text-right break-all">{developer.github}</span>
-                  </a>
-                  <a
-                    href={developer.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-4 text-zinc-500 hover:text-white transition-colors"
-                  >
-                    <span>LinkedIn</span>
-                    <span className="text-right break-all">{developer.linkedin}</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Call To Action Section */}
-      <div className="max-w-[1440px] mx-auto px-6 pt-16 pb-12 border-b border-[#1A1A1A]">
+      {showCta && <div className="max-w-[1440px] mx-auto px-6 pt-16 pb-12 border-b border-[#1A1A1A]">
         <div className="flex flex-col items-center text-center space-y-6 max-w-xl mx-auto">
           <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-white font-sans">
             Ready to track your academic journey?
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-            <Link href="/semester/new" className="w-full sm:w-auto">
+            <Link href="/sgpa" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
@@ -207,7 +93,7 @@ export default function Footer() {
                 Add Semester
               </motion.button>
             </Link>
-            <Link href="/semester/new?import=true" className="w-full sm:w-auto">
+            <Link href="/sgpa?import=true" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ y: -2, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
@@ -220,6 +106,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      }
 
       {/* Main 4-Column Grid */}
       <div className="max-w-[1440px] mx-auto px-6 py-16">
@@ -283,7 +170,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/semester/new" className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors duration-200 inline-flex items-center gap-1">
+                <Link href="/sgpa" className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors duration-200 inline-flex items-center gap-1">
                   SGPA Calculator
                 </Link>
               </li>
@@ -294,11 +181,11 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/predictor" className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors duration-200 inline-flex items-center gap-1">
-                  Grade Predictor
+                  GPA Planner
                 </Link>
               </li>
               <li>
-                <Link href="/semester/new" className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors duration-200 inline-flex items-center gap-1">
+                <Link href="/sgpa" className="text-xs text-zinc-500 hover:text-zinc-200 transition-colors duration-200 inline-flex items-center gap-1">
                   Add Semester
                 </Link>
               </li>

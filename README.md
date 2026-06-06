@@ -1,51 +1,17 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-=======
 <div align="center">
 
-<svg width="800" height="140" viewBox="0 0 800 140" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0d1117"/>
-      <stop offset="60%" style="stop-color:#0d1a0f"/>
-      <stop offset="100%" style="stop-color:#0a1628"/>
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-  <rect width="800" height="140" fill="url(#bg)" rx="10"/>
-  <polygon points="0,140 100,70 180,100 270,45 360,80 450,30 540,65 630,35 720,70 800,45 800,140" fill="#0a1a0d" opacity="0.85"/>
-  <polygon points="0,140 90,95 190,115 290,65 390,95 490,55 590,80 690,55 790,85 800,70 800,140" fill="#0d1f10" opacity="0.5"/>
-  <line x1="0" y1="139" x2="800" y2="139" stroke="#21262d" stroke-width="1"/>
-  <text x="400" y="62" text-anchor="middle" font-family="'Courier New',monospace" font-size="11" fill="#3fb950" opacity="0.7" filter="url(#glow)">harshwardhan1507 / SRM-cgpa-calculator</text>
-  <text x="400" y="92" text-anchor="middle" font-family="'Courier New',monospace" font-size="24" font-weight="700" fill="#ffffff" filter="url(#glow)">🎓 SRM CGPA Calculator</text>
-  <text x="400" y="116" text-anchor="middle" font-family="'Courier New',monospace" font-size="12" fill="#3fb950" filter="url(#glow)">HTML · CSS · JavaScript · Firebase · Vercel</text>
-</svg>
+# 🎓 SRM Academic Suite
 
-<br/>
+**An AI-powered academic analytics platform for SRM students**
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-srm--cgpa--calculator--by--haruto.vercel.app-0d1117?style=for-the-badge&logo=vercel&logoColor=3fb950&labelColor=0d1117)](https://srm-cgpa-calculator-by-haruto.vercel.app/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Gemini AI](https://img.shields.io/badge/Gemini_AI-8E75FF?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![PWA](https://img.shields.io/badge/PWA-5A0FCB?style=for-the-badge&logo=pwa&logoColor=white)](https://www.pwabuilder.com/)
+[![License](https://img.shields.io/badge/MIT-License-green?style=for-the-badge)](LICENSE)
 
-[![HTML](https://img.shields.io/badge/HTML5-0d1117?style=flat-square&logo=html5&logoColor=E34F26)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS](https://img.shields.io/badge/CSS3-0d1117?style=flat-square&logo=css3&logoColor=1572B6)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-0d1117?style=flat-square&logo=javascript&logoColor=F7DF1E)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Firebase](https://img.shields.io/badge/Firebase-0d1117?style=flat-square&logo=firebase&logoColor=FFCA28)](https://firebase.google.com/)
-[![Vercel](https://img.shields.io/badge/Vercel-0d1117?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
+[Live Demo](https://srm-cgpa-calculator-by-haruto.vercel.app/) · [Documentation](#-local-development) · [Report Issue](https://github.com/harshwardhan1507/SRM-cgpa-calculator/issues)
 
 </div>
 
@@ -53,181 +19,344 @@ bun dev
 
 ## 📖 Overview
 
-A fast, accurate, and lightweight **GPA & CGPA calculator** built specifically for **SRM University students**. Enter your subjects, credits, and grades — get your semester GPA and cumulative CGPA instantly. All calculations run client-side with zero page reloads, backed by Firebase for future feature expansion.
+Many students know their grades only after results are published. **SRM Academic Suite** empowers students to take control of their academic journey by providing:
+
+- **SGPA Calculation** — Compute semester-specific performance with credit-weighted accuracy
+- **CGPA Tracking** — Aggregate multiple semesters to monitor overall academic standing
+- **GPA Planning** — Predict future performance and set realistic grade targets
+- **ERP Integration** — Import academic reports directly from portal screenshots
+- **AI Insights** — Analyze academic strengths, weaknesses, and generate personalized strategies
+
+All calculations run client-side with instant results, backed by Firebase for cloud sync and AI-powered coaching through Gemini.
 
 ---
 
 ## ✨ Features
 
-- 🧮 **Semester GPA** — calculate grade point average for any single semester
-- 📈 **Cumulative CGPA** — track your CGPA across multiple semesters
-- 🎓 **SRM Grading System** — logic aligned with SRM University's credit-weighted grading
-- ⚡ **Instant Results** — all computation happens client-side, no server round trips
-- 💻 **Clean Responsive UI** — works smoothly on desktop and mobile
-- 🔥 **Firebase Ready** — authentication and Firestore database scaffolded for future features
-- 🌐 **Deployed on Vercel** — always live, always fast
+### 🧮 Academic Tools
+- **SGPA Calculator** — Compute term-specific performance based on internal grades
+- **CGPA Calculator** — Aggregate multiple semesters to track degree progress
+- **Semester Management** — Organize and edit semester data with ease
+- **Credit Tracking** — Monitor total credits earned across all semesters
+
+### 📸 ERP Integration
+- **ERP Screenshot Upload** — Import academic reports directly from portal screenshots
+- **Smart Text Parsing** — Extract subject names, credits, and grades automatically
+- **AI Subject Extraction** — Leverage OCR and AI to parse complex table structures
+- **Automatic Grade Detection** — Map letter grades to grade points using SRM scale
+
+### 🎯 GPA Planner
+- **Target SGPA Planning** — Set realistic grade targets for upcoming semesters
+- **Dynamic Grade Optimization** — Calculate required grades to achieve targets
+- **Subject Confidence Modeling** — Mark subjects as strong, average, or weak
+- **Feasibility Analysis** — Assess whether targets are achievable given constraints
+- **Difficulty Scoring** — Rank subjects by difficulty to prioritize study efforts
+
+### 🤖 AI Academic Insights
+- **Academic DNA** — Categorize subjects into domains (Math, Programming, Electronics, etc.)
+- **Strength Detection** — Identify academic strengths based on performance patterns
+- **Weakness Detection** — Highlight areas requiring improvement
+- **Category Analysis** — Compare performance across subject categories
+- **Trend Analysis** — Visualize academic progression over time
+- **Personalized Advice** — Get AI-powered study recommendations
+
+### 👤 User Management
+- **Google Authentication** — Secure login with Google OAuth
+- **Student Profiles** — Store registration number, program, branch, and academic year
+- **Cloud Sync** — Automatic synchronization across devices via Firebase
+- **Persistent Records** — Data persists even when offline
+
+### 📱 Platform
+- **Progressive Web App** — Installable on desktop and mobile devices
+- **Mobile-First Design** — Optimized for small screens with touch-friendly interface
+- **Offline Support** — Works without internet connection using service workers
+- **Firebase Backend** — Scalable cloud infrastructure for auth and data storage
 
 ---
 
-## 🛠️ Tech Stack
+## � Screenshots
 
-| Technology | Purpose |
-|-----------|---------|
-| HTML5 | Structure & markup |
-| CSS3 | Styling & responsive layout |
-| JavaScript (Vanilla) | GPA/CGPA calculation logic |
-| Firebase | Auth & database foundation |
-| Vercel | Deployment & hosting |
+### Dashboard
+![Dashboard](https://via.placeholder.com/800x400/0d1117/3fb950?text=Dashboard+Screenshot)
 
----
+### SGPA Calculator
+![SGPA Calculator](https://via.placeholder.com/800x400/0d1117/3fb950?text=SGPA+Calculator+Screenshot)
 
-## 📐 How It Works
+### CGPA Calculator
+![CGPA Calculator](https://via.placeholder.com/800x400/0d1117/3fb950?text=CGPA+Calculator+Screenshot)
 
-```
-User Input
-    │
-    ├── Number of subjects
-    ├── Credits per subject
-    └── Grade per subject
-            │
-            ▼
-    Grade → Grade Points
-    (SRM grading scale)
-            │
-            ▼
-    Credit-Weighted Average
-    Σ(Credits × Grade Points) / Σ(Credits)
-            │
-            ▼
-    GPA / CGPA  ✅
-```
+### GPA Planner
+![GPA Planner](https://via.placeholder.com/800x400/0d1117/3fb950?text=GPA+Planner+Screenshot)
 
-All calculations are performed on the **client side** — no data is sent to any server during computation.
+### AI Insights
+![AI Insights](https://via.placeholder.com/800x400/0d1117/3fb950?text=AI+Insights+Screenshot)
+
+### Mobile View
+![Mobile View](https://via.placeholder.com/400x800/0d1117/3fb950?text=Mobile+View+Screenshot)
 
 ---
 
-## 📂 Project Structure
+## 🏗️ Architecture
 
->>>>>>> 5b59ad03eab0fd57b4a99dd9fde5d350ffdd735c
 ```
-SRM-cgpa-calculator/
-│
-├── index.html          # Main UI — inputs, results display
-├── styles.css          # Styling & responsive layout
-├── script.js           # Core GPA/CGPA calculation logic
-│
-├── firebase-init.js    # Firebase app initialization & config
-├── firebase-service.js # Firebase auth & Firestore service layer
-│
-└── README.md
+User
+ │
+ ▼
+Next.js Frontend (App Router)
+ │
+ ├── Firebase Authentication
+ ├── Firestore Database
+ ├── Firebase Storage
+ │
+ ▼
+Academic Analytics Engine
+ │
+ ├── GPA Calculator (Deterministic)
+ ├── Academic DNA (Category Analysis)
+ ├── Risk Analysis (Backlog Detection)
+ └── GPA Planner (Optimization Algorithm)
+ │
+ ▼
+Gemini AI Layer
+ │
+ ├── Academic Explanations
+ ├── Personalized Study Advice
+ ├── GPA Strategy Interpretation
+ └── AI Academic Coach
+ │
+ ▼
+User Interface
 ```
 
 ---
 
-## 🎓 SRM Grading Scale
+## 🧬 Academic DNA System
 
-| Grade | Grade Points |
-|-------|-------------|
-| O | 10 |
-| A+ | 9 |
-| A | 8 |
-| B+ | 7 |
-| B | 6 |
-| C | 5 |
-| F | 0 |
+The platform analyzes semester performance and categorizes subjects into:
 
-> GPA = Σ(Credit × Grade Point) ÷ Σ(Credits)
+- **Mathematics** — Calculus, Linear Algebra, Probability
+- **Programming** — C, C++, Python, Java, Data Structures
+- **Electronics** — Circuits, Digital Logic, VLSI
+- **Physics** — Mechanics, Thermodynamics, Waves
+- **Chemistry** — Organic, Inorganic, Physical
+- **Languages** — English, Technical Communication
+- **Humanities** — Economics, Management, Ethics
+- **Laboratory** — Practical sessions and experiments
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then computes:
+- **Strengths** — Categories where you consistently perform well
+- **Weaknesses** — Categories requiring additional focus
+- **Trends** — Performance patterns over time
+- **Risk Areas** — Subjects with backlogs or low grades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-<<<<<<< HEAD
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 Dynamic GPA Planner
 
-## Learn More
+**Input:**
+- Target SGPA for upcoming semester
+- Subject list with credits
+- Confidence level for each subject (Strong/Average/Weak)
 
-To learn more about Next.js, take a look at the following resources:
-=======
-Firebase is scaffolded and ready for these upcoming features:
+**Processing:**
+1. Calculate total credits for the semester
+2. Compute required grade points to achieve target SGPA
+3. Distribute grade points across subjects based on confidence
+4. Generate multiple grade distribution strategies
+5. Calculate feasibility score for each strategy
 
-- 🔐 Google Sign-In via Firebase Authentication
-- 💾 Save semester-wise GPA history to Firestore
-- 📊 CGPA trend charts over semesters
-- 👤 Personal student dashboard
+**Output:**
+- Required grades for each subject
+- Multiple optimization strategies
+- Feasibility analysis
+- Difficulty ranking
 
-> The calculator currently works **fully offline** — Firebase is optional and doesn't affect core functionality.
->>>>>>> 5b59ad03eab0fd57b4a99dd9fde5d350ffdd735c
+**Note:** All calculations are deterministic. No AI is involved in GPA planning to ensure mathematical accuracy.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-<<<<<<< HEAD
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤖 AI Integration
 
-## Deploy on Vercel
-=======
-## 🚀 Getting Started
+Gemini AI is used for:
 
-No build tools needed — just open in browser.
+- ✅ **Academic Explanations** — Explain complex concepts in simple terms
+- ✅ **Personalized Study Advice** — Generate tailored study plans
+- ✅ **GPA Strategy Interpretation** — Explain optimization results
+- ✅ **AI Academic Coach** — Provide motivational guidance
+
+Gemini AI is NOT used for:
+
+- ❌ **SGPA Calculations** — Pure mathematical computation
+- ❌ **CGPA Calculations** — Deterministic aggregation
+- ❌ **Grade Optimization** — Algorithm-based planning
+
+This separation ensures accuracy in core calculations while leveraging AI for interpretation and guidance.
+
+---
+
+## �️ Tech Stack
+
+### Frontend
+- **Next.js 16.2** — React framework with App Router
+- **TypeScript 5.6** — Type-safe JavaScript
+- **Tailwind CSS** — Utility-first styling
+- **Framer Motion** — Animation library
+- **shadcn/ui** — Reusable component library
+
+### Backend
+- **Firebase Authentication** — Google OAuth integration
+- **Firestore** — NoSQL cloud database
+- **Firebase Storage** — File storage for ERP uploads
+
+### AI
+- **Gemini 2.5 Flash** — Google's AI model for insights
+
+### Deployment
+- **Vercel** — Edge deployment platform
+
+---
+
+## 📂 Folder Structure
+
+```
+src
+├── app/                    # Next.js App Router pages
+│   ├── (app)/             # Application routes
+│   │   ├── dashboard/     # Dashboard page
+│   │   ├── sgpa/          # SGPA calculator
+│   │   ├── cgpa/          # CGPA calculator
+│   │   ├── predictor/     # GPA planner
+│   │   ├── insights/      # AI insights
+│   │   └── profile/       # User profile
+│   ├── about/             # Marketing/about page
+│   └── api/               # API routes
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   ├── navbar.tsx        # Navigation bar
+│   ├── footer.tsx        # Footer component
+│   └── ...               # Other components
+├── lib/                  # Utility libraries
+│   ├── cgpa.ts          # CGPA calculation logic
+│   ├── grade-mapping.ts # Grade to points conversion
+│   └── firebase.ts      # Firebase configuration
+├── services/             # External service integrations
+│   └── prompt-builder.ts # AI prompt construction
+├── hooks/                # Custom React hooks
+├── providers/            # Context providers
+├── types/                # TypeScript type definitions
+└── utils/                # Helper functions
+```
+
+---
+
+## 🚀 Local Development
+
+### Prerequisites
+- Node.js 18+ 
+- Firebase Project
+- Gemini API Key
+
+### Installation
 
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/harshwardhan1507/SRM-cgpa-calculator.git
 
-# Navigate into the project
+# Navigate to project directory
 cd SRM-cgpa-calculator
 
-# Open directly in browser
-open index.html
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-Or just visit the **[Live Demo ↗](https://srm-cgpa-calculator-by-haruto.vercel.app/)** directly.
->>>>>>> 5b59ad03eab0fd57b4a99dd9fde5d350ffdd735c
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Environment Variables
 
-<<<<<<< HEAD
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
+Create a `.env.local` file in the root directory:
+
+```env
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+### Firebase Setup
+
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com/)
+2. Enable Authentication (Google Sign-In)
+3. Create Firestore Database
+4. Enable Storage (for ERP uploads)
+5. Copy configuration values to `.env.local`
+
+### Gemini AI Setup
+
+1. Get API key from [AI Studio](https://aistudio.google.com/)
+2. Add to `.env.local` as `GEMINI_API_KEY`
+
+---
+
 ## 🗺️ Roadmap
 
-- [x] Semester GPA calculation
-- [x] Cumulative CGPA calculation
-- [x] Firebase project setup
-- [ ] Google Login via Firebase Auth
-- [ ] Save & load semester data from Firestore
-- [ ] CGPA trend visualization (chart)
-- [ ] CGPA to percentage converter
-- [ ] Improved mobile UX
+### Planned Features
+- [ ] **Curriculum Engine** — Track degree completion and remaining credits
+- [ ] **Semester Comparison** — Compare performance across different semesters
+- [ ] **Academic Reports** — Generate PDF reports of academic performance
+- [ ] **Export PDF** — Download semester data as PDF
+- [ ] **Study Planner** — AI-powered study schedule generator
+- [ ] **Attendance Analytics** — Track attendance and correlate with grades
+- [ ] **AI Semester Forecasting** — Predict future semester performance
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome!
+Contributions are welcome! Here's how you can help:
 
-```bash
-# Fork → clone → create branch → commit → push → open PR
-git checkout -b feature/your-feature-name
-```
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m "Add your feature"
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. **Open a Pull Request**
+
+Please ensure your code follows the project's coding standards and includes appropriate tests.
 
 ---
 
-## ⚠️ Disclaimer
+## 👨‍💻 Developer
 
-This calculator follows commonly used SRM grading patterns. For official academic purposes, always refer to **SRM University's academic regulations**.
+**Harsh Wardhan**  
+Full Stack Developer
 
----
-
-## 👨‍💻 Author
-
-**Harsh Wardhan**
-- 🌐 [Portfolio](https://harshwardhanportfolio.vercel.app/)
+- 🌐 [Portfolio](https://harshwardhanportfolio.vercel.app)
 - 💼 [LinkedIn](https://www.linkedin.com/in/harsh-wardhan-singh-cse/)
 - 🐙 [GitHub](https://github.com/harshwardhan1507)
+- 📧 [Email](mailto:harshwardhansingh1507@gmail.com)
 
-If this helped you, drop a ⭐ on the repo — it means a lot!
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -235,7 +364,6 @@ If this helped you, drop a ⭐ on the repo — it means a lot!
 
 Built with 💚 for SRM students · © 2026 Harsh Wardhan
 
-![](https://komarev.com/ghpvc/?username=harshwardhan1507&color=3fb950&style=flat-square&label=REPO+VIEWS)
+[⭐ Star this repo](https://github.com/harshwardhan1507/SRM-cgpa-calculator) if it helped you!
 
 </div>
->>>>>>> 5b59ad03eab0fd57b4a99dd9fde5d350ffdd735c

@@ -15,10 +15,10 @@ interface CommandItem {
 
 const COMMANDS: CommandItem[] = [
   { name: 'Dashboard Home', category: 'Navigation', route: '/', icon: Home, description: 'View your CGPA overview and semesters breakdown' },
-  { name: 'Add Semester', category: 'Actions', route: '/semester/new', icon: PlusIcon, description: 'Enter term grades or upload copy-pasted tables' },
-  { name: 'Upload ERP Result', category: 'Actions', route: '/semester/new?action=upload', icon: Upload, description: 'Directly upload and parse an ERP screenshot' },
+  { name: 'Add Semester', category: 'Actions', route: '/sgpa', icon: PlusIcon, description: 'Enter term grades or upload copy-pasted tables' },
+  { name: 'Upload ERP Result', category: 'Actions', route: '/sgpa?action=upload', icon: Upload, description: 'Directly upload and parse an ERP screenshot' },
   { name: 'CGPA & Analytics', category: 'Navigation', route: '/cgpa', icon: Flame, description: 'Simulate cumulative CGPA across multiple mock terms' },
-  { name: 'Grade Predictor', category: 'Navigation', route: '/predictor', icon: TrendingUp, description: 'Predict future outcomes based on internal marks' },
+  { name: 'GPA Planner', category: 'Navigation', route: '/predictor', icon: TrendingUp, description: 'Map target grades and get AI-powered academic coaching' },
   { name: 'Student Profile', category: 'Navigation', route: '/profile', icon: User, description: 'Update registration number and academic year' },
   { name: 'About Grading', category: 'Navigation', route: '/grading', icon: BookOpen, description: 'SRM academic grading guidelines and GPA conversion scale' }
 ];

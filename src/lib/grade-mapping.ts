@@ -24,8 +24,9 @@ export function getGradeLetter(points: number, hasBack = false): string {
   return POINT_GRADES[points] || 'F';
 }
 
-export function getGradeFromMarks(marks: number, hasBack = false): number {
-  if (hasBack || marks < 40) return 0;
+export function getGradeFromMarks(marks: number, hasBack = false, isLab = false): number {
+  const minPassMarks = isLab ? 50 : 40;
+  if (hasBack || marks < minPassMarks) return 0;
   if (marks >= 90) return 10;
   if (marks >= 80) return 9;
   if (marks >= 70) return 8;
@@ -35,8 +36,8 @@ export function getGradeFromMarks(marks: number, hasBack = false): number {
   return 0;
 }
 
-export function getGradeLetterFromMarks(marks: number, hasBack = false): string {
-  const points = getGradeFromMarks(marks, hasBack);
+export function getGradeLetterFromMarks(marks: number, hasBack = false, isLab = false): string {
+  const points = getGradeFromMarks(marks, hasBack, isLab);
   return getGradeLetter(points, hasBack);
 }
 
