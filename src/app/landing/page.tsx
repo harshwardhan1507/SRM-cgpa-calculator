@@ -29,7 +29,7 @@ export default function MarketingPage() {
           </div>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/dashboard" className="w-full sm:w-auto">
+            <Link href="/" className="w-full sm:w-auto">
               <Button size="xl" className="w-full">
                 Launch Dashboard
                 <ArrowRight className="ml-2 w-4 h-4" />
@@ -144,7 +144,7 @@ export default function MarketingPage() {
           <p className="text-muted-foreground text-lg">
             Join SRM students already using the suite to track their progress.
           </p>
-          <Link href="/dashboard" className="inline-block">
+          <Link href="/" className="inline-block">
             <Button size="xl" className="text-lg px-8 py-6">
               Get Started Free
               <ArrowRight className="ml-2 w-5 h-5" />
