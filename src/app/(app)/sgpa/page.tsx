@@ -1013,7 +1013,7 @@ function NewSemesterForm() {
   );
 }
 
-export default function NewSemesterPage() {
+export default function SGPAPage() {
   return (
     <Suspense fallback={
       <motion.main 
