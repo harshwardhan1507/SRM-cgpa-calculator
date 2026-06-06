@@ -73,7 +73,7 @@ export default function Footer() {
       className="bg-black text-[#FAFAFA] border-t border-[#1A1A1A] w-full mt-auto"
     >
       {/* Developer Spotlight */}
-      <div className="max-w-[1440px] mx-auto px-6 pt-16 pb-12 border-b border-[#1A1A1A]">
+      <div className="hidden md:block max-w-[1440px] mx-auto px-6 pt-16 pb-12 border-b border-[#1A1A1A]">
         <div className="bg-[#090909] border border-border rounded-2xl p-6 sm:p-8 lg:p-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-16">
             <div className="flex flex-col justify-between gap-10">
@@ -226,7 +226,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           
           {/* Section 1: Brand */}
-          <div className="space-y-5">
+          <div className="space-y-5 text-center md:text-left flex flex-col items-center md:items-start">
             <Link href="/" className="flex items-center gap-2.5 group">
               <Logo size="sm" />
               <span className="font-sans text-sm font-semibold tracking-tight text-white transition-colors group-hover:text-zinc-300">
@@ -236,7 +236,7 @@ export default function Footer() {
             <p className="text-xs text-zinc-500 leading-relaxed max-w-[280px] font-sans">
               Academic performance toolkit built for SRM students. Track SGPA, CGPA, academic progress, and import ERP results effortlessly.
             </p>
-            <div className="space-y-2.5 pt-2">
+            <div className="space-y-2.5 pt-2 flex flex-col items-center md:items-start">
               <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
                 Developed By
               </div>
@@ -248,7 +248,7 @@ export default function Footer() {
               >
                 {developer.name}
               </a>
-              <div className="flex gap-4 pt-1 text-zinc-600">
+              <div className="flex gap-4 pt-1 text-zinc-600 justify-center md:justify-start">
                 <a 
                   href={developer.github} 
                   target="_blank" 
@@ -272,7 +272,7 @@ export default function Footer() {
           </div>
 
           {/* Section 2: Product */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
               Product
             </div>
@@ -306,7 +306,7 @@ export default function Footer() {
           </div>
 
           {/* Section 3: Resources */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
               Resources
             </div>
@@ -346,18 +346,18 @@ export default function Footer() {
           </div>
 
           {/* Section 4: Platform */}
-          <div className="space-y-5">
+          <div className="space-y-5 text-center md:text-left flex flex-col items-center md:items-start">
             <div className="text-[10px] font-mono text-zinc-600 uppercase tracking-wider">
               Platform Status
             </div>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 font-sans">
+            <div className="space-y-3 flex flex-col items-center md:items-start w-full">
+              <div className="flex items-center justify-center md:justify-start gap-2 font-sans">
                 <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-zinc-200 animate-pulse' : 'bg-zinc-600'}`}></span>
                 <span className="text-xs font-semibold text-white">
                   {isOnline ? 'Synced' : 'Offline Mode'}
                 </span>
               </div>
-              <ul className="space-y-2 font-mono text-[10px] text-zinc-600">
+              <ul className="space-y-2 font-mono text-[10px] text-zinc-600 w-full max-w-[200px]">
                 <li className="flex justify-between border-b border-zinc-900 pb-1">
                   <span>PWA Support</span>
                   <span className="text-zinc-400">ENABLED</span>
@@ -379,20 +379,20 @@ export default function Footer() {
 
       {/* Bottom Bar Separator & Info */}
       <div className="border-t border-[#1A1A1A]">
-        <div className="max-w-[1440px] mx-auto px-6 py-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5 text-[10px] font-mono text-zinc-600">
-          <div className="space-y-2">
+        <div className="max-w-[1440px] mx-auto px-6 py-6 flex flex-col lg:flex-row justify-between items-center lg:items-center gap-5 text-[10px] font-mono text-zinc-600 text-center lg:text-left">
+          <div className="space-y-2 flex flex-col items-center lg:items-start">
             <div className="text-zinc-500">
               Designed and Developed by{' '}
               <a
                 href={developer.portfolio}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-zinc-300 hover:text-white transition-colors"
+                className="text-zinc-300 hover:text-white transition-colors animate-pulse"
               >
                 {developer.name}
               </a>
             </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-2">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center lg:justify-start">
               <a href={`mailto:${developer.email}`} className="hover:text-white transition-colors">
                 {developer.email}
               </a>
@@ -407,9 +407,9 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          <div className="flex items-center gap-1 text-zinc-500">
+          <div className="flex items-center gap-1 text-zinc-500 justify-center">
             <span>&copy; 2026 SRM Academic Suite. Built for SRM students by {developer.name}.</span>
-            <ArrowUpRight className="w-3 h-3 text-zinc-600" />
+            <ArrowUpRight className="w-3 h-3 text-zinc-600 animate-pulse" />
           </div>
         </div>
       </div>

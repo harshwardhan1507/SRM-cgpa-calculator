@@ -1,1 +1,8 @@
-<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="12" y="12" width="488" height="488" rx="96" fill="#0A0A0A" stroke="#1A1A1A" stroke-width="24"/>
+  <line x1="12" y1="256" x2="500" y2="256" stroke="#1A1A1A" stroke-width="24"/>
+  <line x1="256" y1="12" x2="256" y2="256" stroke="#1A1A1A" stroke-width="24"/>
+  <text x="134" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="150" font-weight="bold" fill="#FAFAFA" text-anchor="middle">S</text>
+  <text x="378" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="150" font-weight="bold" fill="#FAFAFA" text-anchor="middle">A</text>
+  <text x="256" y="415" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-size="120" font-weight="bold" fill="#FAFAFA" text-anchor="middle">9.25</text>
+</svg>

@@ -98,7 +98,7 @@ export default function ProfilePage() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="flex-grow pt-[80px] pb-24 max-w-[800px] mx-auto px-6 w-full flex flex-col gap-8"
+        className="flex-grow pt-[80px] pb-24 max-w-[800px] mx-auto px-4 sm:px-6 w-full flex flex-col gap-8"
       >
         {/* Navigation back link */}
         <div className="pt-6">
@@ -116,6 +116,30 @@ export default function ProfilePage() {
           <p className="text-xs text-muted-foreground">
             Manage your enrollment information, registration credentials, and semester status.
           </p>
+        </div>
+
+        {/* Vertical Profile Preview Card */}
+        <div className="bg-[#090909] border border-border rounded-2xl p-6 flex flex-col items-center text-center gap-4">
+          {user.photoURL ? (
+            <img 
+              src={user.photoURL} 
+              alt={name || 'Student'} 
+              className="w-20 h-20 rounded-full border border-border shadow-lg"
+            />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-neutral-900 border border-border flex items-center justify-center text-2xl font-bold text-white uppercase shadow-lg">
+              {name ? name.substring(0, 2) : 'US'}
+            </div>
+          )}
+          <div className="space-y-1">
+            <h2 className="text-xl font-bold text-white leading-none">{name || 'Student Name'}</h2>
+            <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest mt-1">{regNum || 'Registration Number'}</p>
+          </div>
+          <div className="flex flex-col gap-1.5 text-xs text-muted-foreground font-mono border-t border-[#1A1A1A] pt-4 w-full max-w-[280px]">
+            <span>Program: <strong className="text-white">{program}</strong></span>
+            <span>Branch: <strong className="text-white">{branch.includes('Computer Science') ? 'CSE' : branch}</strong></span>
+            <span>Semester: <strong className="text-white">Semester {semester}</strong></span>
+          </div>
         </div>
 
         {/* Profile Card Form */}
@@ -189,7 +213,7 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Current Year */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-white flex items-center gap-1.5">
@@ -228,7 +252,8 @@ export default function ProfilePage() {
               <Button
                 type="submit"
                 disabled={saveLoading}
-                className="bg-white hover:bg-neutral-200 text-black font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 active:scale-95 flex items-center gap-2 cursor-pointer text-xs"
+                size="xl"
+                className="w-full flex items-center justify-center gap-2"
               >
                 {saveLoading ? (
                   <>

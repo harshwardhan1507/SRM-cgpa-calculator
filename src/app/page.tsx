@@ -8,7 +8,7 @@ import { getGradeLetter } from '@/lib/grade-mapping';
 import { Semester } from '@/types/semester';
 import { Subject } from '@/types/subject';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Onboarding from '@/components/onboarding';
 import { AnimatedCounter } from '@/components/animated-counter';
 import {
@@ -26,18 +26,38 @@ import {
   BarChart3,
   Calendar,
   Clock,
-  BookOpen
+  BookOpen,
+  Upload
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import dynamic from 'next/dynamic';
 import { useToast } from '@/components/toast';
 import { ConfirmationModal } from '@/components/confirmation-modal';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const TrendChart = dynamic(() => import('@/components/trend-chart'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-48 w-full flex items-center justify-center text-xs text-muted-foreground animate-pulse font-mono">
+      Loading trend analysis...
+    </div>
+  ),
+});
 
 export default function DashboardPage() {
   const { semesters, setSemesters, user, profile, loading } = useFirebase();
   const [expandedSemNum, setExpandedSemNum] = useState<number | null>(null);
   const { showToast } = useToast();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => setIsMobile(window.innerWidth < 768);
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
 
   const [confirmState, setConfirmState] = useState<{
     isOpen: boolean;
@@ -168,7 +188,6 @@ export default function DashboardPage() {
       }
     );
   };
-
   return (
     <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
       <Navbar />
@@ -177,13 +196,13 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full"
+        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-4 sm:px-6 w-full"
       >
         {/* Hero Section */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 py-8">
-          <div className="lg:col-span-7">
+        <section className="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-6 py-6 sm:py-8">
+          <div className="order-2 lg:order-1 lg:col-span-7">
             {profile ? (
-              <div className="bg-[#090909] border border-border p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between">
+              <div className="bg-[#090909] border border-border p-6 sm:p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between min-h-[120px]">
                 <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
@@ -197,7 +216,7 @@ export default function DashboardPage() {
                     </Link>
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-white tracking-tight leading-none">{profile.name}</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-none">{profile.name}</h2>
                     <p className="text-xs text-muted-foreground font-mono mt-1.5 uppercase tracking-widest">{profile.registrationNumber}</p>
                   </div>
                 </div>
@@ -218,29 +237,29 @@ export default function DashboardPage() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col justify-center space-y-6 h-full">
+              <div className="flex flex-col justify-center space-y-6 h-full min-h-[120px]">
                 <div className="space-y-3">
                   <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest px-3 py-1 border border-border rounded-lg inline-block">
                     Academic Dashboard v2.0
                   </span>
-                  <h1 className="text-5xl font-bold tracking-tight text-white leading-tight">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
                     SRM Academic Suite
                   </h1>
-                  <p className="text-lg text-muted-foreground font-medium">
+                  <p className="text-sm sm:text-base text-muted-foreground font-medium">
                     Calculate. Predict. Track.
                   </p>
                 </div>
-                <p className="text-muted-foreground leading-relaxed max-w-lg">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
                   Academic performance toolkit built specifically for SRM students. A precision instrument for managing credits, predicting grades, and auditing degree progress with mathematical certainty.
                 </p>
                 <div className="flex gap-4 pt-2">
-                  <Link href="/semester/new">
-                    <Button className="bg-white hover:bg-neutral-200 text-black px-6 py-5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-95">
+                  <Link href="/semester/new" className="w-full sm:w-auto">
+                    <Button size="xl" className="w-full">
                       Get Started
                     </Button>
                   </Link>
-                  <Link href="/grading">
-                    <Button variant="outline" className="bg-transparent border border-border text-white hover:bg-neutral-900 px-6 py-5 rounded-xl text-sm font-medium">
+                  <Link href="/grading" className="w-full sm:w-auto">
+                    <Button variant="outline" size="xl" className="w-full">
                       Regulations
                     </Button>
                   </Link>
@@ -254,28 +273,28 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="lg:col-span-5"
+            className="order-1 lg:order-2 lg:col-span-5"
           >
-            <div className="bg-[#090909] border border-border p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between">
+            <div className="bg-[#090909] border border-border p-6 sm:p-8 rounded-2xl relative overflow-hidden h-full flex flex-col justify-between min-h-[120px]">
               <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
               <div>
                 <div className="font-mono text-xs text-muted-foreground tracking-wider mb-2">CURRENT CGPA</div>
-                <div className="text-6xl font-bold text-white tracking-tighter">
+                <div className="text-5xl sm:text-6xl font-bold text-white tracking-tighter">
                   <AnimatedCounter value={overallCgpa} />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border mt-8">
                 <div>
-                  <div className="font-mono text-[10px] text-muted-foreground uppercase">Credits</div>
-                  <div className="text-xl font-semibold text-white mt-1">{totalCredits}</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Credits</div>
+                  <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalCredits}</div>
                 </div>
                 <div>
-                  <div className="font-mono text-[10px] text-muted-foreground uppercase">Semesters</div>
-                  <div className="text-xl font-semibold text-white mt-1">{totalSemestersCount}</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Semesters</div>
+                  <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalSemestersCount}</div>
                 </div>
                 <div>
-                  <div className="font-mono text-[10px] text-muted-foreground uppercase">Total Points</div>
-                  <div className="text-xl font-semibold text-white mt-1">{totalPoints.toFixed(2)}</div>
+                  <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Total Points</div>
+                  <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalPoints.toFixed(2)}</div>
                 </div>
               </div>
             </div>
@@ -283,60 +302,66 @@ export default function DashboardPage() {
         </section>
 
         {/* Quick Actions */}
-        <section className="py-8">
-          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+        <section className="py-6 sm:py-8">
+          <h2 className="text-lg sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
             <LayoutGrid className="w-5 h-5 text-white" />
             Quick Actions
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link href="/semester/new" className="block">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <Link href="/semester/new" className="block w-full">
               <motion.div 
-                whileHover={{ y: -4, borderColor: '#FAFAFA' }}
+                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
                 transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group h-full cursor-pointer"
+                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
               >
-                <Calculator className="w-6 h-6 text-white mb-4" />
-                <h3 className="text-lg font-medium text-white mb-1">SGPA Calculator</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">Compute term-specific performance based on internal grades.</p>
+                <Calculator className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+                <div>
+                  <h3 className="text-sm sm:text-lg font-medium text-white">SGPA Calculator</h3>
+                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Compute term-specific performance based on internal grades.</p>
+                </div>
               </motion.div>
             </Link>
-            <Link href="/cgpa" className="block">
+            <Link href="/cgpa" className="block w-full">
               <motion.div 
-                whileHover={{ y: -4, borderColor: '#FAFAFA' }}
+                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
                 transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group h-full cursor-pointer"
+                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
               >
-                <Flame className="w-6 h-6 text-white mb-4" />
-                <h3 className="text-lg font-medium text-white mb-1">CGPA Calculator</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">Aggregate multiple semesters to track your overall standing.</p>
+                <Flame className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+                <div>
+                  <h3 className="text-sm sm:text-lg font-medium text-white">CGPA Calculator</h3>
+                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Aggregate multiple semesters to track your overall standing.</p>
+                </div>
               </motion.div>
             </Link>
-            <Link href="/predictor" className="block">
+            <Link href="/predictor" className="block w-full">
               <motion.div 
-                whileHover={{ y: -4, borderColor: '#FAFAFA' }}
+                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
                 transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group h-full cursor-pointer"
+                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
               >
-                <TrendingUp className="w-6 h-6 text-white mb-4" />
-                <h3 className="text-lg font-medium text-white mb-1">Grade Predictor</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">Simulate final results based on expected marks.</p>
+                <TrendingUp className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+                <div>
+                  <h3 className="text-sm sm:text-lg font-medium text-white">Grade Predictor</h3>
+                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Simulate final results based on expected marks.</p>
+                </div>
               </motion.div>
             </Link>
-            <Link href="/grading" className="block">
+            <Link href="/semester/new?import=true" className="block w-full">
               <motion.div 
-                whileHover={{ y: -4, borderColor: '#FAFAFA' }}
+                whileHover={isMobile ? undefined : { y: -4, borderColor: '#FAFAFA' }}
                 transition={{ duration: 0.2 }}
-                className="bg-[#090909] border border-border p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group h-full cursor-pointer"
+                className="bg-[#090909] border border-border p-4 sm:p-6 rounded-xl hover:bg-neutral-900 transition-all duration-200 group flex sm:flex-col items-center sm:items-start gap-4 sm:gap-0 min-h-[56px] sm:min-h-[120px] cursor-pointer"
               >
-                <Info className="w-6 h-6 text-white mb-4" />
-                <h3 className="text-lg font-medium text-white mb-1">About Grading</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">Official SRM grading system schemas and conversion tables.</p>
+                <Upload className="w-6 h-6 text-white sm:mb-4 shrink-0" />
+                <div>
+                  <h3 className="text-sm sm:text-lg font-medium text-white">Upload ERP Result</h3>
+                  <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed mt-1">Import academic reports dynamically from portal screenshots.</p>
+                </div>
               </motion.div>
             </Link>
           </div>
-        </section>
-
-        {/* Semester History */}
+        </section>        {/* Semester History */}
         <section className="py-8">
           <div className="flex justify-between items-end mb-6">
             <div>
@@ -367,7 +392,7 @@ export default function DashboardPage() {
                   <motion.div
                     key={semNum}
                     layout
-                    whileHover={{ 
+                    whileHover={isMobile ? undefined : { 
                       scale: 1.015, 
                       y: -4, 
                       borderColor: '#FAFAFA',
@@ -376,7 +401,7 @@ export default function DashboardPage() {
                     }}
                     transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                     onClick={() => setExpandedSemNum(isExpanded ? null : semNum)}
-                    className={`bg-[#090909] border border-border p-5 rounded-xl flex flex-col border-l-4 cursor-pointer hover:bg-neutral-900 transition-colors ${hasBacks ? 'border-l-red-500' : 'border-l-white'
+                    className={`bg-[#090909] border border-border p-5 rounded-xl flex flex-col border-l-4 cursor-pointer hover:bg-neutral-900 transition-colors min-h-[120px] justify-center ${hasBacks ? 'border-l-red-500' : 'border-l-white'
                       }`}
                   >
                     <div className="flex items-center justify-between w-full">
@@ -510,7 +535,7 @@ export default function DashboardPage() {
                 return (
                   <motion.div
                     key={semNum}
-                    whileHover={{ 
+                    whileHover={isMobile ? undefined : { 
                       scale: 1.015, 
                       y: -4, 
                       borderColor: '#FAFAFA',
@@ -522,18 +547,18 @@ export default function DashboardPage() {
                       // Navigate to create new semester
                       window.location.href = `/semester/new?sem=${semNum}`;
                     }}
-                    className="bg-black border border-border border-dashed p-5 rounded-xl flex items-center justify-between cursor-pointer hover:bg-neutral-950 transition-colors opacity-60 hover:opacity-100"
+                    className="bg-black border border-border border-dashed p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer hover:bg-neutral-950 transition-colors opacity-60 hover:opacity-100 min-h-[120px]"
                   >
-                    <div className="flex gap-6 items-center">
-                      <div className="border border-border border-dashed w-12 h-12 flex items-center justify-center rounded-lg">
+                    <div className="flex gap-6 items-center w-full sm:w-auto">
+                      <div className="border border-border border-dashed w-12 h-12 flex items-center justify-center rounded-lg shrink-0">
                         <span className="font-mono text-sm text-muted-foreground">0{semNum}</span>
                       </div>
-                      <div>
+                      <div className="text-left">
                         <h4 className="font-medium text-muted-foreground text-base">Semester {semNum}</h4>
                         <p className="font-mono text-[10px] text-muted-foreground uppercase mt-0.5">Empty</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-white">
+                    <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-white justify-end w-full sm:w-auto mt-2 sm:mt-0">
                       Click to initialize
                       <Plus className="w-4 h-4" />
                     </div>
@@ -557,37 +582,7 @@ export default function DashboardPage() {
 
             <div className="h-48 w-full mt-6 flex items-center justify-center">
               {semesters.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} margin={{ left: -20, right: 10, top: 10, bottom: 0 }}>
-                    <XAxis
-                      dataKey="name"
-                      stroke="#71717A"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#71717A"
-                      fontSize={11}
-                      domain={[0, 10]}
-                      tickLine={false}
-                      axisLine={false}
-                      ticks={[0, 2, 4, 6, 8, 10]}
-                    />
-                    <Tooltip
-                      contentStyle={{ backgroundColor: '#090909', borderColor: '#1A1A1A', color: '#FAFAFA', borderRadius: '8px' }}
-                      labelStyle={{ color: '#71717A', fontSize: 11, fontWeight: 'bold' }}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="SGPA"
-                      stroke="#FAFAFA"
-                      strokeWidth={2}
-                      activeDot={{ r: 6, fill: '#FFFFFF', stroke: '#000000', strokeWidth: 2 }}
-                      dot={{ r: 4, fill: '#090909', stroke: '#FAFAFA', strokeWidth: 2 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+                <TrendChart data={chartData} />
               ) : (
                 <div className="text-center text-xs text-muted-foreground flex flex-col items-center gap-2">
                   <TrendingDown className="w-8 h-8 opacity-20" />

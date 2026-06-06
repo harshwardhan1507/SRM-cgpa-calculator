@@ -53,10 +53,10 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Add Semester', href: '/semester/new' },
-    { name: 'CGPA', href: '/cgpa' },
-    { name: 'Predictor', href: '/predictor' },
-    { name: 'Grading', href: '/grading' },
+    { name: 'SGPA Calculator', href: '/semester/new' },
+    { name: 'CGPA Calculator', href: '/cgpa' },
+    { name: 'Grade Predictor', href: '/predictor' },
+    { name: 'About Grading', href: '/grading' },
   ];
 
   const isActive = (href: string) => {
@@ -363,7 +363,7 @@ export default function Navbar() {
           }`}
         >
           <Calculator className="w-4 h-4" />
-          <span className="font-mono text-[8px] uppercase tracking-wider">GPA</span>
+          <span className="font-mono text-[8px] uppercase tracking-wider">SGPA</span>
         </Link>
         <Link
           href="/cgpa"

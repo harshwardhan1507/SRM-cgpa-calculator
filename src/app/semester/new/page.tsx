@@ -395,19 +395,19 @@ function NewSemesterForm() {
     <div className="min-h-screen bg-black text-[#FAFAFA] flex flex-col font-sans">
       <Navbar />
 
-      <main className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full flex flex-col gap-12">
+      <main className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-4 sm:px-6 w-full flex flex-col gap-8 sm:gap-12">
         {/* Banner Title */}
         <section className="flex flex-col gap-2 mt-8">
           <span className="font-mono text-xs text-muted-foreground uppercase tracking-widest">
             Intelligence Layer
           </span>
-          <h1 className="text-4xl font-bold tracking-tight text-white leading-none">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-none">
             {editingSemNum ? `Edit Semester ${editingSemNum}` : 'Import ERP Results'}
           </h1>
         </section>
 
         {/* Import Zone Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {/* Option A: OCR Screenshot */}
           <motion.div
             whileHover={{ y: -3, borderColor: '#FAFAFA' }}
@@ -415,7 +415,7 @@ function NewSemesterForm() {
             animate={uploadSuccess ? { scale: [1, 1.02, 1] } : {}}
             transition={{ duration: 0.3 }}
             onClick={() => fileInputRef.current?.click()}
-            className="group relative bg-[#090909] border border-border p-8 hover:border-neutral-800 transition-all duration-200 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden rounded-2xl min-h-[200px]"
+            className="group relative bg-[#090909] border border-border p-6 hover:border-neutral-800 transition-all duration-200 flex flex-col items-center justify-center gap-4 cursor-pointer overflow-hidden rounded-2xl min-h-[180px]"
           >
             <input
               type="file"
@@ -433,25 +433,30 @@ function NewSemesterForm() {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center text-center gap-4">
+              <div className="flex flex-col items-center text-center gap-4 min-h-[180px] justify-center">
                 <div className="w-12 h-12 flex items-center justify-center bg-neutral-900 rounded-xl border border-border group-hover:border-white transition-colors">
                   <Upload className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-white">{uploadSuccess ? '✓ ERP Detected' : 'Upload ERP Screenshot'}</h3>
-                  <p className="text-xs text-muted-foreground mt-1 max-w-xs">
-                    Scan grades and credits from your AcademiA exam portal screenshot.
+                  <h3 className="text-base font-semibold text-white">{uploadSuccess ? '✓ ERP Detected' : 'Upload ERP Result or Take Photo'}</h3>
+                  <p className="text-xs text-muted-foreground mt-1 max-w-xs leading-relaxed">
+                    Scan grades and credits from your AcademiA exam portal by uploading a screenshot or taking a photo.
                   </p>
                 </div>
-                <span className="font-mono text-[10px] bg-neutral-900 border border-border px-3 py-1 rounded-lg text-white font-semibold">
-                  SELECT IMAGE
-                </span>
+                <div className="flex gap-2 pt-1">
+                  <span className="font-mono text-[9px] bg-neutral-900 border border-border px-3 py-1.5 rounded-lg text-white font-semibold flex items-center gap-1.5">
+                    <FileImage className="w-3.5 h-3.5" /> GALLERY
+                  </span>
+                  <span className="font-mono text-[9px] bg-neutral-900 border border-border px-3 py-1.5 rounded-lg text-white font-semibold flex items-center gap-1.5">
+                    <Upload className="w-3.5 h-3.5" /> TAKE PHOTO
+                  </span>
+                </div>
               </div>
             )}
           </motion.div>
 
           {/* Option B: Copy Paste Text */}
-          <div className="bg-[#090909] border border-border p-6 rounded-2xl flex flex-col justify-between min-h-[200px]">
+          <div className="bg-[#090909] border border-border p-6 rounded-2xl flex flex-col justify-between min-h-[180px] gap-4">
             <div className="flex flex-col gap-2 w-full">
               <h3 className="text-base font-semibold text-white flex items-center gap-2">
                 <Clipboard className="w-4 h-4 text-white" />
@@ -467,7 +472,8 @@ function NewSemesterForm() {
             <Button
               disabled={textLoading}
               onClick={handleProcessPastedText}
-              className="w-full mt-4 bg-white hover:bg-neutral-200 text-black py-3 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-2"
+              size="xl"
+              className="w-full flex items-center justify-center gap-2"
             >
               {textLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'PROCESS TEXT'}
             </Button>
@@ -484,8 +490,8 @@ function NewSemesterForm() {
             </div>
 
             <div className="flex flex-col border border-border bg-[#090909] rounded-2xl overflow-hidden">
-              {/* Table Header */}
-              <div className="grid grid-cols-12 px-5 py-3 border-b border-border bg-neutral-900/50 font-mono text-[10px] text-muted-foreground">
+              {/* Desktop View: Table Header */}
+              <div className="hidden md:grid grid-cols-12 px-5 py-3 border-b border-border bg-neutral-900/50 font-mono text-[10px] text-muted-foreground">
                 <div className="col-span-7">SUBJECT NAME</div>
                 <div className="col-span-2 text-center">CREDITS</div>
                 <div className="col-span-2 text-center">GRADE</div>
@@ -512,7 +518,7 @@ function NewSemesterForm() {
                   ))}
                 </div>
               ) : subjects.length === 0 ? (
-                <div className="p-8 text-center text-xs text-muted-foreground">
+                <div className="p-8 text-center text-xs text-muted-foreground leading-relaxed">
                   No subjects added. Upload a screenshot, paste ERP text, or add subjects manually below.
                 </div>
               ) : (
@@ -537,75 +543,150 @@ function NewSemesterForm() {
                         hidden: { opacity: 0, y: 10 },
                         show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 20 } }
                       }}
-                      className={`grid grid-cols-12 px-5 py-4 items-center transition-colors ${course.hasBack ? 'bg-red-950/5 hover:bg-red-950/10' : 'hover:bg-neutral-900/40'
-                        }`}
+                      className={`p-4 md:px-5 md:py-4 transition-colors ${course.hasBack ? 'bg-red-950/5 hover:bg-red-950/10' : 'hover:bg-neutral-900/40'}`}
                     >
-                      <div className="col-span-7 font-medium text-white text-xs sm:text-sm truncate pr-2 flex flex-col gap-1 text-left">
-                        <div className="flex items-center gap-2">
-                          <span className="truncate">{course.name}</span>
-                          {course.type === 'lab' && (
-                            <span className="bg-neutral-800 text-muted-foreground text-[9px] px-1.5 py-0.5 rounded font-mono">LAB</span>
+                      {/* Desktop Row: Grid layout */}
+                      <div className="hidden md:grid grid-cols-12 items-center">
+                        <div className="col-span-7 font-medium text-white text-xs sm:text-sm truncate pr-2 flex flex-col gap-1 text-left">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate">{course.name}</span>
+                            {course.type === 'lab' && (
+                              <span className="bg-neutral-800 text-muted-foreground text-[9px] px-1.5 py-0.5 rounded font-mono">LAB</span>
+                            )}
+                          </div>
+
+                          {(course.mst1 !== undefined || course.labInternal !== undefined) && (
+                            <div className="text-[10px] text-muted-foreground font-mono">
+                              {course.type === 'theory' ? (
+                                <span>
+                                  mst1: {course.mst1}/30 • mst2: {course.mst2}/30 • Assg: {course.assignment}/10 • EndSem: {course.endsem}/100
+                                  <span className="text-white font-medium ml-1">({(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100)</span>
+                                </span>
+                              ) : (
+                                <span>
+                                  Internal: {course.labInternal}/60 • External: {course.labExternal}/40
+                                  <span className="text-white font-medium ml-1">({(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100)</span>
+                                </span>
+                              )}
+                            </div>
                           )}
                         </div>
 
+                        {/* Credits Selector */}
+                        <div className="col-span-2 flex justify-center">
+                          <select
+                            value={course.credit}
+                            onChange={(e) => handleUpdateSubjectField(course.id, 'credit', parseInt(e.target.value))}
+                            className="bg-black border border-border text-white text-xs p-1.5 rounded-lg outline-none font-mono focus:border-white"
+                          >
+                            {[1, 2, 3, 4, 5].map(c => (
+                              <option key={c} value={c}>{c}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Grade Selector */}
+                        <div className="col-span-2 flex justify-center">
+                          <select
+                            value={course.grade}
+                            onChange={(e) => handleUpdateSubjectField(course.id, 'grade', parseInt(e.target.value))}
+                            className={`border text-xs p-1.5 rounded-lg outline-none font-mono focus:border-white ${course.hasBack
+                              ? 'bg-red-950/20 border-red-900 text-red-400'
+                              : 'bg-black border-border text-white'
+                              }`}
+                          >
+                            <option value={10}>S</option>
+                            <option value={9}>A</option>
+                            <option value={8}>B</option>
+                            <option value={7}>C</option>
+                            <option value={6}>D</option>
+                            <option value={5}>E</option>
+                            <option value={0}>F (Fail)</option>
+                          </select>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="col-span-1 text-right">
+                          <button
+                            onClick={() => handleDeleteSubject(course.id)}
+                            className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-colors cursor-pointer"
+                          >
+                            <Trash2 className="w-4.5 h-4.5" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Mobile Row: Card layout */}
+                      <div className="md:hidden flex flex-col gap-3">
+                        <div className="flex justify-between items-start">
+                          <div className="flex flex-col gap-1 text-left max-w-[85%]">
+                            <span className="font-semibold text-white text-sm break-words leading-tight">{course.name}</span>
+                            {course.type === 'lab' && (
+                              <span className="bg-neutral-800 text-muted-foreground text-[9px] px-1.5 py-0.5 rounded font-mono w-max">LAB</span>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => handleDeleteSubject(course.id)}
+                            className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-colors cursor-pointer shrink-0"
+                          >
+                            <Trash2 className="w-4.5 h-4.5" />
+                          </button>
+                        </div>
+
+                        {/* Marks details if detailed entry was used */}
                         {(course.mst1 !== undefined || course.labInternal !== undefined) && (
-                          <div className="text-[10px] text-muted-foreground font-mono">
+                          <div className="text-[10px] text-muted-foreground font-mono text-left bg-black/40 p-2 rounded-lg border border-border/30">
                             {course.type === 'theory' ? (
-                              <span>
-                                mst1: {course.mst1}/30 • mst2: {course.mst2}/30 • Assg: {course.assignment}/10 • EndSem: {course.endsem}/100
-                                <span className="text-white font-medium ml-1">({(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100)</span>
-                              </span>
+                              <div>
+                                <span>mst1: {course.mst1}/30 • mst2: {course.mst2}/30 • Assg: {course.assignment}/10 • EndSem: {course.endsem}/100</span>
+                                <div className="mt-1 text-white">Total: {(course.totalMarks ?? 0).toFixed(1)}/100</div>
+                              </div>
                             ) : (
-                              <span>
-                                Internal: {course.labInternal}/60 • External: {course.labExternal}/40
-                                <span className="text-white font-medium ml-1">({(course.totalMarks ?? (course.grade === 10 ? 95 : course.grade === 9 ? 85 : course.grade === 8 ? 75 : course.grade === 7 ? 65 : course.grade === 6 ? 55 : course.grade === 5 ? 45 : 35)).toFixed(1)}/100)</span>
-                              </span>
+                              <div>
+                                <span>Internal: {course.labInternal}/60 • External: {course.labExternal}/40</span>
+                                <div className="mt-1 text-white">Total: {(course.totalMarks ?? 0).toFixed(1)}/100</div>
+                              </div>
                             )}
                           </div>
                         )}
-                      </div>
 
-                      {/* Credits Selector */}
-                      <div className="col-span-2 flex justify-center">
-                        <select
-                          value={course.credit}
-                          onChange={(e) => handleUpdateSubjectField(course.id, 'credit', parseInt(e.target.value))}
-                          className="bg-black border border-border text-white text-xs p-1.5 rounded-lg outline-none font-mono focus:border-white"
-                        >
-                          {[1, 2, 3, 4, 5].map(c => (
-                            <option key={c} value={c}>{c}</option>
-                          ))}
-                        </select>
-                      </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="flex flex-col gap-1 text-left">
+                            <span className="font-mono text-[9px] text-muted-foreground uppercase">Credits</span>
+                            <select
+                              value={course.credit}
+                              onChange={(e) => handleUpdateSubjectField(course.id, 'credit', parseInt(e.target.value))}
+                              className="bg-black border border-border text-white text-xs p-2.5 rounded-lg outline-none font-mono focus:border-white w-full"
+                            >
+                              {[1, 2, 3, 4, 5].map(c => (
+                                <option key={c} value={c}>{c}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="flex flex-col gap-1 text-left">
+                            <span className="font-mono text-[9px] text-muted-foreground uppercase">Grade</span>
+                            <select
+                              value={course.grade}
+                              onChange={(e) => handleUpdateSubjectField(course.id, 'grade', parseInt(e.target.value))}
+                              className={`border text-xs p-2.5 rounded-lg outline-none font-mono focus:border-white w-full ${course.hasBack
+                                ? 'bg-red-950/20 border-red-900 text-red-400'
+                                : 'bg-black border-border text-white'
+                                }`}
+                            >
+                              <option value={10}>S</option>
+                              <option value={9}>A</option>
+                              <option value={8}>B</option>
+                              <option value={7}>C</option>
+                              <option value={6}>D</option>
+                              <option value={5}>E</option>
+                              <option value={0}>F</option>
+                            </select>
+                          </div>
+                        </div>
 
-                      {/* Grade Selector */}
-                      <div className="col-span-2 flex justify-center">
-                        <select
-                          value={course.grade}
-                          onChange={(e) => handleUpdateSubjectField(course.id, 'grade', parseInt(e.target.value))}
-                          className={`border text-xs p-1.5 rounded-lg outline-none font-mono focus:border-white ${course.hasBack
-                            ? 'bg-red-950/20 border-red-900 text-red-400'
-                            : 'bg-black border-border text-white'
-                            }`}
-                        >
-                          <option value={10}>S</option>
-                          <option value={9}>A</option>
-                          <option value={8}>B</option>
-                          <option value={7}>C</option>
-                          <option value={6}>D</option>
-                          <option value={5}>E</option>
-                          <option value={0}>F (Fail)</option>
-                        </select>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="col-span-1 text-right">
-                        <button
-                          onClick={() => handleDeleteSubject(course.id)}
-                          className="text-muted-foreground hover:text-red-400 p-1 hover:bg-neutral-900 rounded-lg transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-4.5 h-4.5" />
-                        </button>
+                        <div className="flex justify-between items-center text-[10px] font-mono text-muted-foreground border-t border-[#1A1A1A] pt-2 mt-1">
+                          <span>Grade Point: <strong className="text-white">{course.hasBack ? 0 : course.grade}</strong></span>
+                        </div>
                       </div>
                     </motion.div>
                   ))}
@@ -641,7 +722,8 @@ function NewSemesterForm() {
 
               <Button
                 onClick={handleSaveSemester}
-                className="w-full bg-white hover:bg-neutral-200 text-black py-4 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+                size="xl"
+                className="w-full flex items-center justify-center gap-2"
               >
                 <Save className="w-4 h-4" />
                 SAVE SEMESTER
@@ -864,7 +946,8 @@ function NewSemesterForm() {
               <div className="col-span-1 sm:col-span-2 md:col-span-2">
                 <Button
                   onClick={handleAddManualSubject}
-                  className="w-full bg-white hover:bg-neutral-200 text-black p-3.5 rounded-xl font-semibold text-xs transition-all duration-200 active:scale-95 flex items-center justify-center gap-1.5"
+                  size="xl"
+                  className="w-full flex items-center justify-center gap-1.5"
                 >
                   <Plus className="w-4 h-4" />
                   ADD SUBJECT

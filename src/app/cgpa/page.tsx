@@ -17,10 +17,19 @@ import {
   ToggleRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import dynamic from 'next/dynamic';
 import { useToast } from '@/components/toast';
 import { motion } from 'framer-motion';
 import { AnimatedCounter } from '@/components/animated-counter';
+
+const TrendChart = dynamic(() => import('@/components/trend-chart'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-56 w-full flex items-center justify-center text-xs text-muted-foreground animate-pulse font-mono">
+      Loading trend analysis...
+    </div>
+  ),
+});
 
 interface MockSemester {
   id: string;
@@ -36,6 +45,16 @@ export default function CGPAPage() {
   const [mockSemesters, setMockSemesters] = useState<MockSemester[]>([]);
   const [newSgpa, setNewSgpa] = useState<string>('9.00');
   const [newCredits, setNewCredits] = useState<string>('20');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => setIsMobile(window.innerWidth < 768);
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
 
   // Load existing semesters into simulation initially
   useEffect(() => {
@@ -137,7 +156,7 @@ export default function CGPAPage() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-6 w-full"
+        className="flex-grow pt-[80px] pb-24 max-w-[1440px] mx-auto px-4 sm:px-6 w-full"
       >
         {/* Hero: Current CGPA */}
         <section className="py-12 flex flex-col md:flex-row justify-between items-end border-b border-border">
@@ -180,38 +199,7 @@ export default function CGPAPage() {
               
               <div className="h-56 w-full mt-4 flex items-center justify-center">
                 {mockSemesters.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData} margin={{ left: -20, right: 10, top: 10, bottom: 0 }}>
-                      <CartesianGrid stroke="#1A1A1A" vertical={false} />
-                      <XAxis 
-                        dataKey="name" 
-                        stroke="#71717A" 
-                        fontSize={11}
-                        tickLine={false} 
-                        axisLine={false} 
-                      />
-                      <YAxis 
-                        stroke="#71717A" 
-                        fontSize={11}
-                        domain={[0, 10]}
-                        tickLine={false} 
-                        axisLine={false} 
-                        ticks={[0, 2, 4, 6, 8, 10]}
-                      />
-                      <Tooltip 
-                        contentStyle={{ backgroundColor: '#090909', borderColor: '#1A1A1A', color: '#FAFAFA', borderRadius: '8px' }}
-                        labelStyle={{ color: '#71717A', fontSize: 11, fontWeight: 'bold' }}
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="SGPA" 
-                        stroke="#FAFAFA" 
-                        strokeWidth={2}
-                        activeDot={{ r: 6, fill: '#FFFFFF', stroke: '#000000', strokeWidth: 2 }} 
-                        dot={{ r: 4, fill: '#090909', stroke: '#FAFAFA', strokeWidth: 2 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <TrendChart data={chartData} showGrid={true} />
                 ) : (
                   <div className="text-center text-xs text-muted-foreground flex flex-col items-center gap-2">
                     No semesters in simulation. Add real semesters or mock semesters below.
@@ -255,7 +243,8 @@ export default function CGPAPage() {
                 </div>
                 <Button 
                   onClick={handleAddMockSemester}
-                  className="bg-white hover:bg-neutral-200 text-black p-3.5 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+                  size="xl"
+                  className="w-full flex items-center justify-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add to simulation
@@ -335,7 +324,8 @@ export default function CGPAPage() {
 
               <Button 
                 variant="outline"
-                className="w-full mt-6 py-5 bg-transparent border border-border text-white hover:bg-neutral-900 text-xs rounded-xl flex items-center justify-center gap-2 cursor-pointer"
+                size="xl"
+                className="w-full mt-6 flex items-center justify-center gap-2"
                 onClick={() => showToast('Transcript download features are offline. Sync your cloud account to request official transcripts.', 'info')}
               >
                 <Download className="w-4 h-4" />
