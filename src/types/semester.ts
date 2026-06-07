@@ -6,5 +6,6 @@ export interface Semester {
   courses: Subject[];
   totalPoints: number;
   totalCredits: number;
+  earnedCredits?: number;
   academicYear?: string; // e.g. "2023-2024"
 }

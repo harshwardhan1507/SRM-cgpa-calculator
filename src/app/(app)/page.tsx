@@ -152,10 +152,12 @@ export default function DashboardPage() {
             // Recalculate SGPA
             let totalPoints = 0;
             let totalCredits = 0;
+            let earnedCredits = 0;
             updatedCourses.forEach(c => {
+              totalPoints += c.grade * c.credit;
+              totalCredits += c.credit;
               if (!c.hasBack) {
-                totalPoints += c.grade * c.credit;
-                totalCredits += c.credit;
+                earnedCredits += c.credit;
               }
             });
 
@@ -167,7 +169,8 @@ export default function DashboardPage() {
               courses: updatedCourses,
               cgpa: newSgpa,
               totalPoints,
-              totalCredits
+              totalCredits,
+              earnedCredits
             };
 
             await setSemesters(updatedSemesters);
@@ -278,7 +281,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border mt-8">
               <div>
                 <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Credits</div>
-                <div className="text-lg sm:text-xl font-semibold text-white mt-1">{totalCredits}</div>
+                <div className="text-lg sm:text-xl font-semibold text-white mt-1">{cgpaResult.earnedCredits}</div>
               </div>
               <div>
                 <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase">Semesters</div>
@@ -411,7 +414,9 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-12">
                         <div className="hidden sm:block text-right">
                           <div className="font-mono text-[10px] text-muted-foreground">CREDITS EARNED</div>
-                          <div className="font-semibold text-white text-sm mt-0.5">{sem.totalCredits}</div>
+                          <div className="font-semibold text-white text-sm mt-0.5">
+                            {sem.earnedCredits !== undefined ? sem.earnedCredits : (sem.totalCredits - sem.courses.filter(c => c.hasBack).reduce((acc, c) => acc + c.credit, 0))}
+                          </div>
                         </div>
                         <div className="bg-neutral-900 px-5 py-2 rounded-lg border border-border">
                           <div className="font-mono text-[10px] text-muted-foreground">SGPA</div>

@@ -132,6 +132,7 @@ function NewSemesterForm() {
   const totalPoints = sgpaResult.totalPoints;
   const totalCredits = sgpaResult.totalCredits;
   const sgpa = sgpaResult.sgpa;
+  const earnedCredits = sgpaResult.earnedCredits;
 
   // Running calculations for the detailed marks inputs
   const parseNum = (val: string) => parseFloat(val) || 0;
@@ -356,6 +357,7 @@ function NewSemesterForm() {
         courses: subjects,
         totalPoints,
         totalCredits,
+        earnedCredits,
         academicYear
       };
 
@@ -712,9 +714,15 @@ function NewSemesterForm() {
 
               <div className="flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground">
                 <div className="flex justify-between items-center">
-                  <span>Total Credits</span>
+                  <span>Registered Credits</span>
                   <span className="font-mono text-white font-semibold">{totalCredits}</span>
                 </div>
+                {earnedCredits !== totalCredits && (
+                  <div className="flex justify-between items-center">
+                    <span>Earned Credits</span>
+                    <span className="font-mono text-white font-semibold">{earnedCredits}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-center">
                   <span>Weighted Points</span>
                   <span className="font-mono text-white font-semibold">{totalPoints.toFixed(1)}</span>
