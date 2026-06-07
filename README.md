@@ -74,25 +74,22 @@ All calculations run client-side with instant results, backed by Firebase for cl
 
 ---
 
-## � Screenshots
+## 📸 Screenshots
 
 ### Dashboard
-![Dashboard](https://via.placeholder.com/800x400/0d1117/3fb950?text=Dashboard+Screenshot)
-
-### SGPA Calculator
-![SGPA Calculator](https://via.placeholder.com/800x400/0d1117/3fb950?text=SGPA+Calculator+Screenshot)
+![Dashboard](public/screenshots/dashboard.png)
 
 ### CGPA Calculator
-![CGPA Calculator](https://via.placeholder.com/800x400/0d1117/3fb950?text=CGPA+Calculator+Screenshot)
+![CGPA Calculator](public/screenshots/cgpa_calculator.png)
 
 ### GPA Planner
-![GPA Planner](https://via.placeholder.com/800x400/0d1117/3fb950?text=GPA+Planner+Screenshot)
+![GPA Planner](public/screenshots/gpa_planner.png)
 
 ### AI Insights
-![AI Insights](https://via.placeholder.com/800x400/0d1117/3fb950?text=AI+Insights+Screenshot)
+![AI Insights](public/screenshots/ai_insights.png)
 
 ### Mobile View
-![Mobile View](https://via.placeholder.com/400x800/0d1117/3fb950?text=Mobile+View+Screenshot)
+![Mobile View](public/screenshots/mobile_view.png)
 
 ---
 
