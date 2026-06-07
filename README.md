@@ -1,3 +1,20 @@
+---
+title: SRM Academic Suite
+tagline: AI-Powered Academic Analytics Platform
+description: An AI-powered academic analytics platform for SRM students to compute GPAs, plan targets, and receive personalized insights.
+image: /images/Srm_cgpa.png
+projectType: software
+live: https://srm-cgpa-calculator-by-haruto.vercel.app/
+github: https://github.com/harshwardhan1507/SRM-cgpa-calculator
+technologies:
+  - Next.js
+  - TypeScript
+  - Firebase
+  - Gemini AI
+  - Tailwind CSS
+  - Framer Motion
+---
+
 <div align="center">
 
 # 🎓 SRM Academic Suite
@@ -78,6 +95,9 @@ All calculations run client-side with instant results, backed by Firebase for cl
 
 ### Dashboard
 ![Dashboard](public/screenshots/dashboard.png)
+
+### SGPA Calculator
+![SGPA Calculator](public/screenshots/sgpa_calculator.png)
 
 ### CGPA Calculator
 ![CGPA Calculator](public/screenshots/cgpa_calculator.png)
@@ -348,6 +368,14 @@ Full Stack Developer
 - 💼 [LinkedIn](https://www.linkedin.com/in/harsh-wardhan-singh-cse/)
 - 🐙 [GitHub](https://github.com/harshwardhan1507)
 - 📧 [Email](mailto:harshwardhansingh1507@gmail.com)
+
+---
+
+## 📝 Lessons Learned
+
+- **Deterministic Calculation First**: Core algebraic grading calculators must be mathematically deterministic. Relying on LLMs for calculations introduces hallucinations and decreases student trust.
+- **Progressive Web App Reach**: Building installable web features (PWA) with persistent local storage is essential for campus utility tools where university Wi-Fi is throttled.
+- **Clean Interface Hierarchy**: Dynamic planners require structured confidence inputs to reduce user cognitive load while offering complex optimization paths.
 
 ---
 
